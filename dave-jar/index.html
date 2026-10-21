@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jar Made by Dave</title>
+<style>
+  :root {
+    --ink: #1f2430;
+    --muted: #586174;
+    --line: #d9dde5;
+    --panel: #f6f4ef;
+    --card: #ffffff;
+    --accent: #7a3e1d;      /* stoneware brown */
+    --accent-dark: #5b2c13;
+    --good: #1d6b3a;
+    --good-bg: #e6f4ea;
+    --bad: #9b2226;
+    --bad-bg: #fbe9e9;
+    --focus: #1a5fb4;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; line-height: 1.25; }
+  h2 { font-size: 1.2rem; margin: 0 0 10px; color: var(--accent-dark); }
+  p { margin: 0 0 10px; }
+  .sub { color: var(--muted); margin: 0 0 16px; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-left: 6px solid var(--accent);
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin: 0 0 18px;
+  }
+  .card.soft { background: var(--panel); }
+
+  .steps { margin: 0; padding-left: 22px; }
+  .steps li { margin-bottom: 6px; }
+  .controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 8px;
+    margin: 12px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .controls li {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: .94rem;
+  }
+  .controls b { display: block; color: var(--accent-dark); }
+
+  .viewer {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    min-height: 320px;
+    background: #2b2b2b;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  .viewer iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .viewer-bar {
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+    justify-content: space-between; margin: 10px 0 0;
+    font-size: .92rem; color: var(--muted);
+  }
+
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px 16px; margin: 0; }
+  .facts div { border-bottom: 1px dashed var(--line); padding: 4px 0; }
+  .facts dt { font-weight: 700; font-size: .85rem; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
+  .facts dd { margin: 0; }
+  blockquote {
+    margin: 12px 0 0; padding: 10px 14px; background: #fff;
+    border-left: 4px solid var(--accent); font-style: italic;
+  }
+
+  .q { padding: 14px 0; border-top: 1px solid var(--line); }
+  .q:first-of-type { border-top: 0; padding-top: 4px; }
+  .q label { display: block; font-weight: 700; margin-bottom: 8px; }
+  .q .num {
+    display: inline-block; min-width: 26px; height: 26px; line-height: 26px;
+    text-align: center; border-radius: 13px; background: var(--accent);
+    color: #fff; font-size: .85rem; margin-right: 6px;
+  }
+  select, textarea {
+    font: inherit; color: var(--ink); width: 100%;
+    border: 1px solid #b9bfcb; border-radius: 6px; background: #fff;
+  }
+  select { padding: 9px 10px; max-width: 560px; }
+  textarea { padding: 10px 12px; min-height: 170px; resize: vertical; }
+  select:focus, textarea:focus, button:focus, a:focus {
+    outline: 3px solid var(--focus); outline-offset: 2px;
+  }
+  select.right { border-color: var(--good); background: var(--good-bg); }
+  select.wrong { border-color: var(--bad); background: var(--bad-bg); }
+  .fb { margin-top: 8px; font-size: .95rem; display: none; padding: 8px 10px; border-radius: 6px; }
+  .fb.show { display: block; }
+  .fb.right { background: var(--good-bg); color: var(--good); }
+  .fb.wrong { background: var(--bad-bg); color: var(--bad); }
+
+  .starters { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+  .chip {
+    font: inherit; font-size: .88rem; padding: 5px 10px; border-radius: 14px;
+    border: 1px solid var(--accent); color: var(--accent-dark); background: #fff; cursor: pointer;
+  }
+  .chip:hover { background: var(--panel); }
+  .meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; font-size: .88rem; color: var(--muted); margin-top: 6px; }
+
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+  .btn {
+    font: inherit; font-weight: 700; padding: 10px 16px; border-radius: 6px;
+    border: 2px solid var(--accent); cursor: pointer; text-decoration: none;
+    display: inline-block;
+  }
+  .btn.primary { background: var(--accent); color: #fff; }
+  .btn.primary:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+  .btn.ghost { background: #fff; color: var(--accent-dark); }
+  .btn.ghost:hover { background: var(--panel); }
+  .btn.small { padding: 6px 12px; font-size: .9rem; }
+
+  .score { font-weight: 700; margin: 12px 0 0; min-height: 1.4em; }
+  .status { font-size: .9rem; color: var(--good); min-height: 1.3em; margin-top: 8px; }
+  .footer { font-size: .82rem; color: var(--muted); margin-top: 8px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+  @media (max-width: 560px) {
+    h1 { font-size: 1.35rem; }
+    .card { padding: 14px; }
+    .viewer { aspect-ratio: 4 / 5; }
+  }
+  @media print {
+    .viewer, .viewer-bar, .btns, .starters { display: none; }
+    .card { border-left-width: 3px; }
+  }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <header>
+    <h1>Jar Made by "Dave"</h1>
+    <p class="sub">Explore a 3D model of a stoneware jar made and signed by David Drake, an enslaved potter and poet in Edgefield, South Carolina.</p>
+  </header>
+
+  <!-- 1. INSTRUCTIONS -->
+  <section class="card soft" aria-labelledby="how">
+    <h2 id="how">How to complete this activity</h2>
+    <ol class="steps">
+      <li><b>Explore the jar.</b> Turn the 3D model all the way around. Zoom in on the writing near the top and on both sides.</li>
+      <li><b>Read the Object Facts</b> below the viewer.</li>
+      <li><b>Answer the five drop-down questions.</b> Press <b>Check My Answers</b> to see what you got right. You can change answers and check again.</li>
+      <li><b>Write your expansion response</b> (at least 5 sentences). Use evidence from the jar.</li>
+      <li><b>Submit:</b> press <b>Copy My Answers</b> and paste them into the Canvas submission box. Or press <b>Download</b> and upload the file.</li>
+    </ol>
+    <ul class="controls" aria-label="3D viewer controls">
+      <li><b>Rotate</b>Click and drag (one finger on a phone)</li>
+      <li><b>Zoom</b>Scroll wheel (pinch on a phone)</li>
+      <li><b>Move</b>Right-click and drag (two fingers)</li>
+      <li><b>Reset / Full screen</b>Use the buttons in the viewer's menu</li>
+    </ul>
+    <p class="footer" style="margin-top:10px">Your work saves on this device as you type, so it's safe to leave and come back.</p>
+  </section>
+
+  <!-- 2. 3D OBJECT -->
+  <section class="card" aria-labelledby="obj">
+    <h2 id="obj">Explore the object</h2>
+    <div class="viewer">
+      <iframe
+        id="voyager"
+        title="Interactive 3D model: Jar made by Dave, Smithsonian 3D Digitization"
+        src="https://3d.si.edu/voyager/fc2bca6b-1f44-4d2c-a1b9-713a33ee0596"
+        allow="xr; xr-spatial-tracking; fullscreen"
+        allowfullscreen
+        loading="lazy"></iframe>
+    </div>
+    <div class="viewer-bar">
+      <span>Is the viewer blank or too small?</span>
+      <a class="btn ghost small" href="https://3d.si.edu/object/3d/jar-made-dave:fc2bca6b-1f44-4d2c-a1b9-713a33ee0596" target="_blank" rel="noopener">Open the jar in a new tab &#8599;</a>
+    </div>
+  </section>
+
+  <!-- 3. FACTS -->
+  <section class="card soft" aria-labelledby="facts">
+    <h2 id="facts">Object facts</h2>
+    <dl class="facts">
+      <div><dt>Maker</dt><dd>David Drake ("Dave"), about 1801 to the 1870s</dd></div>
+      <div><dt>Date</dt><dd>May 3, 1862</dd></div>
+      <div><dt>Place</dt><dd>Lewis Miles' pottery, Edgefield District, South Carolina</dd></div>
+      <div><dt>Material</dt><dd>Stoneware clay with an alkaline glaze</dd></div>
+      <div><dt>Held by</dt><dd>National Museum of American History, Smithsonian</dd></div>
+      <div><dt>Marks</dt><dd>"May 3, 1862 / LM Dave" on the other side</dd></div>
+    </dl>
+    <p style="margin-top:12px">Dave was enslaved for most of his life. He made thousands of huge storage jars for the pottery. On about twenty surviving jars he scratched short poems into the wet clay. That was dangerous: an 1834 South Carolina law made it a crime to teach enslaved people to read or write.</p>
+    <blockquote>"I made this jar all of cross<br>If you don't repent, you will be lost"</blockquote>
+  </section>
+
+  <!-- 4. QUESTIONS -->
+  <section class="card" aria-labelledby="qs">
+    <h2 id="qs">Questions</h2>
+    <form id="quiz" onsubmit="return false" novalidate>
+
+      <div class="q">
+        <label for="q1"><span class="num">1</span>What material is the jar made of?</label>
+        <select id="q1" data-answer="b">
+          <option value="">Choose an answer</option>
+          <option value="a">Blown glass</option>
+          <option value="b">Stoneware clay with a glaze</option>
+          <option value="c">Carved wood</option>
+          <option value="d">Cast iron</option>
+        </select>
+        <div class="fb" role="status" data-right="Correct. Dave shaped it from local clay and fired it with an alkaline glaze, which gives it a glassy, drippy surface." data-wrong="Not quite. Zoom in on the surface: it is shiny and drippy, with no wood grain or metal. Check the Object Facts."></div>
+      </div>
+
+      <div class="q">
+        <label for="q2"><span class="num">2</span>Where was the jar made?</label>
+        <select id="q2" data-answer="c">
+          <option value="">Choose an answer</option>
+          <option value="a">Boston, Massachusetts</option>
+          <option value="b">London, England</option>
+          <option value="c">Edgefield, South Carolina</option>
+          <option value="d">New Orleans, Louisiana</option>
+        </select>
+        <div class="fb" role="status" data-right="Correct. Edgefield was a center of stoneware pottery in the South, and the workshops there depended on enslaved workers." data-wrong="Not quite. Look at the Place line in the Object Facts."></div>
+      </div>
+
+      <div class="q">
+        <label for="q3"><span class="num">3</span>Why are the words on Dave's jars so remarkable?</label>
+        <select id="q3" data-answer="d">
+          <option value="">Choose an answer</option>
+          <option value="a">They were painted on by a famous artist later</option>
+          <option value="b">They are written in a secret code</option>
+          <option value="c">Every potter in the 1800s wrote poems on jars</option>
+          <option value="d">He wrote them while South Carolina law banned teaching enslaved people to read and write</option>
+        </select>
+        <div class="fb" role="status" data-right="Correct. By writing and signing his work, Dave showed he could read and write, even though it was against the law to teach him. That was a risky and powerful act." data-wrong="Not quite. Reread the paragraph about the 1834 South Carolina law."></div>
+      </div>
+
+      <div class="q">
+        <label for="q4"><span class="num">4</span>The jar is marked "LM Dave." What do the letters "LM" most likely stand for?</label>
+        <select id="q4" data-answer="a">
+          <option value="">Choose an answer</option>
+          <option value="a">Lewis Miles, who enslaved Dave and owned the pottery</option>
+          <option value="b">"Large Measure," the size of the jar</option>
+          <option value="c">Dave's family name</option>
+          <option value="d">The name of the town where it was sold</option>
+        </select>
+        <div class="fb" role="status" data-right="Correct. Dave added the initials of Lewis Miles, his enslaver at the time. The jar carries both the owner's mark and the maker's own name." data-wrong="Not quite. Look at the Place line: whose pottery was it?"></div>
+      </div>
+
+      <div class="q">
+        <label for="q5"><span class="num">5</span>Dave dated this jar May 3, 1862. What was happening in the United States then?</label>
+        <select id="q5" data-answer="b">
+          <option value="">Choose an answer</option>
+          <option value="a">The American Revolution</option>
+          <option value="b">The Civil War</option>
+          <option value="c">The Great Depression</option>
+          <option value="d">World War I</option>
+        </select>
+        <div class="fb" role="status" data-right="Correct. The Civil War (1861 to 1865) was being fought over slavery. Dave made this jar while still enslaved, about three years before the war ended slavery." data-wrong="Not quite. The war over slavery began in 1861 and ended in 1865."></div>
+      </div>
+
+      <div class="btns" style="margin-top:14px">
+        <button type="button" class="btn primary" id="check">Check My Answers</button>
+        <button type="button" class="btn ghost" id="reset">Clear Answers</button>
+      </div>
+      <p class="score" id="score" aria-live="polite"></p>
+
+      <!-- EXPANSION -->
+      <div class="q" style="border-top:1px solid var(--line); margin-top:10px; padding-top:18px">
+        <label for="q6"><span class="num">6</span>Expansion: Dave could have made the jar and stayed silent. Instead, he signed his name and wrote a poem. Why do you think he did this, and what does the jar tell us about him as a person?</label>
+        <p class="footer" style="margin:0 0 8px">Write at least 5 sentences. Use at least one detail you saw on the 3D model and one fact from this page. Tap a starter to add it.</p>
+        <div class="starters" aria-label="Sentence starters">
+          <button type="button" class="chip">I think Dave signed his name because…</button>
+          <button type="button" class="chip">When I zoomed in on the jar, I noticed…</button>
+          <button type="button" class="chip">This was risky because…</button>
+          <button type="button" class="chip">The poem shows that Dave…</button>
+          <button type="button" class="chip">This jar tells us that Dave was…</button>
+        </div>
+        <textarea id="q6" aria-describedby="wc"></textarea>
+        <div class="meta"><span id="wc">0 words · 0 sentences</span><span id="saved"></span></div>
+      </div>
+
+      <h2 style="margin-top:18px">Turn it in</h2>
+      <div class="btns">
+        <button type="button" class="btn primary" id="copy">Copy My Answers</button>
+        <button type="button" class="btn ghost" id="download">Download (.txt)</button>
+      </div>
+      <p class="status" id="status" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <p class="footer">3D model: Smithsonian 3D Digitization, "Jar Made by Dave," National Museum of American History.</p>
+</main>
+
+<script>
+(function () {
+  var KEY = "dave-jar-v1";
+  var qs = ["q1", "q2", "q3", "q4", "q5"];
+  var $ = function (id) { return document.getElementById(id); };
+  var essay = $("q6");
+
+  /* ---------- save / restore (safe if storage is blocked) ---------- */
+  function save() {
+    var data = { essay: essay.value };
+    qs.forEach(function (id) { data[id] = $(id).value; });
+    try { localStorage.setItem(KEY, JSON.stringify(data)); $("saved").textContent = "Saved"; } catch (e) {}
+  }
+  function load() {
+    try {
+      var data = JSON.parse(localStorage.getItem(KEY) || "{}");
+      qs.forEach(function (id) { if (data[id]) $(id).value = data[id]; });
+      if (data.essay) essay.value = data.essay;
+    } catch (e) {}
+  }
+
+  /* ---------- checking ---------- */
+  function clearMark(sel) {
+    sel.classList.remove("right", "wrong");
+    var fb = sel.parentNode.querySelector(".fb");
+    fb.className = "fb"; fb.textContent = "";
+  }
+  function check() {
+    var right = 0, blank = 0;
+    qs.forEach(function (id) {
+      var sel = $(id), fb = sel.parentNode.querySelector(".fb");
+      clearMark(sel);
+      if (!sel.value) { blank++; return; }
+      var ok = sel.value === sel.getAttribute("data-answer");
+      if (ok) right++;
+      sel.classList.add(ok ? "right" : "wrong");
+      fb.textContent = (ok ? "✓ " : "✗ ") + fb.getAttribute(ok ? "data-right" : "data-wrong");
+      fb.className = "fb show " + (ok ? "right" : "wrong");
+    });
+    $("score").textContent = "You got " + right + " out of 5 correct." +
+      (blank ? " (" + blank + " not answered yet.)" : right === 5 ? " Great work! Now write your expansion answer." : " Fix the red ones and check again.");
+    resize();
+  }
+
+  /* ---------- essay helpers ---------- */
+  function counts() {
+    var t = essay.value.trim();
+    var w = t ? t.split(/\s+/).length : 0;
+    var s = t ? (t.match(/[^.!?]+[.!?]+/g) || [t]).length : 0;
+    $("wc").textContent = w + " words · " + s + " sentence" + (s === 1 ? "" : "s") + (s >= 5 ? " ✓" : "");
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".chip"), function (c) {
+    c.addEventListener("click", function () {
+      var v = essay.value;
+      var stem = c.textContent.replace(/…$/, " ");
+      essay.value = v + (v && !/\s$/.test(v) ? " " : "") + stem;
+      essay.focus();
+      essay.setSelectionRange(essay.value.length, essay.value.length);
+      counts(); save();
+    });
+  });
+
+  /* ---------- export ---------- */
+  function buildText() {
+    var lines = ["Jar Made by Dave: 3D Object Activity", "Date: " + new Date().toLocaleString(), ""];
+    var right = 0;
+    qs.forEach(function (id, i) {
+      var sel = $(id);
+      var q = sel.parentNode.querySelector("label").textContent.replace(/^\d/, "").trim();
+      var a = sel.value ? sel.options[sel.selectedIndex].text : "(no answer)";
+      var ok = sel.value && sel.value === sel.getAttribute("data-answer");
+      if (ok) right++;
+      lines.push((i + 1) + ". " + q);
+      lines.push("   Answer: " + a + (sel.value ? (ok ? "  [correct]" : "  [incorrect]") : ""));
+    });
+    lines.push("", "Drop-down score: " + right + "/5", "");
+    lines.push("6. Expansion response:");
+    lines.push(essay.value.trim() || "(no response)");
+    return lines.join("\n");
+  }
+  function status(msg) { $("status").textContent = msg; }
+  function fallbackCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text; ta.setAttribute("readonly", "");
+    ta.style.position = "fixed"; ta.style.top = "-1000px";
+    document.body.appendChild(ta); ta.select();
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) {}
+    document.body.removeChild(ta);
+    status(ok ? "Copied! Paste it into the Canvas submission box (Ctrl+V or ⌘+V)."
+              : "Copy was blocked. Use Download instead and upload the file.");
+  }
+  $("copy").addEventListener("click", function () {
+    var text = buildText();
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () {
+        status("Copied! Paste it into the Canvas submission box (Ctrl+V or ⌘+V).");
+      }, function () { fallbackCopy(text); });
+    } else { fallbackCopy(text); }
+  });
+  $("download").addEventListener("click", function () {
+    var blob = new Blob([buildText()], { type: "text/plain" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "dave-jar-answers.txt";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    status("Downloaded. Upload dave-jar-answers.txt to the assignment.");
+  });
+
+  $("check").addEventListener("click", check);
+  $("reset").addEventListener("click", function () {
+    if (!confirm("Clear your drop-down answers? (Your written answer stays.)")) return;
+    qs.forEach(function (id) { $(id).value = ""; clearMark($(id)); });
+    $("score").textContent = ""; save(); resize();
+  });
+  qs.forEach(function (id) {
+    $(id).addEventListener("change", function () { clearMark(this); save(); });
+  });
+  var t;
+  essay.addEventListener("input", function () {
+    counts(); $("saved").textContent = "Saving…";
+    clearTimeout(t); t = setTimeout(save, 400);
+  });
+
+  /* ---------- Canvas iframe auto-height ---------- */
+  function resize() {
+    try {
+      var h = document.documentElement.scrollHeight;
+      window.parent.postMessage(JSON.stringify({ subject: "lti.frameResize", height: h }), "*");
+    } catch (e) {}
+  }
+  window.addEventListener("load", resize);
+  window.addEventListener("resize", resize);
+
+  load(); counts();
+})();
+</script>
+</body>
+</html>
