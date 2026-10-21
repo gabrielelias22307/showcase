@@ -1,0 +1,319 @@
+<title>Jar Made by Dave</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;700&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+  /* Layout: one centered column; the jar sits in a kiln-dark stage, the work below it on clay-paper cards. */
+  :root {
+    --bg: #faf7f2;          /* clay paper */
+    --card: #ffffff;
+    --panel: #f3ede4;
+    --ink: #2a211b;
+    --muted: #6b5d52;
+    --line: #e1d7ca;
+    --accent: #7a3e1d;      /* alkaline-glaze brown */
+    --accent-ink: #ffffff;
+    --accent-soft: #f1e3d6;
+    --stage: #262220;
+    --stage-ink: #efe8df;
+    --good: #1f6b3b; --good-bg: #e5f3e9;
+    --bad: #a1282c;  --bad-bg: #fbe8e8;
+    --focus: #2563b8;
+    --display: "Zilla Slab", Rockwell, "Roboto Slab", Georgia, serif;
+    --body: "Source Sans 3", "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --bg: #1b1714; --card: #241f1b; --panel: #2b2520; --ink: #efe7dd; --muted: #b3a597;
+    --line: #3d342d; --accent: #d08a5c; --accent-ink: #1b1714; --accent-soft: #3a2b21;
+    --stage: #121010; --stage-ink: #efe8df;
+    --good: #7fd19b; --good-bg: #1d3325; --bad: #f19a9c; --bad-bg: #3a1f20; --focus: #7fb0ff;
+    color-scheme: dark;
+  } }
+  :root[data-theme="dark"] {
+    --bg: #1b1714; --card: #241f1b; --panel: #2b2520; --ink: #efe7dd; --muted: #b3a597;
+    --line: #3d342d; --accent: #d08a5c; --accent-ink: #1b1714; --accent-soft: #3a2b21;
+    --stage: #121010; --stage-ink: #efe8df;
+    --good: #7fd19b; --good-bg: #1d3325; --bad: #f19a9c; --bad-bg: #3a1f20; --focus: #7fb0ff;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.55; }
+  .wrap {
+    max-width: 860px; margin: 0 auto;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 24px 40px;
+    display: flex; flex-direction: column; gap: 18px;
+  }
+  h1, h2 { font-family: var(--display); text-wrap: balance; line-height: 1.2; margin: 0; }
+  h1 { font-size: 2rem; font-weight: 700; }
+  h2 { font-size: 1.25rem; font-weight: 700; color: var(--accent); margin-bottom: 10px; }
+  p { margin: 0 0 10px; }
+  header { text-align: center; }
+  .sub { color: var(--muted); margin: 4px 0 0; }
+
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 18px; }
+  .card.soft { background: var(--panel); }
+
+  .steps { margin: 0; padding-left: 22px; display: grid; gap: 4px; }
+  .controls { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .controls li { background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; font-size: .9rem; }
+  .controls b { color: var(--accent); margin-right: 4px; }
+
+  /* stage */
+  .stage { background: var(--stage); border-radius: 12px; overflow: hidden; position: relative; }
+  .viewer { position: relative; width: 100%; max-width: 100%; aspect-ratio: 4 / 3; min-height: 300px; margin: 0 auto; }
+  model-viewer { position: absolute; inset: 0; width: 100%; height: 100%; background: transparent; --poster-color: transparent; }
+  .loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--stage-ink); pointer-events: none; text-align: center; padding: 16px; }
+  .vbtns { position: absolute; right: 10px; bottom: 10px; display: flex; gap: 6px; }
+  .vbtn { font: inherit; font-size: .85rem; font-weight: 700; padding: 6px 10px; border-radius: 6px; border: 1px solid #ffffff66; background: #00000080; color: #fff; cursor: pointer; }
+  .stage-bar { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 14px; padding: 10px 14px; color: var(--stage-ink); font-size: .9rem; border-top: 1px solid #ffffff1f; }
+  .stage-bar a { color: var(--stage-ink); font-weight: 700; }
+
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px 16px; margin: 0; }
+  .facts div { min-width: 0; border-bottom: 1px dashed var(--line); padding: 4px 0; }
+  .facts dt { font-weight: 700; font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+  .facts dd { margin: 0; }
+  blockquote { margin: 12px 0 0; padding: 10px 14px; background: var(--card); border-left: 4px solid var(--accent); font-family: var(--display); font-size: 1.1rem; }
+
+  .q { padding: 14px 0; border-top: 1px solid var(--line); }
+  .q:first-of-type { border-top: 0; padding-top: 4px; }
+  .q label { display: block; font-weight: 700; margin-bottom: 8px; }
+  .num { display: inline-block; min-width: 26px; height: 26px; line-height: 26px; text-align: center; border-radius: 13px; background: var(--accent); color: var(--accent-ink); font-size: .85rem; margin-right: 6px; }
+  select, textarea { font: inherit; color: var(--ink); background: var(--card); width: 100%; border: 1px solid var(--line); border-radius: 6px; }
+  select { padding: 9px 10px; max-width: 560px; }
+  textarea { padding: 10px 12px; min-height: 170px; resize: vertical; }
+  select:focus-visible, textarea:focus-visible, button:focus-visible, a:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+  select.right { border-color: var(--good); background: var(--good-bg); }
+  select.wrong { border-color: var(--bad); background: var(--bad-bg); }
+  .fb { margin-top: 8px; font-size: .95rem; padding: 8px 10px; border-radius: 6px; }
+  .fb:empty { display: none; }
+  .fb.right { background: var(--good-bg); color: var(--good); }
+  .fb.wrong { background: var(--bad-bg); color: var(--bad); }
+
+  .starters { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+  .chip { font: inherit; font-size: .88rem; padding: 5px 10px; border-radius: 14px; border: 1px solid var(--accent); color: var(--accent); background: var(--card); cursor: pointer; }
+  .chip:hover { background: var(--accent-soft); }
+  .meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; font-size: .88rem; color: var(--muted); margin-top: 6px; }
+  .footer { font-size: .85rem; color: var(--muted); }
+
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  .btn { font: inherit; font-weight: 700; padding: 10px 16px; border-radius: 6px; border: 2px solid var(--accent); cursor: pointer; }
+  .btn.primary { background: var(--accent); color: var(--accent-ink); }
+  .btn.ghost { background: var(--card); color: var(--accent); }
+  .btn.ghost:hover { background: var(--accent-soft); }
+  .score { font-weight: 700; margin: 12px 0 0; min-height: 1.4em; }
+  .status { font-size: .92rem; color: var(--good); min-height: 1.3em; margin: 8px 0 0; }
+  #copy-box { width: 100%; min-height: 120px; margin-top: 8px; font-size: .85rem; }
+
+  @media (max-width: 520px) { h1 { font-size: 1.6rem; } .card { padding: 14px; } .viewer { aspect-ratio: 4 / 5; } }
+  @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+</style>
+
+<main class="wrap">
+  <header>
+    <h1>Jar Made by "Dave"</h1>
+    <p class="sub">A stoneware jar signed by David Drake, an enslaved potter and poet.</p>
+  </header>
+
+  <section class="card soft" aria-labelledby="how">
+    <h2 id="how">Directions</h2>
+    <ol class="steps">
+      <li>Turn the jar and zoom in on the writing.</li>
+      <li>Answer the 5 questions, then press <b>Check My Answers</b>.</li>
+      <li>Write your expansion answer (5+ sentences).</li>
+      <li>Press <b>Copy My Answers</b> and paste them where your teacher asks.</li>
+    </ol>
+    <ul class="controls" aria-label="3D viewer controls">
+      <li><b>Turn</b>Drag</li>
+      <li><b>Zoom</b>Scroll or pinch</li>
+      <li><b>Move</b>Right-drag or two fingers</li>
+    </ul>
+  </section>
+
+  <section class="stage" id="stage" aria-label="3D model of the jar">
+    <div class="viewer">
+      <div class="loading" id="mv-loading">Loading the jar…</div>
+      <model-viewer
+        id="mv"
+        src="jar.glb"
+        loading="eager"
+        camera-orbit="180deg 75deg auto"
+        camera-target="0m 0m 0m"
+        alt="3D model of a large brown stoneware jar by David Drake, with a poem scratched near the top"
+        camera-controls
+        touch-action="pan-y"
+        interaction-prompt="auto"
+        shadow-intensity="0.8"
+        exposure="1.05"
+        environment-image="neutral"></model-viewer>
+      <div class="vbtns">
+        <button type="button" class="vbtn" id="mv-reset">Reset view</button>
+        <button type="button" class="vbtn" id="mv-full">Full screen</button>
+      </div>
+    </div>
+    <div class="stage-bar">
+      <span>Want more tools?</span>
+      <a href="https://3d.si.edu/object/3d/jar-made-dave%3Afc2bca6b-1f44-4d2c-a1b9-713a33ee0596" target="_blank" rel="noopener">Open at the Smithsonian &#8599;</a>
+    </div>
+  </section>
+
+  <section class="card soft" aria-labelledby="facts">
+    <h2 id="facts">Object facts</h2>
+    <dl class="facts">
+      <div><dt>Maker</dt><dd>David Drake ("Dave"), about 1801 to the 1870s</dd></div>
+      <div><dt>Date</dt><dd>May 3, 1862</dd></div>
+      <div><dt>Place</dt><dd>Lewis Miles' pottery, Edgefield District, South Carolina</dd></div>
+      <div><dt>Material</dt><dd>Stoneware clay with an alkaline glaze</dd></div>
+      <div><dt>Held by</dt><dd>National Museum of American History, Smithsonian</dd></div>
+      <div><dt>Marks</dt><dd>"May 3, 1862 / LM Dave"</dd></div>
+    </dl>
+    <p style="margin-top:12px">Dave scratched poems into about twenty surviving jars. In 1834, South Carolina made it a crime to teach enslaved people to read or write.</p>
+    <blockquote>"I made this jar all of cross<br>If you don't repent, you will be lost"</blockquote>
+  </section>
+
+  <section class="card" aria-labelledby="qs">
+    <h2 id="qs">Questions</h2>
+    <form id="quiz" novalidate>
+__QUESTIONS__
+      <h2 style="margin-top:18px">Turn it in</h2>
+      <div class="btns">
+        <button type="button" class="btn primary" id="copy">Copy My Answers</button>
+      </div>
+      <p class="status" id="status" aria-live="polite"></p>
+      <textarea id="copy-box" readonly hidden aria-label="Your answers, ready to copy"></textarea>
+    </form>
+  </section>
+
+  <p class="footer">3D model: Smithsonian 3D Digitization, "Jar Made by Dave," National Museum of American History.</p>
+</main>
+
+<script>
+(function () {
+  var KEY = "dave-jar-v1";
+  var qs = ["q1", "q2", "q3", "q4", "q5"];
+  var $ = function (id) { return document.getElementById(id); };
+  var essay = $("q6");
+  $("quiz").addEventListener("submit", function (e) { e.preventDefault(); });
+
+  function save() {
+    var data = { essay: essay.value };
+    qs.forEach(function (id) { data[id] = $(id).value; });
+    try { localStorage.setItem(KEY, JSON.stringify(data)); $("saved").textContent = "Saved on this device"; } catch (e) {}
+  }
+  function load() {
+    try {
+      var data = JSON.parse(localStorage.getItem(KEY) || "{}");
+      qs.forEach(function (id) { if (data[id]) $(id).value = data[id]; });
+      if (data.essay) essay.value = data.essay;
+    } catch (e) {}
+  }
+
+  function clearMark(sel) {
+    sel.classList.remove("right", "wrong");
+    var fb = sel.parentNode.querySelector(".fb");
+    fb.className = "fb"; fb.textContent = "";
+  }
+  function check() {
+    var right = 0, blank = 0;
+    qs.forEach(function (id) {
+      var sel = $(id), fb = sel.parentNode.querySelector(".fb");
+      clearMark(sel);
+      if (!sel.value) { blank++; return; }
+      var ok = sel.value === sel.getAttribute("data-answer");
+      if (ok) right++;
+      sel.classList.add(ok ? "right" : "wrong");
+      fb.textContent = (ok ? "✓ " : "✗ ") + fb.getAttribute(ok ? "data-right" : "data-wrong");
+      fb.className = "fb " + (ok ? "right" : "wrong");
+    });
+    $("score").textContent = "You got " + right + " out of 5 correct." +
+      (blank ? " (" + blank + " not answered yet.)" : right === 5 ? " Great work! Now write your expansion answer." : " Fix the red ones and check again.");
+  }
+
+  function counts() {
+    var t = essay.value.trim();
+    var w = t ? t.split(/\s+/).length : 0;
+    var s = t ? (t.match(/[^.!?]+[.!?]+/g) || [t]).length : 0;
+    $("wc").textContent = w + " words · " + s + " sentence" + (s === 1 ? "" : "s") + (s >= 5 ? " ✓" : "");
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".chip"), function (c) {
+    c.addEventListener("click", function () {
+      var v = essay.value;
+      essay.value = v + (v && !/\s$/.test(v) ? " " : "") + c.textContent.replace(/…$/, " ");
+      essay.focus();
+      essay.setSelectionRange(essay.value.length, essay.value.length);
+      counts(); save();
+    });
+  });
+
+  function buildText() {
+    var lines = ["Jar Made by Dave: 3D Object Activity", "Date: " + new Date().toLocaleString(), ""];
+    var right = 0;
+    qs.forEach(function (id, i) {
+      var sel = $(id);
+      var q = sel.parentNode.querySelector("label").textContent.replace(/^\d/, "").trim();
+      var a = sel.value ? sel.options[sel.selectedIndex].text : "(no answer)";
+      var ok = sel.value && sel.value === sel.getAttribute("data-answer");
+      if (ok) right++;
+      lines.push((i + 1) + ". " + q);
+      lines.push("   Answer: " + a + (sel.value ? (ok ? "  [correct]" : "  [incorrect]") : ""));
+    });
+    lines.push("", "Drop-down score: " + right + "/5", "", "6. Expansion response:", essay.value.trim() || "(no response)");
+    return lines.join("\n");
+  }
+  function showBox(text, msg) {
+    var box = $("copy-box");
+    box.value = text; box.hidden = false; box.focus(); box.select();
+    $("status").textContent = msg;
+  }
+  $("copy").addEventListener("click", function () {
+    var text = buildText();
+    try {
+      navigator.clipboard.writeText(text).then(function () {
+        $("copy-box").hidden = true;
+        $("status").textContent = "Copied. Paste it where your teacher asks (Ctrl+V or ⌘+V).";
+      }, function () { showBox(text, "Copy was blocked. Your answers are selected below: press Ctrl+C or ⌘+C."); });
+    } catch (e) { showBox(text, "Copy was blocked. Your answers are selected below: press Ctrl+C or ⌘+C."); }
+  });
+
+  $("check").addEventListener("click", check);
+  // No confirm() in this frame: the first press asks, the second clears.
+  var armed = null;
+  $("reset").addEventListener("click", function () {
+    var btn = this;
+    if (!armed) {
+      btn.textContent = "Press again to clear";
+      armed = setTimeout(function () { armed = null; btn.textContent = "Clear Answers"; }, 3000);
+      return;
+    }
+    clearTimeout(armed); armed = null; btn.textContent = "Clear Answers";
+    qs.forEach(function (id) { $(id).value = ""; clearMark($(id)); });
+    $("score").textContent = ""; save();
+  });
+  qs.forEach(function (id) { $(id).addEventListener("change", function () { clearMark(this); save(); }); });
+  var t;
+  essay.addEventListener("input", function () {
+    counts(); $("saved").textContent = "Saving…";
+    clearTimeout(t); t = setTimeout(save, 400);
+  });
+
+  var mv = $("mv"), mvLoaded = false;
+  mv.addEventListener("load", function () { mvLoaded = true; $("mv-loading").hidden = true; });
+  mv.addEventListener("error", function () { $("mv-loading").textContent = "The jar could not load. Use Open at the Smithsonian below."; });
+  setTimeout(function () {
+    if (!mvLoaded) $("mv-loading").textContent = "Still loading… If nothing appears, use Open at the Smithsonian below.";
+  }, 15000);
+  $("mv-reset").addEventListener("click", function () {
+    mv.cameraOrbit = "180deg 75deg auto"; mv.fieldOfView = "auto"; mv.cameraTarget = "0m 0m 0m";
+  });
+  $("mv-full").addEventListener("click", function () {
+    var el = $("stage");
+    if (document.fullscreenElement) { document.exitFullscreen(); return; }
+    var req = el.requestFullscreen || el.webkitRequestFullscreen;
+    if (req) { try { var p = req.call(el); if (p && p.catch) p.catch(function () {}); } catch (e) {} }
+  });
+
+  load(); counts();
+})();
+</script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
