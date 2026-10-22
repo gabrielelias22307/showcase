@@ -7,8 +7,9 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '
 const $ = (sel, root = document) => root.querySelector(sel);
 
 export class UI {
-  constructor({ mystery, state, npcs, portraits = {}, onAction }) {
+  constructor({ mystery, state, npcs, portraits = {}, onAction, banksLocked = false }) {
     this.m = mystery;
+    this.banksLocked = banksLocked; // true when the teacher set ?practice= in the link
     this.portraits = portraits;     // npcId -> photo URL (optional)
     this.state = state;
     this.npcs = npcs;               // id -> NPC
@@ -45,7 +46,7 @@ export class UI {
     this.current = null;
     const was = this.modal;
     this.modal = null;
-    if (was === 'dialogue' && this.dialogueNpc && !silent) { this.dialogueNpc.stopTalking(); this.dialogueNpc = null; }
+    if ((was === 'dialogue' || was === 'practice') && this.dialogueNpc && !silent) { this.dialogueNpc.stopTalking(); this.dialogueNpc = null; }
     if (!silent) this.onAction('closed', was);
   }
 
@@ -83,10 +84,12 @@ export class UI {
       <label class="field">Your name (for your report)
         <input id="student-name" type="text" maxlength="60" value="${esc(this.state.studentName)}" autocomplete="off">
       </label>
+      ${this.practiceToggles()}
       <div class="row">
         <button class="primary" data-start autofocus>${hasSave ? 'Continue' : 'Start investigating'}</button>
         ${hasSave ? '<button data-restart>Start over</button>' : ''}
       </div>`, { cls: 'intro', closable: false });
+    this.wireToggles(w);
     w.querySelector('[data-start]').onclick = () => {
       this.state.studentName = $('#student-name').value.trim();
       this.state.save();
@@ -116,7 +119,19 @@ export class UI {
   renderNode(npc, nodeId) {
     const def = npc.def;
     const node = def.dialogue.nodes[nodeId];
-    const choices = node.choices.filter((c) => this.state.check(c.requires, c.requiresNot));
+    let choices = node.choices.filter((c) => this.state.check(c.requires, c.requiresNot));
+    // Extra practice tasks from this person, shown on their first screen,
+    // just above "Goodbye". Only for banks that are switched on.
+    if (nodeId === def.dialogue.start) {
+      const extra = this.practiceFor(npc.id).map(({ bank, id, item }) => ({
+        text: `${bank.icon} ${bank.taskWord}: ${item.title}${this.state.practiceDone(id) ? ' ✔' : ''}`, practice: id
+      }));
+      if (extra.length) {
+        const bye = choices.findIndex((c) => c.end && !c.next && !c.action);
+        const at = bye < 0 ? choices.length : bye;
+        choices = [...choices.slice(0, at), ...extra, ...choices.slice(at)];
+      }
+    }
     const w = this.show('dialogue', `
       <div class="speaker">${this.face(def, true)}
         <div><strong>${esc(def.name)}</strong><span class="muted"> · ${esc(def.role || '')}</span></div></div>
@@ -126,6 +141,7 @@ export class UI {
     w.querySelectorAll('[data-i]').forEach((b) => {
       b.onclick = () => {
         const c = choices[+b.dataset.i];
+        if (c.practice) { this.openPractice(c.practice, { npc }); return; }
         (c.set || []).forEach((f) => this.state.set(f));
         if (c.give && this.state.giveEvidence(c.give)) this.evidenceToast(c.give);
         if (c.action) { this.close(true); npc.stopTalking(); this.dialogueNpc = null; this.onAction(c.action); return; }
@@ -157,8 +173,104 @@ export class UI {
   }
 
   // ---------- evidence viewer ----------
-  levelBadge(level, skill) {
-    return `<span class="badge l${level}">WorkKeys Level ${level}</span><span class="skill">${esc(skill)}</span>`;
+  levelBadge(level, skill, test = 'WorkKeys') {
+    return `<span class="badge l${level}">${esc(test)} Level ${level}</span><span class="skill">${esc(skill)}</span>`;
+  }
+
+  // ---------- optional practice banks (other WorkKeys tests) ----------
+  practiceFor(npcId) {
+    const out = [];
+    for (const bank of this.state.activeBanks()) {
+      for (const [id, item] of Object.entries(bank.items)) if (item.from === npcId) out.push({ bank, id, item });
+    }
+    return out;
+  }
+
+  // The on/off switches. When the teacher locked them with the link,
+  // students only see what is switched on.
+  practiceToggles() {
+    const banks = this.state.bankDefs;
+    if (!banks.length) return '';
+    if (this.banksLocked) {
+      const on = this.state.activeBanks();
+      if (!on.length) return '';
+      return `<div class="toggles"><p class="kicker">Extra practice</p><p>Your teacher turned on: ${on.map((b) => `${b.icon} <strong>${esc(b.label)}</strong>`).join(' and ')}. People in the room will give you extra tasks.</p></div>`;
+    }
+    return `<fieldset class="toggles"><legend>Extra practice (optional)</legend>
+      <p class="muted">Turn these on to get extra tasks from people in the room. They practice other WorkKeys tests. They do not change the mystery.</p>
+      ${banks.map((b) => `<label class="toggle"><input type="checkbox" data-bank="${esc(b.id)}" ${this.state.bankOn(b.id) ? 'checked' : ''}>
+        <span><strong>${b.icon} ${esc(b.label)}</strong><br><span class="muted">${esc(b.description)}</span></span></label>`).join('')}
+    </fieldset>`;
+  }
+
+  wireToggles(w, after) {
+    const boxes = [...w.querySelectorAll('[data-bank]')];
+    boxes.forEach((cb) => (cb.onchange = () => {
+      this.state.setBanks(boxes.filter((x) => x.checked).map((x) => x.dataset.bank));
+      this.onAction('banks');
+      after?.();
+    }));
+  }
+
+  // A workplace document: memo, notice, policy, procedure...
+  renderDoc(doc) {
+    const list = (tag, items) => `<${tag}>${items.map((x) => `<li>${esc(x)}</li>`).join('')}</${tag}>`;
+    const body = doc.body.map((b) => (typeof b === 'string' ? `<p>${esc(b)}</p>`
+      : b.h ? `<h4>${esc(b.h)}</h4>` : b.ol ? list('ol', b.ol) : b.ul ? list('ul', b.ul) : '')).join('');
+    const meta = doc.meta ? `<dl class="doc-meta">${doc.meta.map(([k, v]) => `<div><dt>${esc(k)}:</dt> <dd>${esc(v)}</dd></div>`).join('')}</dl>` : '';
+    return `<article class="doc"><p class="doc-kind">${esc(doc.kind)}</p><h3>${esc(doc.title)}</h3>${meta}${body}</article>`;
+  }
+
+  // back: { npc } to return to that person, 'practice' for the notebook tab.
+  openPractice(id, back = null) {
+    const found = this.state.bankItem(id);
+    if (!found) return;
+    const { bank, item } = found;
+    this.state.seePractice(id);
+    const done = this.state.practiceDone(id);
+    const giver = this.m.npcs.find((n) => n.id === item.from);
+    const backLabel = back?.npc ? `← Back to ${esc(giver?.name || 'them')}` : back ? '← Back to notebook' : 'Close';
+    const w = this.show('practice', `
+      <p class="kicker">${bank.icon} ${esc(bank.label)} practice · ${esc(id)}${giver ? ` · from ${esc(giver.name)}` : ''}</p>
+      <h2>${esc(item.title)}</h2>
+      <div class="levelrow">${this.levelBadge(item.level, item.skill, bank.label)}</div>
+      ${item.intro ? `<p class="line">${giver ? `<strong>${esc(giver.name)}:</strong> ` : ''}“${esc(item.intro)}”</p>` : ''}
+      ${item.doc ? this.renderDoc(item.doc) : ''}
+      ${item.graphic ? `<figure class="graphic">${renderGraphic(item.graphic, this.m.room)}</figure>
+        <details class="alt"><summary>Describe this graphic in words</summary><p>${esc(item.graphic.alt)}</p></details>` : ''}
+      ${bank.formulaSheet ? `<details class="alt formula"><summary>Formula sheet</summary><ul>${bank.formulaSheet.map((f) => `<li>${esc(f)}</li>`).join('')}</ul>
+        ${bank.calculatorNote ? `<p class="muted">${esc(bank.calculatorNote)}</p>` : ''}</details>` : ''}
+      <section class="question">
+        <p class="qprompt">${esc(item.prompt)}</p>
+        <div class="options">${item.options.map((o, i) => `<button data-num="${i + 1}" data-o="${i}" ${done ? 'disabled' : ''} class="${done && o.correct ? 'right' : ''}"><kbd>${String.fromCharCode(65 + i)}</kbd> ${esc(o.text)}</button>`).join('')}</div>
+        <p class="feedback" aria-live="polite"></p>
+        <div class="fact ${done ? '' : 'hidden'}"><strong>✔ Task complete.</strong> This counts toward your ${esc(bank.label)} practice report.</div>
+      </section>
+      <div class="row"><button data-back>${backLabel}</button></div>`, { cls: 'wide' });
+    w.querySelector('[data-back]').onclick = () => {
+      if (back?.npc) this.renderNode(back.npc, back.npc.def.dialogue.start);
+      else if (back) this.openNotebook('practice');
+      else this.close();
+    };
+    if (done) return;
+    const fb = w.querySelector('.feedback');
+    w.querySelectorAll('[data-o]').forEach((b) => {
+      b.onclick = () => {
+        const o = item.options[+b.dataset.o];
+        this.state.answerPractice(id, !!o.correct);
+        fb.textContent = o.feedback;
+        fb.className = `feedback ${o.correct ? 'good' : 'bad'}`;
+        if (o.correct) {
+          w.querySelectorAll('[data-o]').forEach((x) => (x.disabled = true));
+          b.classList.add('right');
+          w.querySelector('.fact').classList.remove('hidden');
+          this.toast(`<strong>${bank.icon} Task complete:</strong> ${esc(item.title)}`);
+        } else {
+          b.disabled = true;
+          b.classList.add('wrong');
+        }
+      };
+    });
   }
 
   openEvidence(id, back) {
@@ -209,6 +321,9 @@ export class UI {
     const have = ids.filter((id) => this.state.has(`has:${id}`));
     const solved = have.filter((id) => this.state.has(`solved:${id}`));
     const tabs = [['evidence', `Evidence (${have.length})`], ['facts', `Facts (${solved.length})`], ['people', 'People'], ['progress', 'My progress']];
+    const pc = this.state.practiceCount();
+    if (pc.total) tabs.splice(3, 0, ['practice', `Extra practice (${pc.done}/${pc.total})`]);
+    if (tab === 'practice' && !pc.total) tab = 'progress';
     let body = '';
     if (tab === 'evidence') {
       body = have.length ? `<div class="cards">${have.map((id) => {
@@ -222,8 +337,22 @@ export class UI {
       body += `<p class="muted">You need ${this.m.readyWhen.length} key facts before the case review. You have ${this.m.readyWhen.filter((f) => this.state.has(f)).length}.</p>`;
     } else if (tab === 'people') {
       body = `<ul class="people">${this.m.npcs.map((n) => `<li>${this.face(n)}<strong>${esc(n.name)}</strong> · ${esc(n.role)} ${this.state.has(`talked:${n.id}`) ? '<span class="status good">talked</span>' : '<span class="status">not yet</span>'}</li>`).join('')}</ul>`;
+    } else if (tab === 'practice') {
+      body = this.state.activeBanks().map((bank) => `<h3>${bank.icon} ${esc(bank.label)}</h3><div class="cards">${Object.entries(bank.items).map(([id, it]) => {
+        const seen = this.state.practice[id]?.seen;
+        const done = this.state.practiceDone(id);
+        const giver = this.m.npcs.find((n) => n.id === it.from)?.name || it.from;
+        return seen
+          ? `<button class="card" data-pr="${id}"><span class="kicker">${id} · from ${esc(giver)}</span><strong>${esc(it.title)}</strong>
+            <span>${this.levelBadge(it.level, it.skill, bank.label)}</span><span class="status ${done ? 'good' : ''}">${done ? '✔ Done' : 'Not answered yet'}</span></button>`
+          : `<div class="card notyet"><span class="kicker">${id}</span><strong>Ask ${esc(giver)}</strong>
+            <span>${this.levelBadge(it.level, it.skill, bank.label)}</span><span class="status">Talk to ${esc(giver)} to get this task.</span></div>`;
+      }).join('')}</div>`).join('');
     } else {
-      body = this.progressTable() + `<div class="row"><button data-report>Teacher report</button><button data-restart class="danger">Start over</button></div>`;
+      const sections = [['graphic', 'Graphic Literacy (the mystery)'], ...this.state.activeBanks().map((b) => [b.id, `${b.icon} ${b.label} (extra practice)`])];
+      body = sections.map(([id, title]) => `${sections.length > 1 ? `<h3>${esc(title)}</h3>` : ''}${this.progressTable(id)}`).join('') +
+        this.practiceToggles() +
+        `<div class="row"><button data-report>Teacher report</button><button data-restart class="danger">Start over</button></div>`;
     }
     const w = this.show('notebook', `
       <h2>Detective Notebook</h2>
@@ -231,14 +360,16 @@ export class UI {
       <div class="tabbody">${body}</div>`, { cls: 'wide' });
     w.querySelectorAll('[data-tab]').forEach((b) => (b.onclick = () => this.openNotebook(b.dataset.tab)));
     w.querySelectorAll('[data-ev]').forEach((b) => (b.onclick = () => this.openEvidence(b.dataset.ev, 'evidence')));
+    w.querySelectorAll('[data-pr]').forEach((b) => (b.onclick = () => this.openPractice(b.dataset.pr, 'practice')));
+    this.wireToggles(w, () => this.openNotebook('progress'));
     w.querySelector('[data-report]')?.addEventListener('click', () => this.openReport());
     w.querySelector('[data-restart]')?.addEventListener('click', () => {
       if (confirm('Erase your progress and start over?')) { this.state.wipe(); location.reload(); }
     });
   }
 
-  progressTable() {
-    const lv = this.state.levelSummary();
+  progressTable(testId = 'graphic') {
+    const lv = this.state.levelSummary(testId);
     const rows = [3, 4, 5, 6, 7].map((n) => {
       const L = lv[n];
       return `<tr><th>Level ${n}</th><td>${L ? `${L.correct} / ${L.total}` : '–'}</td><td>${L ? L.items.map((i) => `${i.firstTry ? '✔' : '✘'} ${esc(i.skill)}`).join('<br>') : '<span class="muted">not attempted</span>'}</td></tr>`;
@@ -325,16 +456,30 @@ export class UI {
       lines.push(`  Level ${n}: ${L ? `${L.correct}/${L.total}` : 'not attempted'}`);
       if (L) L.items.forEach((i) => lines.push(`     ${i.firstTry ? 'RIGHT' : 'MISSED'}  ${i.label} - ${i.skill}${i.attempts > 1 ? ` (${i.attempts} tries)` : ''}`));
     }
+    // Extra practice sections: banks that are on, or that have answers.
+    for (const bank of s.bankDefs) {
+      const blv = s.levelSummary(bank.id);
+      if (!s.bankOn(bank.id) && !Object.keys(blv).length) continue;
+      const { done, total } = { done: Object.keys(bank.items).filter((id) => s.practiceDone(id)).length, total: Object.keys(bank.items).length };
+      lines.push('', `Extra practice - WorkKeys ${bank.label} (right on first try; ${done} of ${total} tasks done):`);
+      for (const n of [3, 4, 5, 6, 7]) {
+        const L = blv[n];
+        lines.push(`  Level ${n}: ${L ? `${L.correct}/${L.total}` : 'not attempted'}`);
+        if (L) L.items.forEach((i) => lines.push(`     ${i.firstTry ? 'RIGHT' : 'MISSED'}  ${i.label} - ${i.skill}${i.attempts > 1 ? ` (${i.attempts} tries)` : ''}`));
+      }
+    }
     return lines.join('\n');
   }
 
   openReport(final = false) {
     const text = this.reportText();
+    const banksShown = this.state.bankDefs.filter((b) => this.state.bankOn(b.id) || Object.keys(this.state.levelSummary(b.id)).length);
     const w = this.show('report', `
       <p class="kicker">${final ? 'Great detective work!' : 'Progress report'}</p>
-      <h2>Your Graphic Literacy report</h2>
+      <h2>Your ${banksShown.length ? 'WorkKeys' : 'Graphic Literacy'} report</h2>
       <label class="field">Your name <input id="report-name" type="text" maxlength="60" value="${esc(this.state.studentName)}"></label>
-      ${this.progressTable()}
+      ${banksShown.length ? '<h3>Graphic Literacy (the mystery)</h3>' : ''}${this.progressTable()}
+      ${banksShown.map((b) => `<h3>${b.icon} ${esc(b.label)} (extra practice)</h3>${this.progressTable(b.id)}`).join('')}
       <pre class="reporttext">${esc(text)}</pre>
       <div class="row">
         <button class="primary" data-copy>Copy report</button>
@@ -369,6 +514,7 @@ export class UI {
         <li>Each graphic has one question. Answer it to add a fact to your notebook.</li>
         <li>Choices: click them, or press the number keys.</li>
         <li>When you have the key facts, talk to Ms. Ortiz to start the case review.</li>
+        ${this.state.activeBanks().length ? `<li>Extra practice is on: look for ${this.state.activeBanks().map((b) => `${b.icon} ${esc(b.taskWord)}`).join(' and ')} choices when you talk to people. They are optional.</li>` : ''}
       </ul>
       <div class="row"><button class="primary" data-close autofocus>Got it</button></div>`);
   }

@@ -3,6 +3,7 @@
 import * as THREE from 'three';
 import mystery from '../data/mystery.js';
 import assets from '../data/assets.js';
+import banks from '../data/banks/index.js';
 import { World } from './engine/world.js';
 import { NPC } from './engine/npc.js';
 import { Player } from './engine/player.js';
@@ -27,8 +28,17 @@ function resize() {
 addEventListener('resize', resize);
 resize();
 
-const state = new GameState(mystery);
+const state = new GameState(mystery, banks);
 const hadSave = state.flags.size > 0;
+
+// Optional practice banks. A teacher can lock them with the link:
+// ?practice=math | docs | math,docs | all | none (see data/banks/index.js).
+const practiceParam = new URLSearchParams(location.search).get('practice');
+const banksLocked = practiceParam !== null;
+if (banksLocked) {
+  const want = practiceParam.toLowerCase().split(/[\s,+]+/).filter(Boolean);
+  state.setBanks(want.includes('all') ? banks.map((b) => b.id) : want);
+}
 const loading = document.getElementById('loading');
 
 const world = new World(scene, mystery, assets);
@@ -68,6 +78,7 @@ const prompt = document.getElementById('prompt');
 const objective = document.getElementById('objective');
 const ui = new UI({
   mystery, state, npcs,
+  banksLocked,
   portraits: Object.fromEntries(Object.entries(assets.npcs || {}).filter(([, v]) => v?.portrait).map(([k, v]) => [k, v.portrait])),
   onAction(action) {
     if (action === 'accuse') ui.openReview(0);
@@ -84,7 +95,9 @@ function refreshHud() {
   else if (state.has('ready')) text = 'You have the key facts. Tell Ms. Ortiz what happened.';
   else if (!state.has('talked:ortiz')) text = 'Talk to Ms. Ortiz at the front of the room.';
   else text = `Collect graphics and answer their questions. Key facts: ${keySolved} / ${mystery.readyWhen.length}`;
-  objective.innerHTML = `<strong>Goal:</strong> ${text}<br><span class="muted">Evidence collected: ${have} / ${ids.length}</span>`;
+  const pc = state.practiceCount();
+  const extra = pc.total ? `<br><span class="muted">Extra practice: ${pc.done} / ${pc.total} tasks done</span>` : '';
+  objective.innerHTML = `<strong>Goal:</strong> ${text}<br><span class="muted">Evidence collected: ${have} / ${ids.length}</span>${extra}`;
 }
 state.on((type) => { if (type !== 'answer') refreshHud(); });
 state.on((type) => { if (type === 'ready') ui.toast('<strong>You have all the key facts!</strong> Go tell Ms. Ortiz what happened.', 6000); });

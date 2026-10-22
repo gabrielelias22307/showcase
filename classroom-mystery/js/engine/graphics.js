@@ -99,7 +99,8 @@ export function table(ev) {
       b += text(10 + ci * colW + colW / 2, y + rowH / 2 + 5, cell, { size: 15 });
     });
   });
-  b += text(W / 2, H - 6, 'Times are PM. Sign out when you leave; sign in when you return.', { size: 12, fill: MUTED });
+  const note = ev.data.note ?? 'Times are PM. Sign out when you leave; sign in when you return.';
+  if (note) b += text(W / 2, H - 6, note, { size: 12, fill: MUTED });
   return svg(W, H, ev.title, b);
 }
 

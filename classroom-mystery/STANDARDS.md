@@ -68,6 +68,61 @@ once, as the test does.
 - Every wrong option has feedback that explains the misreading, and the
   report records whether each item was right on the first try, by level.
 
+## Extra practice banks (optional)
+
+These tasks are switched on separately (see README.md). They don't affect
+the mystery. Level descriptions are summarized from ACT's assessment pages
+for each test.
+
+### Applied Math (34 items, 55 minutes; calculator and formula sheet allowed)
+
+| Level | ACT skills (summary) |
+|---|---|
+| 3 | One operation; simple fraction/decimal/percent conversions; money and time; totals and change |
+| 4 | One or two operations; averages; simple rates and proportions; put information in order |
+| 5 | Decide what is needed; unit conversions with a given factor; best deal; perimeter and area; percent for discounts, markups and tax |
+| 6 | Reverse percent; multi-step conversions; area with rearranged formulas; volume of a box; rates over time |
+| 7 | Fractional ratios and rates; volumes of cylinders, cones and spheres; better value; weighted mean and other basic statistics |
+
+| Item | Level | Skill practiced | From |
+|---|---|---|---|
+| AM1 | 3 | Add prices and find the change | Jordan |
+| AM2 | 3 | Change a fraction to a percent | Riley |
+| AM3 | 4 | Find an average with decimals | Marcus |
+| AM4 | 4 | Use a rate | Ms. Ortiz |
+| AM5 | 5 | Find the best deal using a percent discount | Sam |
+| AM6 | 5 | Find the area of a rectangle, then the cost | Priya |
+| AM7 | 6 | Work a percent backward (reverse percent) | Ana |
+| AM8 | 6 | Find the volume of a box | Marcus |
+| AM9 | 7 | Find a weighted average | Sam |
+| AM10 | 7 | Find the volume of a cylinder and change units | Ms. Ortiz |
+
+### Workplace Documents (35 items, 55 minutes)
+
+| Level | ACT documents and skills (summary) |
+|---|---|
+| 3 | Short, simple policies, procedures and announcements: find the main point and details; decide when to do a step |
+| 4 | Longer, more detailed documents: work out the meaning of words from the document; choose an action when conditions change |
+| 5 | Policies, contracts and instructions with jargon, acronyms and if-then rules: apply them to similar situations |
+| 6 | Complex sentences, implied meanings, extra details: infer jargon from context; apply rules to new situations; find the reason behind a rule |
+| 7 | Very complex, sometimes unclear writing with undefined terms: all of Level 6, plus apply a conclusion from one part to another part |
+
+| Item | Level | Skill practiced | Document | From |
+|---|---|---|---|---|
+| WD1 | 3 | Decide when to do a step | Hall pass rules | Jordan |
+| WD2 | 3 | Find the main point | Book cart notice | Ana |
+| WD3 | 4 | Choose an action when conditions change | Battery charging procedure | Marcus |
+| WD4 | 4 | Figure out the meaning of a word from the document | Trophy rotation notice | Riley |
+| WD5 | 5 | Apply if-then instructions and acronyms | Shelf sensor guide | Priya |
+| WD6 | 5 | Apply a policy to a similar situation | After-school room policy | Ms. Ortiz |
+| WD7 | 6 | Work out a technical term and apply a rule to a new situation | Robot inspection rules | Sam |
+| WD8 | 6 | Identify the reason behind a rule | Principal's memo | Jordan |
+| WD9 | 7 | Apply one section of a document to another | Key control procedure | Marcus |
+| WD10 | 7 | Infer implied details and draw a conclusion | Equipment loan agreement | Ana |
+
+In both banks the right answers are spread across A to D, and every wrong
+option names the mistake behind it.
+
 ## Sources
 
 - ACT, "Graphic Literacy" assessment page (educators):
@@ -82,6 +137,12 @@ once, as the test does.
   https://uniontestprep.com/workkeys/study-guide/graphic-literacy/pages/1
 - Albert.io, "What is Graphic Literacy?":
   https://www.albert.io/blog/act-workkeys-what-is-graphic-literacy/
+- ACT, "Applied Math" assessment page (educators):
+  https://www.act.org/content/act/en/products-and-services/workkeys-for-educators/assessments/applied-math.html
+- ACT, "Workplace Documents" assessment page (employers):
+  https://www.act.org/content/act/en/products-and-services/workkeys-for-employers/assessments/workplace-documents.html
+- ACT, WorkKeys Workplace Documents Technical Manual:
+  https://www.alabamaachieves.org/wp-content/uploads/2021/03/WorkKeys-Workplace-Document-Technical-Manual.pdf
 
 ACT's site could not be opened directly from the build environment, so these
 notes rely on the official wording quoted in search results. Check the level

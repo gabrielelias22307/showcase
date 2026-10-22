@@ -33,6 +33,38 @@ school networks that block CDNs.
 talk or examine, N for the notebook, number keys to pick answers. On phones
 and tablets there is a joystick on the left; drag on the right to look.
 
+## Extra practice: other WorkKeys tests (optional)
+
+Two optional question banks practice the other two tests in the ACT
+National Career Readiness Certificate:
+
+| Bank | File | Tasks |
+|---|---|---|
+| 📐 Applied Math | `data/banks/applied-math.js` | 10 (two per level, 3-7), with a formula sheet |
+| 📄 Workplace Documents | `data/banks/workplace-documents.js` | 10 (two per level, 3-7), each with a memo, notice, rule or policy |
+
+When a bank is on, the people in the room offer extra "Math task" and
+"Reading task" choices when you talk to them. These tasks never change the
+mystery or the case review. They show up in the notebook (Extra practice
+tab), in the on-screen counter, and as their own level-by-level sections in
+the student report.
+
+**Students** turn the banks on or off on the start screen or in
+Notebook > My progress.
+
+**Teachers** can set them in the link instead. The switches are then hidden:
+
+| Link | What students get |
+|---|---|
+| `index.html?practice=math` | Applied Math tasks |
+| `index.html?practice=docs` | Workplace Documents tasks |
+| `index.html?practice=all` | Both |
+| `index.html?practice=none` | Neither (Graphic Literacy only) |
+
+To add another bank, copy one of the bank files, give it a new `id` and new
+item ids, and list it in `data/banks/index.js`. See
+[STANDARDS.md](STANDARDS.md) for how each task maps to the test levels.
+
 ## Adding your Blender files
 
 **Artists: start with [HANDOVER.md](HANDOVER.md).** It has the room layout in
@@ -127,6 +159,7 @@ js/engine/graphics.js SVG chart renderers
 js/engine/state.js    flags, scoring and save (localStorage)
 data/mystery.js       the story
 data/assets.js        list of Blender files
+data/banks/           optional Applied Math and Workplace Documents tasks
 vendor/three/         three.js r160 (MIT), stored locally
 ```
 
