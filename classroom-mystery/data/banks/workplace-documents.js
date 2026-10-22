@@ -70,12 +70,12 @@ export default {
     WD3: {
       level: 4, skill: 'Choose an action when conditions change',
       from: 'marcus', title: 'Battery charging',
-      intro: 'I also charge the robot batteries. Mr. Elias made us a procedure.',
+      intro: 'I also charge the camera batteries. Mr. Elias made us a procedure.',
       doc: {
-        kind: 'Procedure', title: 'Robot Battery Charging',
-        meta: [['From', 'Mr. Elias, Robotics Coach']],
+        kind: 'Procedure', title: 'Camera Battery Charging',
+        meta: [['From', 'Mr. Elias, Yearbook Adviser']],
         body: [
-          'Charge batteries only at the charging station on Robotics Bench 2. Never leave a charging battery alone.',
+          'Charge batteries only at the charging station on Layout Table 2. Never leave a charging battery alone.',
           { ol: [
             'Check the battery for cracks, swelling or loose wires. Do not charge a damaged battery.',
             'Connect the battery to the charger, then plug the charger into the wall.',
@@ -100,9 +100,9 @@ export default {
       intro: 'This is the notice about who keeps the trophy over the summer. That\'s what the vote was about.',
       doc: {
         kind: 'Notice', title: 'Summer Trophy Rotation',
-        meta: [['To', 'Robotics team members'], ['From', 'Mr. Elias']],
+        meta: [['To', 'Yearbook staff'], ['From', 'Mr. Elias']],
         body: [
-          'This summer, the state championship trophy will rotate among team members. Each member keeps it for two weeks. The first holder was chosen by team vote.',
+          'This summer, our Best Yearbook trophy will rotate among staff members. Each member keeps it for two weeks. The first holder was chosen by staff vote.',
           'While you have the trophy, you are its custodian. As custodian, you must keep it indoors, keep it safe from damage, and bring it to the next holder on the date on the schedule.',
           'If the trophy is damaged while you are its custodian, tell Mr. Elias the same day.'
         ]
@@ -111,15 +111,15 @@ export default {
       options: [
         { text: 'A person who cleans the school building', feedback: 'That is another meaning of the word, but it does not fit this notice. Read what a custodian must do.' },
         { text: 'The person in charge of taking care of the trophy', correct: true, feedback: 'Correct. The notice says the custodian must keep the trophy safe and pass it on.' },
-        { text: 'The person who won the team vote', feedback: 'Only the FIRST holder was chosen by vote. Every holder becomes a custodian.' },
-        { text: 'The team captain', feedback: 'The notice says any team member who has the trophy is its custodian.' }
+        { text: 'The person who won the staff vote', feedback: 'Only the FIRST holder was chosen by vote. Every holder becomes a custodian.' },
+        { text: 'The editor-in-chief', feedback: 'The notice says any staff member who has the trophy is its custodian.' }
       ]
     },
 
     WD5: {
       level: 5, skill: 'Apply if-then instructions and acronyms',
-      from: 'priya', title: 'Shelf sensor guide',
-      intro: 'We wrote a user guide for the shelf sensors we built.',
+      from: 'grump', title: 'Shelf sensor guide',
+      intro: 'The district sent me this guide for the shelf sensors. I had to read it three times. Your turn.',
       doc: {
         kind: 'User guide', title: 'Trophy Case Shelf Sensors: Quick Guide',
         body: [
@@ -156,7 +156,7 @@ export default {
           'Advisors must keep the room\'s trophy and display cases locked when they are not in use.'
         ]
       },
-      prompt: 'Ana is a library aide. She is not in the robotics club. She arrives at Room 210 at 3:15. According to the policy, what must she do?',
+      prompt: 'Ana is a library aide. She is not on the yearbook staff. She arrives at Room 210 at 3:15. According to the policy, what must she do?',
       options: [
         { text: 'Nothing. She works for the library, so she is not a visitor.', feedback: 'The policy defines a visitor as anyone who is not a club member or the advisor. That includes Ana.' },
         { text: 'Scan her badge at Door B, the closest door to the library.', feedback: 'The policy does not say visitors may choose any door. And it does not say Door B is closest to the library.' },
@@ -167,24 +167,24 @@ export default {
 
     WD7: {
       level: 6, skill: 'Work out a technical term and apply a rule to a new situation',
-      from: 'sam', title: 'Robot inspection rules',
-      intro: 'As captain I have to know the competition rules. This section always confuses people.',
+      from: 'sam', title: 'Yearbook contest rules',
+      intro: 'As editor-in-chief I have to know the contest rules. This section always confuses people.',
       doc: {
-        kind: 'Rule book', title: 'Section 4: Robot Inspection',
-        meta: [['From', 'State Robotics League Rule Book, 2026 season']],
+        kind: 'Rule book', title: 'Section 4: Spread Entries',
+        meta: [['From', 'State Yearbook Contest Rule Book, 2026']],
         body: [
-          '4.1 Every robot must pass inspection before its first match. Inspectors may re-check any robot at any time.',
-          '4.2 At the start of each match, the robot must fit within the size envelope: 45 cm × 45 cm × 45 cm. A robot that does not fit within the size envelope at the start of a match may not compete in that match.',
-          '4.3 Mechanisms that extend beyond the size envelope after the match begins are legal, as long as they do not damage the field or another robot.',
-          '4.4 Teams may not add parts after passing inspection without a new inspection.'
+          '4.1 Each entry is one spread (two facing pages) at trim size, 9 in × 12 in per page. Judges may ask for a corrected file at any time.',
+          '4.2 Photos and background colors may run into the bleed, the 1/8-inch strip beyond the trim edge that is cut away after printing.',
+          '4.3 All text must stay inside the safe area, at least 1/2 inch inside the trim edge. An entry with text outside the safe area may not be judged until it is corrected.',
+          '4.4 Entries may not be changed after the deadline without the judges\' approval.'
         ]
       },
-      prompt: 'At the start of a match, Sam\'s robot is 44 cm × 40 cm × 44 cm. After the match begins, its arm reaches out to 60 cm without touching anything. According to Section 4, can the robot compete?',
+      prompt: 'On Sam\'s spread, a photo runs 1/8 inch past the trim edge. All of the text is 3/4 inch inside the trim edge. According to Section 4, can the spread be judged?',
       options: [
-        { text: 'No, because the arm reaches 60 cm.', feedback: 'Rule 4.3 allows parts to extend after the match begins.' },
-        { text: 'No, because it must be re-inspected before every match.', feedback: 'Rule 4.1 says inspectors MAY re-check robots. It does not require it before every match.' },
-        { text: 'Yes, because size rules only apply at the state finals.', feedback: 'Section 4 does not say that. The rules apply to every match.' },
-        { text: 'Yes. It fits within the size envelope at the start, and the arm extends only after the match begins.', correct: true, feedback: 'Correct. The "size envelope" is the 45 cm box the robot must fit in at the start (4.2). Extending later is allowed (4.3).' }
+        { text: 'No, because the photo goes past the trim edge.', feedback: 'Rule 4.2 allows photos to run into the bleed past the trim edge.' },
+        { text: 'No, because the judges must check every file again.', feedback: 'Rule 4.1 says judges MAY ask for a corrected file. It does not say they must.' },
+        { text: 'Yes, because the size rules only apply at the state finals.', feedback: 'Section 4 does not say that. The rules apply to every entry.' },
+        { text: 'Yes. The photo stays in the bleed, and the text is inside the safe area.', correct: true, feedback: 'Correct. The "bleed" is the strip that gets cut off (4.2), and 3/4 inch is more than the 1/2 inch the safe area needs (4.3).' }
       ]
     },
 
@@ -213,10 +213,10 @@ export default {
     WD9: {
       level: 7, skill: 'Apply one section of a document to another',
       from: 'marcus', title: 'Key control procedure',
-      intro: 'Mr. Elias gave me the official key procedure when I became lab assistant. It is very hard to read.',
+      intro: 'Mr. Elias gave me the official key procedure when I became photo editor. It is very hard to read.',
       doc: {
         kind: 'Procedure', title: 'Equipment Custody and Key Control (Rev. 3)',
-        meta: [['Issued by', 'Facilities Office'], ['Scope', 'Secured storage units: display cases, parts cabinets, tool lockers']],
+        meta: [['Issued by', 'Facilities Office'], ['Scope', 'Secured storage units: display cases, camera cabinets, equipment lockers']],
         body: [
           { h: '2. Issuance' },
           '2.1 Keys to secured storage units shall be issued exclusively to persons enumerated on the authorized roster maintained by the supervising faculty member.',
@@ -227,7 +227,7 @@ export default {
           '5.1 Any breach, whether or not loss or damage results, shall be reported to the supervising faculty member no later than the end of the following school day.'
         ]
       },
-      prompt: 'A club member uses the key to get a part from the parts cabinet. She returns the key on time, but she leaves the cabinet unlocked. Nothing is missing. Using Sections 3.4 and 5.1, what is true?',
+      prompt: 'A staff member uses the key to get a camera from the camera cabinet. She returns the key on time, but she leaves the cabinet unlocked. Nothing is missing. Using Sections 3.4 and 5.1, what is true?',
       options: [
         { text: 'There was no breach, because the key was returned on time.', feedback: 'Section 3.4 says it is a breach "notwithstanding" (even if) the key was returned on time.' },
         { text: 'It was a breach, and it must be reported to the supervising teacher by the end of the next school day.', correct: true, feedback: 'Correct. Not locking the unit is a breach (3.4), and every breach must be reported, even with no loss (5.1).' },
@@ -239,10 +239,10 @@ export default {
     WD10: {
       level: 7, skill: 'Infer implied details and draw a conclusion',
       from: 'ana', title: 'Equipment loan agreement',
-      intro: 'Priya borrowed a sensor kit from the library. Here is the loan agreement she signed.',
+      intro: 'Priya borrowed a camera kit from the library. Here is the loan agreement she signed.',
       doc: {
         kind: 'Agreement', title: 'Library Equipment Loan Agreement',
-        meta: [['Borrower', 'Priya S.'], ['Item', 'Sensor kit #4'], ['Loan period', '14 days']],
+        meta: [['Borrower', 'Priya S.'], ['Item', 'Camera kit #4'], ['Loan period', '14 days']],
         body: [
           'The borrower assumes responsibility for the item from checkout until check-in, exclusive of normal wear.',
           'Items not checked in by the end of the loan period accrue a fee of $1.00 per school day, not to exceed the replacement cost of the item.',
@@ -250,7 +250,7 @@ export default {
           'Items with a hold may not be renewed and must be checked in by the due date so they can be issued to the next patron.'
         ]
       },
-      prompt: 'Priya\'s loan ends today. Another student has placed a hold on the sensor kit. What should Priya do?',
+      prompt: 'Priya\'s loan ends today. Another student has placed a hold on the camera kit. What should Priya do?',
       options: [
         { text: 'Renew the loan at the front desk today.', feedback: 'Renewals are allowed only if no one has placed a hold. Someone has.' },
         { text: 'Keep it and pay $1.00 per school day for as long as she needs it.', feedback: 'The agreement says the kit must be checked in by the due date when there is a hold. Also, the fee is capped at the replacement cost.' },

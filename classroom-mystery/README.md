@@ -6,7 +6,8 @@ flowchart). Each graphic has one question written to a WorkKeys Graphic
 Literacy level (3 to 7). The answers add up to the solution of a mystery.
 See [STANDARDS.md](STANDARDS.md) for the research and the skill map.
 
-The first mystery included is **The Case of the Missing Robotics Trophy**.
+The first mystery included is **The Case of the Missing Yearbook Trophy**: the yearbook
+staff's Best Yearbook trophy disappears from Room 210 after school.
 
 The game runs now with simple placeholder models. Each Blender file replaces
 its placeholder when you add it to `assets/models/`.
@@ -108,7 +109,7 @@ the floor plan matches the 3D room.
 
 ### Option B: individual furniture models
 
-`table.glb`, `trophy_case.glb`, `robotics_bench.glb` and `desk.glb` replace
+`table.glb`, `trophy_case.glb`, `layout_table.glb` and `desk.glb` replace
 those placeholder pieces wherever the layout puts them. Put each model's
 origin at its bottom centre, with its front facing Blender's Front view (−Y).
 
@@ -137,7 +138,8 @@ Everything about the story lives in `data/mystery.js`:
   east or west.
 - `npcs`: name, role, colour, position and a dialogue tree. A dialogue
   choice can `give` evidence, `set` flags, `requires` or `requiresNot` flags,
-  or run `action: 'accuse'`.
+  or run `action: 'accuse'`. Add `suspect: false` to a character who should not
+  be on the final "Who took it?" list (like Mr. Grump, the principal).
 - `props`: things to examine; a `poster` shows a graphic on the wall
 - `evidence`: one graphic plus one leveled question each. The graphic types
   are `floorplan`, `table`, `flowchart`, `bar`, `line` and `pie`, and each

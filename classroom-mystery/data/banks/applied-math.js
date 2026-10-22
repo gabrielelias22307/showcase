@@ -43,9 +43,9 @@ export default {
 
     AM2: {
       level: 3, skill: 'Change a fraction to a percent',
-      from: 'riley', title: 'Safety quiz',
-      intro: 'Mr. Elias wants to know how many of us passed the safety quiz.',
-      prompt: '3 out of 4 robotics team members passed the safety quiz. What percent of the team passed?',
+      from: 'riley', title: 'Photo permission forms',
+      intro: 'Mr. Elias wants to know how many of us turned in our photo permission forms.',
+      prompt: '3 out of 4 yearbook staff members turned in their photo permission forms. What percent of the staff turned them in?',
       options: [
         { text: '34%', feedback: 'That just puts the 3 and the 4 side by side. Divide: 3 ÷ 4.' },
         { text: '43%', feedback: 'That puts the 4 and the 3 side by side. Divide: 3 ÷ 4.' },
@@ -56,21 +56,21 @@ export default {
 
     AM3: {
       level: 4, skill: 'Find an average with decimals',
-      from: 'marcus', title: 'Robot test runs',
-      intro: 'I timed our robot on the practice course four times.',
+      from: 'marcus', title: 'Page export times',
+      intro: 'Before pages go to the printer, I save each one as a PDF. I timed four pages.',
       graphic: {
-        type: 'table', title: 'Practice course times',
-        alt: 'Table of four practice runs. Run 1: 12.4 seconds. Run 2: 11.8 seconds. Run 3: 13.0 seconds. Run 4: 12.2 seconds.',
+        type: 'table', title: 'PDF export times',
+        alt: 'Table of four yearbook pages. Page 1: 12.4 seconds. Page 2: 11.8 seconds. Page 3: 13.0 seconds. Page 4: 12.2 seconds.',
         data: {
-          columns: ['Run', 'Time (seconds)'],
+          columns: ['Page', 'Time (seconds)'],
           rows: [['1', '12.4'], ['2', '11.8'], ['3', '13.0'], ['4', '12.2']],
           note: 'Times measured with a stopwatch.'
         }
       },
-      prompt: 'What is the average (mean) time for the four runs?',
+      prompt: 'What is the average (mean) export time for the four pages?',
       options: [
-        { text: '49.4 seconds', feedback: 'That is the total of all four runs. Now divide by the number of runs.' },
-        { text: '12.4 seconds', feedback: 'That is only Run 1. Add all four times, then divide by 4.' },
+        { text: '49.4 seconds', feedback: 'That is the total of all four pages. Now divide by the number of pages.' },
+        { text: '12.4 seconds', feedback: 'That is only Page 1. Add all four times, then divide by 4.' },
         { text: '12.3 seconds', feedback: 'That is the middle value (median). The average is the total divided by 4.' },
         { text: '12.35 seconds', correct: true, feedback: 'Correct. 12.4 + 11.8 + 13.0 + 12.2 = 49.4, and 49.4 ÷ 4 = 12.35.' }
       ]
@@ -78,21 +78,21 @@ export default {
 
     AM4: {
       level: 4, skill: 'Use a rate',
-      from: 'ortiz', title: '3D printer wheels',
-      intro: 'While you are here: I need to plan time on the 3D printer.',
-      prompt: 'The 3D printer makes 3 robot wheels in 45 minutes. At the same rate, how long will it take to make 8 wheels?',
+      from: 'ortiz', title: 'Poster proofs',
+      intro: 'While you are here: I need to plan time on the big poster printer.',
+      prompt: 'The poster printer prints 3 large photo proofs in 45 minutes. At the same rate, how long will it take to print 8 proofs?',
       options: [
-        { text: '120 minutes (2 hours)', correct: true, feedback: 'Correct. 45 ÷ 3 = 15 minutes per wheel, and 15 × 8 = 120 minutes.' },
-        { text: '360 minutes', feedback: 'That is 45 × 8. But 45 minutes is the time for 3 wheels, not 1.' },
-        { text: '24 minutes', feedback: 'That is 3 × 8. Find the minutes for one wheel first: 45 ÷ 3.' },
-        { text: '90 minutes', feedback: 'Two batches of 3 wheels make only 6 wheels. Find the time for one wheel first.' }
+        { text: '120 minutes (2 hours)', correct: true, feedback: 'Correct. 45 ÷ 3 = 15 minutes per proof, and 15 × 8 = 120 minutes.' },
+        { text: '360 minutes', feedback: 'That is 45 × 8. But 45 minutes is the time for 3 proofs, not 1.' },
+        { text: '24 minutes', feedback: 'That is 3 × 8. Find the minutes for one proof first: 45 ÷ 3.' },
+        { text: '90 minutes', feedback: 'Two batches of 3 proofs make only 6 proofs. Find the time for one proof first.' }
       ]
     },
 
     AM5: {
       level: 5, skill: 'Find the best deal using a percent discount',
       from: 'sam', title: 'Poster printing',
-      intro: 'I have to print our team poster. Which shop should I use?',
+      intro: 'I have to print the poster for yearbook sales. Which shop should I use?',
       prompt: 'Shop A charges $24 for the poster, with a 25% student discount. Shop B charges $20, with no discount. Which shop is cheaper, and by how much?',
       options: [
         { text: 'Shop B, by $4', feedback: 'You forgot Shop A\'s discount. Find 25% of $24 and subtract it.' },
@@ -118,7 +118,7 @@ export default {
     AM7: {
       level: 6, skill: 'Work a percent backward (reverse percent)',
       from: 'ana', title: 'Book sale',
-      intro: 'The library bought a set of robotics books on sale. I need the original price for our records.',
+      intro: 'The library bought a set of photography books on sale for the yearbook staff. I need the original price for our records.',
       prompt: 'After a 20% discount, the book set cost $64. What was the price before the discount?',
       options: [
         { text: '$80.00', correct: true, feedback: 'Correct. After a 20% discount you pay 80%. $64 ÷ 0.80 = $80.' },
@@ -130,9 +130,9 @@ export default {
 
     AM8: {
       level: 6, skill: 'Find the volume of a box',
-      from: 'marcus', title: 'Packing the parts bin',
-      intro: 'I have to pack sensor boxes into a bin in the parts cabinet.',
-      prompt: 'The bin is 40 cm long, 30 cm wide and 20 cm tall. Each sensor box is 10 cm long, 10 cm wide and 5 cm tall. If the boxes pack in perfectly, how many sensor boxes fit in the bin?',
+      from: 'marcus', title: 'Packing the camera cabinet',
+      intro: 'I have to pack lens boxes into a bin in the camera cabinet.',
+      prompt: 'The bin is 40 cm long, 30 cm wide and 20 cm tall. Each lens box is 10 cm long, 10 cm wide and 5 cm tall. If the boxes pack in perfectly, how many lens boxes fit in the bin?',
       options: [
         { text: '12', feedback: 'That is one layer on the bottom of the bin. How many 5 cm layers fit in 20 cm?' },
         { text: '4', feedback: 'That is the number of layers. Multiply by the boxes in each layer.' },
@@ -143,18 +143,18 @@ export default {
 
     AM9: {
       level: 7, skill: 'Find a weighted average',
-      from: 'sam', title: 'Competition score',
-      intro: 'The judges sent our scores. The parts don\'t count the same.',
+      from: 'sam', title: 'Yearbook contest score',
+      intro: 'The yearbook contest judges sent our scores. The parts don\'t count the same.',
       graphic: {
         type: 'table', title: 'Judges\' score sheet',
-        alt: 'Table with three parts. Design: weight 50%, score 80. Programming: weight 30%, score 90. Presentation: weight 20%, score 70.',
+        alt: 'Table with three parts. Design: weight 50%, score 80. Photography: weight 30%, score 90. Writing: weight 20%, score 70.',
         data: {
           columns: ['Part', 'Weight', 'Score'],
-          rows: [['Design', '50%', '80'], ['Programming', '30%', '90'], ['Presentation', '20%', '70']],
+          rows: [['Design', '50%', '80'], ['Photography', '30%', '90'], ['Writing', '20%', '70']],
           note: 'Final score = weighted average of the three parts.'
         }
       },
-      prompt: 'What is the team\'s final (weighted) score?',
+      prompt: 'What is the yearbook\'s final (weighted) score?',
       options: [
         { text: '80', feedback: 'That is the plain average (240 ÷ 3). It treats every part the same. Use the weights.' },
         { text: '78', feedback: 'You matched the weights to the wrong parts. Design is worth 50%.' },
@@ -165,9 +165,9 @@ export default {
 
     AM10: {
       level: 7, skill: 'Find the volume of a cylinder and change units',
-      from: 'ortiz', title: 'Robot water tank',
-      intro: 'Our new robot carries water in a round tank. The rules limit how much water it can carry.',
-      prompt: 'The tank is a cylinder with a radius of 5 cm and a height of 12 cm. About how many liters does it hold? (Round to the nearest tenth.)',
+      from: 'ortiz', title: 'Paint for the banner',
+      intro: 'We are painting a big banner for yearbook sales. I need to know how much paint is in one can.',
+      prompt: 'The paint can is a cylinder with a radius of 5 cm and a height of 12 cm. About how many liters does it hold? (Round to the nearest tenth.)',
       options: [
         { text: '3.8 liters', feedback: 'You used 10 cm (the diameter) as the radius. The radius is 5 cm.' },
         { text: '0.9 liters', correct: true, feedback: 'Correct. 3.14 × 5² × 12 = 942 cm³, and 942 ÷ 1,000 = 0.9 liters.' },

@@ -54,19 +54,19 @@ deliver one file at a time.
 | File | What it is | Notes |
 |---|---|---|
 | `classroom.glb` | The whole suite: walls, floor, ceiling, doors, furniture | **Recommended.** Must include `COL_` boxes (section 4). |
-| `npc_ortiz.glb` | Mr. Elias, robotics coach (teacher) | 1.78 m. **Done** (Gabriel; `tools/gabriel_character.py`) |
+| `npc_ortiz.glb` | Mr. Elias, yearbook adviser (teacher) | 1.78 m. **Done** (Gabriel; `tools/gabriel_character.py`) |
 | `npc_jordan.glb` | Jordan, hall pass monitor (student) | 1.60 m. **Done** (`tools/student_character.py`, WHO = A) |
-| `npc_marcus.glb` | Marcus, lab assistant (student) | 1.78 m |
-| `npc_priya.glb` | Priya, robotics club programmer (student) | 1.62 m |
-| `npc_riley.glb` | Riley, robotics club member (student) | 1.70 m |
-| `npc_sam.glb` | Sam, team captain (student) | 1.70 m. **Done** (`tools/student_character.py`, WHO = B) |
+| `npc_marcus.glb` | Marcus, photo editor (student) | 1.78 m |
+| `npc_priya.glb` | Priya, page designer (student) | 1.62 m |
+| `npc_riley.glb` | Riley, staff writer (student) | 1.70 m |
+| `npc_sam.glb` | Sam, editor-in-chief (student) | 1.70 m. **Done** (`tools/student_character.py`, WHO = B) |
 | `npc_ana.glb` | Ana, library aide visiting the room (student) | 1.60 m |
 | `npc_grump.glb` | Mr. Grump, the principal (in the office; a witness, not a suspect) | 1.83 m. **Done** (`tools/principal_character.py`) |
 | `npc_student.glb` | A generic student, used for any character above that doesn't have a file yet | optional |
 
 If you'd rather not build the whole room as one file, you can instead make
 single pieces: `table.glb` (reused for all 12 student tables),
-`trophy_case.glb`, `robotics_bench.glb` and `desk.glb`. Each piece's origin
+`trophy_case.glb`, `layout_table.glb` and `desk.glb`. Each piece's origin
 must be at its **bottom centre**, with its front facing Blender's Front
 view (−Y). The engine puts and turns them in place. Don't do
 both: if `classroom.glb` exists, the separate pieces are hidden.
@@ -153,16 +153,16 @@ moves, see "Moving things" below.
 | Door B (Lab) | −9 | 8 | 1.2 wide, 2.2 tall | North wall of the computer lab. Label it "Door B (Lab)". |
 | **Trophy case** | −6.8 | 7.55 | 2.2 × 0.8 × 1.9 | Against the lab's north wall, just east of Door B. Glass front faces south. |
 | Computer desks | 2.6 | 7.55 | 6.8 × 0.8 × 0.75 | Lab's north wall; monitors, towers, navy chairs |
-| Robotics bench 1 | −2.4 | 4.6 | 3.2 × 1.1 × 0.9 | Robot parts on top |
-| Robotics bench 2 | 2.6 | 4.6 | 3.2 × 1.1 × 0.9 | |
-| Parts cabinet | 6.55 | 6.3 | 0.7 × 1.6 × 2.0 | Grey metal, against the office wall, doors face west |
+| Layout table 1 | −2.4 | 4.6 | 3.2 × 1.1 × 0.9 | Yearbook page proofs and a camera on top |
+| Layout table 2 | 2.6 | 4.6 | 3.2 × 1.1 × 0.9 | Camera battery charging station |
+| Camera cabinet | 6.55 | 6.3 | 0.7 × 1.6 × 2.0 | Grey metal, against the office wall, doors face west |
 | Rolling whiteboard | −10.4 | 4.6 | 0.6 × 1.8 × 2.1 | Sticky notes, faces east |
 | Sink counter | −11.65 | 6.6 | 0.7 × 1.4 × 0.9 | Lab's west wall |
 | Office desk | 10.4 | 7.25 | 1.5 × 0.7 × 0.76 | |
 | Filing cabinets (2) | 11.7 | 5.3 and 4.7 | 0.6 × 0.5 × 1.35 each | Black |
 | Teacher's desk | −8.6 | 0.95 | 2.0 × 0.8 × 0.76 | Classroom, north-west |
 | Tall wood cabinet | −11.45 | 1.55 | 1.0 × 0.7 × 2.2 | Classroom's north-west corner |
-| TV on a stand | −5.4 | 1.6 | 1.7 wide, screen centre 1.55 m up | "ROBOTICS" sign above it |
+| TV on a stand | −5.4 | 1.6 | 1.7 wide, screen centre 1.55 m up | "YEARBOOK" sign above it |
 | Whiteboard (north) | −1.2 | 1.9 | 3.4 wide, 1.2 tall | Inside wall; bottom edge 1.0 m up |
 | Whiteboard (west) | −11.97 | −1.4 | 4.0 wide, 1.2 tall | Classroom's west wall |
 | Drawer cabinet | −11.65 | −4.25 | 0.6 × 1.1 × 0.9 | Beside Door A |
@@ -194,6 +194,10 @@ Students are told these things, so the model has to agree:
   far from the case.
 - **No whiteboard writing with names.** The real whiteboards had students'
   names on them, so keep boards blank or use made-up writing.
+- Mr. Grump, the principal, is in the office the whole time (he is a witness,
+  not a suspect).
+- The room belongs to the **yearbook** staff: layout tables with page proofs
+  and cameras, a camera cabinet, a "YEARBOOK" sign. No robotics.
 - It's 3:55 PM after school.
 
 ### Required helper objects
@@ -220,10 +224,10 @@ walk and stand.
 | `SPAWN_player` | The student playing | −11.0, −6.0 (just inside Door A) |
 | `SPAWN_ortiz` | Mr. Elias | −8.6, −0.2 (in front of her desk) |
 | `SPAWN_jordan` | Jordan | −8.6, −6.0 (at the hall pass desk) |
-| `SPAWN_marcus` | Marcus | −2.4, 3.5 (lab, by robotics bench 1) |
+| `SPAWN_marcus` | Marcus | −2.4, 3.5 (lab, by layout table 1) |
 | `SPAWN_priya` | Priya | 10.3, −1.4 (by the plants) |
 | `SPAWN_riley` | Riley | −0.75, −2.0 (among the student tables) |
-| `SPAWN_sam` | Sam | 5.6, 4.6 (lab, east of robotics bench 2) |
+| `SPAWN_sam` | Sam | 5.6, 4.6 (lab, east of layout table 2) |
 | `SPAWN_ana` | Ana | 6.5, −6.4 (by the book cart) |
 | `SPAWN_grump` | Mr. Grump | 9.6, 5.6 (in the office) |
 
@@ -272,7 +276,7 @@ Add each picture to the `pictures` list at the bottom of `data/assets.js`:
 ```js
 pictures: [
   { url: 'assets/photos/team_photo.jpg', wall: 'north', x: 6, height: 1.7, width: 1.4 },
-  { url: 'assets/photos/robot_poster.jpg', wall: 'east', y: 6.5, height: 1.6, width: 1.0 }
+  { url: 'assets/photos/yearbook_poster.jpg', wall: 'east', y: 6.5, height: 1.6, width: 1.0 }
 ]
 ```
 

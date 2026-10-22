@@ -46,12 +46,12 @@ once, as the test does.
 | E4 | Grouped bar chart (badge swipes) | 4 | Use one graphic (floor plan) to find information in another; compare data | Mr. Elias |
 | E3 | Flowchart / checklist | 5 | Identify the missing step in a process | Marcus |
 | E6 | Bar chart (library check-ins) | 5 | Interpret data to draw a conclusion | Ana |
-| E5 | Two-line graph (shelf sensors) | 6 | Compare two trends | Priya |
+| E5 | Two-line graph (shelf sensors) | 6 | Compare two trends | Mr. Grump, the principal |
 | R1 | Line graph | 6 | Interpret a trend (when the trophy left) | Case review |
 | R2 | Checklist + floor plan + bar chart | 6 | Locate information in one graphic using another | Case review |
 | R3 | Line graph, then table | 7 | Make an inference from one graphic after finding information in another | Case review |
 | R4 | Bar chart + bar chart + table | 7 | Justify an inference | Case review |
-| R5 | All graphics | 7 | Identify and justify the most effective graphic for a purpose | Case review |
+| R5 | All graphics | 7 | Identify and justify the most effective graphic for a purpose | Case review (Mr. Grump's request) |
 
 ### Test-taking habits the game builds in
 
@@ -113,9 +113,9 @@ for each test.
 | WD2 | 3 | Find the main point | Book cart notice | Ana |
 | WD3 | 4 | Choose an action when conditions change | Battery charging procedure | Marcus |
 | WD4 | 4 | Figure out the meaning of a word from the document | Trophy rotation notice | Riley |
-| WD5 | 5 | Apply if-then instructions and acronyms | Shelf sensor guide | Priya |
+| WD5 | 5 | Apply if-then instructions and acronyms | Shelf sensor guide | Mr. Grump |
 | WD6 | 5 | Apply a policy to a similar situation | After-school room policy | Mr. Elias |
-| WD7 | 6 | Work out a technical term and apply a rule to a new situation | Robot inspection rules | Sam |
+| WD7 | 6 | Work out a technical term and apply a rule to a new situation | Yearbook contest rules | Sam |
 | WD8 | 6 | Identify the reason behind a rule | Principal's memo | Mr. Grump |
 | WD9 | 7 | Apply one section of a document to another | Key control procedure | Marcus |
 | WD10 | 7 | Infer implied details and draw a conclusion | Equipment loan agreement | Ana |

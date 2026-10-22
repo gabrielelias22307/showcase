@@ -1,4 +1,4 @@
-// The Case of the Missing Robotics Trophy
+// The Case of the Missing Yearbook Trophy
 //
 // Every clue is a workplace-style graphic. Each graphic comes with one
 // question written to a WorkKeys Graphic Literacy level (3-7). Answering it
@@ -10,13 +10,14 @@
 // same room.objects list, so the 3D room and the map always agree.
 
 export default {
-  id: 'robotics-trophy-v1',
-  title: 'The Case of the Missing Robotics Trophy',
+  id: 'yearbook-trophy-v1',
+  title: 'The Case of the Missing Yearbook Trophy',
   setting: 'Room 210, 3:55 PM, after school',
 
   intro: [
-    'Room 210 is the biggest classroom in the building. It has its own computer lab and a small office. The robotics club meets here after school.',
-    'At 3:50 PM, Mr. Elias noticed that the state championship trophy was gone from the trophy case.',
+    'Room 210 is the biggest classroom in the building. It has its own computer lab and a small office. The yearbook staff works here after school.',
+    'At 3:50 PM, Mr. Elias, the yearbook adviser, noticed that the school\'s Best Yearbook trophy was gone from the trophy case.',
+    'The principal, Mr. Grump, is in the office. He is not happy.',
     'You just got here. Everyone who was in the room is still here. Talk to them, collect their charts, logs and maps, and read each graphic carefully.',
     'When you have the facts, tell Mr. Elias what happened.'
   ],
@@ -69,7 +70,7 @@ export default {
       { id: 'tallCabinet', label: '', type: 'tallcab', x: -11.45, z: -1.55, w: 1.0, d: 0.7, h: 2.2, plan: false, collide: true },
       { id: 'teacherDesk', label: "Teacher's desk", type: 'desk', x: -8.6, z: -0.95, w: 2.0, d: 0.8, h: 0.76, plan: true, collide: true },
       { id: 'tv', label: 'TV', type: 'tv', x: -5.4, z: -1.6, w: 1.7, d: 0.5, h: 1.9, plan: true, collide: true },
-      { id: 'sign', label: '', type: 'sign', text: 'ROBOTICS', x: -5.4, z: -1.9, w: 2.4, d: 0.05, h: 0.35, y: 2.65, plan: false },
+      { id: 'sign', label: '', type: 'sign', text: 'YEARBOOK', x: -5.4, z: -1.9, w: 2.4, d: 0.05, h: 0.35, y: 2.65, plan: false },
       { id: 'whiteboard', label: 'Whiteboard', type: 'board', x: -1.2, z: -1.9, w: 3.4, d: 0.1, h: 1.2, y: 1.0, plan: true },
       { id: 'westBoard', label: 'Whiteboard', type: 'board', face: 'east', x: -11.94, z: 1.4, w: 0.1, d: 4.0, h: 1.2, y: 1.0, plan: true },
       { id: 'drawers', label: '', type: 'counter', face: 'east', x: -11.65, z: 4.25, w: 0.6, d: 1.1, h: 0.9, plan: false, collide: true },
@@ -85,9 +86,9 @@ export default {
       // ----- Computer lab -----
       { id: 'trophyCase', label: 'Trophy case', type: 'case', x: -6.8, z: -7.55, w: 2.2, d: 0.8, h: 1.9, plan: true, collide: true },
       { id: 'computers', label: 'Computers', type: 'computers', x: 2.6, z: -7.55, w: 6.8, d: 0.8, h: 0.75, plan: true, collide: true },
-      { id: 'labBench1', label: 'Robotics bench', type: 'bench', x: -2.4, z: -4.6, w: 3.2, d: 1.1, h: 0.9, plan: true, collide: true },
-      { id: 'labBench2', label: 'Robotics bench', type: 'bench', x: 2.6, z: -4.6, w: 3.2, d: 1.1, h: 0.9, plan: true, collide: true },
-      { id: 'cabinet', label: 'Parts cabinet', type: 'cabinet', face: 'west', x: 6.55, z: -6.3, w: 0.7, d: 1.6, h: 2, plan: true, collide: true },
+      { id: 'labBench1', label: 'Layout table', type: 'bench', x: -2.4, z: -4.6, w: 3.2, d: 1.1, h: 0.9, plan: true, collide: true },
+      { id: 'labBench2', label: 'Layout table', type: 'bench', x: 2.6, z: -4.6, w: 3.2, d: 1.1, h: 0.9, plan: true, collide: true },
+      { id: 'cabinet', label: 'Camera cabinet', type: 'cabinet', face: 'west', x: 6.55, z: -6.3, w: 0.7, d: 1.6, h: 2, plan: true, collide: true },
       { id: 'easel', label: '', type: 'easel', face: 'east', x: -10.4, z: -4.6, w: 0.6, d: 1.8, h: 2.1, plan: false, collide: true },
       { id: 'sink', label: '', type: 'sink', face: 'east', x: -11.65, z: -6.6, w: 0.7, d: 1.4, h: 0.9, plan: false, collide: true },
       // ----- Office -----
@@ -99,17 +100,18 @@ export default {
 
   npcs: [
     {
-      id: 'ortiz', name: 'Mr. Elias', role: 'Robotics coach (teacher)', color: '#3d6fb4',
+      id: 'ortiz', name: 'Mr. Elias', role: 'Yearbook adviser (teacher)', color: '#3d6fb4',
       position: [-8.6, 0.2], yaw: 0,
       dialogue: {
         start: 'root',
         nodes: {
           root: {
-            text: "Thank you for coming. The trophy was in the case at 2:45. We took a team photo with it. At 3:50 it was gone. Nobody has left the room since then.",
+            text: "Thank you for coming. Our Best Yearbook trophy was in the case at 2:45. We took the staff photo for this year's book with it. At 3:50 it was gone. Nobody has left the room since then.",
             choices: [
               { text: 'Is there a map of the room?', next: 'map', requiresNot: ['has:E1'] },
               { text: 'Do the doors keep a record?', next: 'doors', requiresNot: ['has:E4'] },
               { text: 'Who had the key to the trophy case?', next: 'key' },
+              { text: 'Is anyone else here?', next: 'grump', requiresNot: ['talked:grump'] },
               { text: 'I think I know what happened.', next: 'ready', requires: ['ready'] },
               { text: 'I need more facts first.', next: 'notReady', requiresNot: ['ready'] },
               { text: 'Goodbye.', end: true }
@@ -121,7 +123,11 @@ export default {
             choices: [{ text: 'Thanks.', next: 'root', give: 'E4' }]
           },
           key: {
-            text: "Marcus signed out the key at 3:00. He needed a ribbon from the case for our display. Ask him about the checklist.",
+            text: "Marcus, our photo editor, signed out the key at 3:00. He needed a ribbon from the case for our awards display. Ask him about the checklist.",
+            choices: [{ text: 'OK.', next: 'root' }]
+          },
+          grump: {
+            text: "Mr. Grump, the principal, is working in the office. He is not happy about this. The school's security system runs on his laptop, so he may have something useful.",
             choices: [{ text: 'OK.', next: 'root' }]
           },
           notReady: {
@@ -155,13 +161,13 @@ export default {
       }
     },
     {
-      id: 'marcus', name: 'Marcus', role: 'Lab assistant', color: '#2f8a5b',
+      id: 'marcus', name: 'Marcus', role: 'Photo editor, yearbook staff', color: '#2f8a5b',
       position: [-2.4, -3.5], yaw: 0,
       dialogue: {
         start: 'root',
         nodes: {
           root: {
-            text: "I didn't take the trophy! I only took a blue ribbon out of the case. I followed the key checklist.",
+            text: "I didn't take the trophy! I only took a blue ribbon out of the case for the awards display. I followed the key checklist.",
             choices: [
               { text: 'Can I see the checklist?', next: 'list', requiresNot: ['has:E3'] },
               { text: 'When did you use the key?', next: 'when' },
@@ -182,32 +188,32 @@ export default {
       }
     },
     {
-      id: 'priya', name: 'Priya', role: 'Programmer, robotics club', color: '#8a3fa0',
+      id: 'priya', name: 'Priya', role: 'Page designer, yearbook staff', color: '#8a3fa0',
       position: [10.3, 1.4], yaw: Math.PI / 2,
       dialogue: {
         start: 'root',
         nodes: {
           root: {
-            text: "I was watering the plants on the counter. I saw the trophy in the case at about 3:25, when I went into the lab to print. It was there. I'm sure.",
+            text: "I was watering the plants on the counter. At about 3:25 I went into the lab to print page proofs, and I saw the trophy in the case. It was there. I'm sure.",
             choices: [
-              { text: 'Does the trophy case have any sensors?', next: 'sensor', requiresNot: ['has:E5'] },
               { text: 'Did you see anyone take it?', next: 'see' },
+              { text: 'Does the trophy case have any sensors?', next: 'sensor', requiresNot: ['has:E5'] },
               { text: 'Goodbye.', end: true }
             ]
-          },
-          sensor: {
-            text: "Yes! Our team built weight sensors for the shelves. They record the weight every minute. Here is the graph from today.",
-            choices: [{ text: 'Great, thanks.', next: 'root', give: 'E5' }]
           },
           see: {
             text: "No. After 3:25 I came back to the plants. They are on the blue wall, here in the classroom. The trophy case is in the computer lab, on the other side of the wall.",
             choices: [{ text: 'OK.', next: 'root' }]
+          },
+          sensor: {
+            text: "I think so. There is a little pad under each shelf. Mr. Grump checks that stuff on his laptop. He's in the office, but be careful. He's in a mood.",
+            choices: [{ text: 'Thanks.', next: 'root' }]
           }
         }
       }
     },
     {
-      id: 'riley', name: 'Riley', role: 'Robotics club member', color: '#b23a48',
+      id: 'riley', name: 'Riley', role: 'Staff writer, yearbook staff', color: '#b23a48',
       position: [-0.75, 2], yaw: Math.PI,
       dialogue: {
         start: 'root',
@@ -221,24 +227,24 @@ export default {
             ]
           },
           vote: {
-            text: "The team voted on who keeps the trophy over the summer. I wanted it. Here are the results. Yes, I'm upset. But I didn't take it.",
+            text: "The staff voted on who keeps the trophy over the summer. I wanted it. Here are the results. Yes, I'm upset. But I didn't take it.",
             choices: [{ text: 'Thanks.', next: 'root', give: 'E7' }]
           },
           where: {
-            text: "I went to the restroom after 3:00 and came back through Door A. Ask Jordan. After that I sat right here at this table.",
+            text: "I went to the restroom after 3:00 and came back through Door A. Ask Jordan. After that I sat right here, writing photo captions.",
             choices: [{ text: 'OK.', next: 'root' }]
           }
         }
       }
     },
     {
-      id: 'sam', name: 'Sam', role: 'Team captain', color: '#d19a1f',
+      id: 'sam', name: 'Sam', role: 'Editor-in-chief, yearbook staff', color: '#d19a1f',
       position: [5.6, -4.6], yaw: -Math.PI / 2,
       dialogue: {
         start: 'root',
         nodes: {
           root: {
-            text: "Hi. I wasn't even here when it happened. I was at the library working on our team poster.",
+            text: "Hi. I wasn't even here when it happened. I was at the library working on the yearbook cover.",
             choices: [
               { text: 'How long were you at the library?', next: 'library' },
               { text: 'Which door did you use to come back?', next: 'door' },
@@ -254,7 +260,7 @@ export default {
             choices: [{ text: 'OK.', next: 'root', set: ['samNervous'] }]
           },
           confront2: {
-            text: "...I think I should explain this to Mr. Elias. Not here.",
+            text: "...I think I should explain this to Mr. Elias. Not here. And please don't tell Mr. Grump yet.",
             choices: [{ text: 'OK.', next: 'root', set: ['samNervous'] }]
           }
         }
@@ -283,30 +289,42 @@ export default {
       }
     },
     {
+      // The principal: a witness, not a suspect. He holds a key clue (E5)
+      // and sets up the last case-review question (R5).
       id: 'grump', name: 'Mr. Grump', role: 'Principal', color: '#5b6b8a', suspect: false,
       position: [9.6, -5.6], yaw: 0,
       dialogue: {
         start: 'root',
         nodes: {
           root: {
-            text: "Hmph. A trophy goes missing on MY watch. I've been in this office on the phone with the district since three o'clock. I didn't see a thing.",
+            text: "Hmph. Our Best Yearbook trophy goes missing on MY watch. I've been in this office on the phone with the district since three o'clock. I didn't see a thing.",
             choices: [
+              { text: 'Does the trophy case have any sensors?', next: 'sensor', requiresNot: ['has:E5'] },
               { text: 'Could you see the trophy case from here?', next: 'case' },
+              { text: 'The trophy left the shelf at 3:36.', next: 'time', requires: ['solved:E5'] },
               { text: 'Is there anything you need from me?', next: 'need' },
               { text: 'Why are you so grumpy?', next: 'grumpy' },
               { text: 'Goodbye.', end: true }
             ]
           },
+          sensor: {
+            text: "It does. Last year the district put a weight sensor under every trophy shelf. They record the weight every minute. My laptop shows today's graph. Here. Read it carefully. Both lines.",
+            choices: [{ text: 'Thank you, Mr. Grump.', next: 'root', give: 'E5' }]
+          },
           case: {
-            text: "From the office? No. There's a solid wall between me and that case. That's why the team built sensors for the shelves.",
+            text: "From the office? No. There's a solid wall between me and that case. That is exactly why we have the sensors.",
             choices: [{ text: 'OK.', next: 'root' }]
+          },
+          time: {
+            text: "3:36. I was still on the phone with the district. So someone walked off with it while I was ten meters away. Wonderful. Use the badge chart and the hall pass log. Find out who was not where they said.",
+            choices: [{ text: 'I will.', next: 'root', set: ['grumpTime'] }]
           },
           need: {
             text: "Yes. When you figure this out, I want ONE graphic that shows WHEN the trophy was taken. One. I do not have time to read five.",
-            choices: [{ text: 'Got it.', next: 'root' }]
+            choices: [{ text: 'Got it.', next: 'root', set: ['grumpWantsOne'] }]
           },
           grumpy: {
-            text: "I'm not grumpy. I'm busy. ...Fine. I'm a little grumpy. That trophy took this school three years to win.",
+            text: "I'm not grumpy. I'm busy. ...Fine. I'm a little grumpy. It took this school three years to win Best Yearbook in the state.",
             choices: [{ text: 'We will find it.', next: 'root' }]
           }
         }
@@ -442,7 +460,7 @@ export default {
 
     E5: {
       title: 'Trophy Case Shelf Weight Sensors',
-      from: 'Priya',
+      from: 'Mr. Grump (security system)',
       type: 'line',
       level: 6,
       skill: 'Compare two trends',
@@ -495,7 +513,7 @@ export default {
     },
 
     E7: {
-      title: 'Team Vote: Who Keeps the Trophy This Summer?',
+      title: 'Staff Vote: Who Keeps the Trophy This Summer?',
       from: 'Riley',
       type: 'pie',
       level: 3,
@@ -511,7 +529,7 @@ export default {
         ]
       },
       question: {
-        prompt: 'What percent of the team voted for Riley?',
+        prompt: 'What percent of the staff voted for Riley?',
         options: [
           { text: '45%', feedback: 'That is the largest slice. Whose is it?' },
           { text: '30%', correct: true, feedback: 'Correct. 6 out of 20 votes is 30%. Riley lost the vote to Priya.' },
@@ -534,7 +552,7 @@ export default {
       prompt: 'Mr. Elias asks: "When was the trophy taken?"',
       use: ['E5'],
       options: [
-        { text: 'About 2:45, after the team photo', feedback: 'The sensor graph shows the trophy still on the shelf after 3:00.' },
+        { text: 'About 2:45, after the staff photo', feedback: 'The sensor graph shows the trophy still on the shelf after 3:00.' },
         { text: 'About 3:18, when Marcus opened the case', feedback: 'At 3:18 only Shelf 2 (ribbons) dropped. Shelf 1 stayed at 3.2 kg.' },
         { text: 'About 3:36, when Shelf 1 dropped to zero', correct: true, feedback: 'Correct. The trophy weighed 3.2 kg. That weight left the shelf at 3:36.' },
         { text: 'About 3:50, when I noticed', feedback: 'The graph shows the shelf was already empty before 3:50.' }
@@ -567,7 +585,7 @@ export default {
       prompt: '"Sam says he was at the library. Why don\'t you believe that?"',
       use: ['E6', 'E4'],
       options: [
-        { text: 'Because Sam is the team captain', feedback: 'That is not evidence.' },
+        { text: 'Because Sam is the editor-in-chief', feedback: 'That is not evidence.' },
         { text: 'Because Sam got only 15% of the vote', feedback: 'The vote is a red herring. It does not show where Sam was.' },
         { text: 'No one checked in at the library from 3:10 to 3:39, and the only Door B swipe was at 3:30-3:39, while Sam was signed out', correct: true, feedback: 'Correct. Two graphics together break Sam\'s alibi.' },
         { text: 'Because Jordan saw Sam at the case', feedback: 'Jordan said the case cannot be seen from the hall pass desk.' }
@@ -599,8 +617,9 @@ export default {
   ending: [
     'Sam looks at the floor. "OK. It was me."',
     '"I came back through Door B at 3:35. I saw the case was unlocked. I took the trophy and put it in my backpack. Then I signed back in at 3:40."',
-    '"I wanted to take it to the engraving shop tonight. I wanted to add every team member\'s name before the awards assembly. It was supposed to be a surprise."',
+    '"I wanted to take it to the engraving shop tonight. I wanted to add every staff member\'s name before the awards assembly. It was supposed to be a surprise."',
     'Mr. Elias sighs. "That is a kind idea, Sam. But you have to ask first. And Marcus, the checklist exists for a reason."',
+    'Mr. Grump steps out of the office and looks at the shelf sensor graph. "One graphic. Exactly what I asked for." He almost smiles. "Sam, my office. Tomorrow. Bring the trophy."',
     'Case closed. You solved it by reading the graphics, not by guessing.'
   ]
 };

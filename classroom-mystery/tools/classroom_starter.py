@@ -5,7 +5,8 @@ Builds a blocked-out version of the real classroom from the photos:
   - Classroom (south part) with a blue painted east wall, a counter with
     plants and upper cabinets, whiteboards, TV, hall pass desk, 12 tables.
   - Computer lab (north-west) with the trophy case beside Door B,
-    computer desks, two robotics benches, a rolling whiteboard and a sink.
+    computer desks, two yearbook layout tables, a camera cabinet, a rolling
+    whiteboard and a sink.
   - Small office (north-east) with a desk and filing cabinets.
   - Cream painted block walls, blue door frames, blue baseboard, tile
     floor with red accent tiles, paper pennant banners.
@@ -303,7 +304,10 @@ M = {
     "screen": mat("Screen", "#0d0f12", rough=0.2),
     "bench": mat("BenchTop", "#3b3f46", rough=0.5),
     "cabinet": mat("GreyCabinet", "#c4c7cb"),
-    "robot": mat("RobotRed", "#c9372c"),
+    "proof": mat("ProofPaper", "#fbfbf6"),
+    "photo1": mat("ProofPhoto1", "#6a8fbf"),
+    "photo2": mat("ProofPhoto2", "#c98a5a"),
+    "mat": mat("CuttingMat", "#3f7d5a"),
     "white": mat("WhiteFrame", "#fbfbfb", rough=0.3),
     "book1": mat("Book1", "#3a6ea5"),
     "book2": mat("Book2", "#c4533a"),
@@ -455,7 +459,7 @@ s.box(0, 0.38, 0.3, 2.0, 0.03, 0.41, 1)
 build("TeacherDesk", s, [M["tabletop"], M["metal"]], (-8.6, 0.95, 0))
 col_box("teacher_desk", -8.6, 0.95, 2.0, 0.8, 0.76)
 
-# TV on a stand + ROBOTICS sign above it
+# TV on a stand + YEARBOOK sign above it
 s = Shape()
 s.box(0, 0, 1.08, 1.7, 0.06, 0.95, 0)
 s.box(-0.6, 0.1, 0, 0.05, 0.05, 1.3, 1)
@@ -463,7 +467,7 @@ s.box(0.6, 0.1, 0, 0.05, 0.05, 1.3, 1)
 s.box(0, 0.1, 0, 1.4, 0.5, 0.05, 1)
 build("TV", s, [M["screen"], M["white"]], (-5.4, 1.6, 0))
 col_box("tv", -5.4, 1.6, 1.7, 0.5, 1.9)
-label("Sign_Robotics", "ROBOTICS", (-5.4, 1.91, 2.65), (90, 0, 0), 0.3, M["label"])
+label("Sign_Yearbook", "YEARBOOK", (-5.4, 1.91, 2.65), (90, 0, 0), 0.3, M["label"])
 
 # Whiteboards (no writing - the real boards had student names on them)
 s = Shape()
@@ -596,23 +600,29 @@ while x < 3.1:
 build("ComputerDesks", s, [M["wood"], M["screen"], M["black"], M["chair"]], (2.6, 7.55, 0))
 col_box("computer_desks", 2.6, 7.55, 6.8, 0.8, 0.75)
 
-# Two robotics benches with robot parts
+# Two yearbook layout tables: page proofs, a camera, a cutting mat
 for i, bx in ((1, -2.4), (2, 2.6)):
     s = Shape()
     s.box(0, 0, 0.86, 3.2, 1.1, 0.04, 0)
     s.box(0, 0, 0, 3.1, 1.0, 0.86, 1)
-    if i == 1:
-        s.box(-0.8, 0, 0.9, 0.4, 0.4, 0.25, 2)
-        s.box(0.5, -0.1, 0.9, 0.6, 0.3, 0.12, 3)
-    build(f"RoboticsBench_{i}", s, [M["bench"], M["metal"], M["robot"], M["metal"]], (bx, 4.6, 0))
-    col_box(f"robotics_bench_{i}", bx, 4.6, 3.2, 1.1, 0.9)
+    s.box(0.9, 0, 0.9, 0.9, 0.6, 0.005, 5)                       # cutting mat
+    for k in range(6):                                            # proof pages with photos
+        px, py = -1.25 + (k % 3) * 0.42, 0.2 - (k // 3) * 0.36
+        s.box(px, py, 0.9 + k * 0.001, 0.36, 0.28, 0.004, 2)
+        s.box(px - 0.07, py + 0.05, 0.905 + k * 0.001, 0.15, 0.11, 0.002, 3)
+        s.box(px + 0.09, py - 0.06, 0.905 + k * 0.001, 0.12, 0.09, 0.002, 4)
+    if i == 1:                                                    # camera
+        s.box(0.6, 0.25, 0.9, 0.14, 0.07, 0.09, 6)
+        s.cyl(0.6, 0.19, 0.91, 0.035, 0.07, 6)
+    build(f"LayoutTable_{i}", s, [M["bench"], M["metal"], M["proof"], M["photo1"], M["photo2"], M["mat"], M["black"]], (bx, 4.6, 0))
+    col_box(f"layout_table_{i}", bx, 4.6, 3.2, 1.1, 0.9)
 
-# Grey metal parts cabinet against the office wall, doors facing west
+# Grey metal camera cabinet against the office wall, doors facing west
 s = Shape()
 s.box(0, 0, 0, 0.7, 1.6, 2.0, 0)
 s.box(-0.36, 0, 0.05, 0.02, 0.01, 1.9, 1)
-build("PartsCabinet", s, [M["cabinet"], M["metal"]], (6.55, 6.3, 0))
-col_box("parts_cabinet", 6.55, 6.3, 0.7, 1.6, 2.0)
+build("CameraCabinet", s, [M["cabinet"], M["metal"]], (6.55, 6.3, 0))
+col_box("camera_cabinet", 6.55, 6.3, 0.7, 1.6, 2.0)
 
 # Rolling whiteboard covered in sticky notes (facing east)
 s = Shape()
@@ -659,7 +669,7 @@ for i, fy in ((1, 5.3), (2, 4.7)):
 
 for who, sx, sy in (("player", -11.0, -6.0), ("ortiz", -8.6, -0.2), ("jordan", -8.6, -6.0),
                     ("marcus", -2.4, 3.5), ("priya", 10.3, -1.4), ("riley", -0.75, -2.0),
-                    ("sam", 5.6, 4.6), ("ana", 6.5, -6.4)):
+                    ("sam", 5.6, 4.6), ("ana", 6.5, -6.4), ("grump", 9.6, 5.6)):
     spawn(who, sx, sy)
 
 # ------------------------------------------------------------------

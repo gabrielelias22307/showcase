@@ -453,12 +453,24 @@ export class World {
         }
         break;
       }
-      case 'bench':
+      case 'bench': {
+        // yearbook layout table: page proofs spread out, a camera, a cutting mat
         g.add(box(w, 0.06, d, M.bench, 0, h, 0));
         g.add(box(w - 0.1, h - 0.06, d - 0.1, mat('#5b616b'), 0, (h - 0.06) / 2, 0));
-        g.add(box(0.4, 0.25, 0.4, mat('#c9372c'), -0.8, h + 0.125, 0));   // robot parts
-        g.add(box(0.6, 0.12, 0.3, M.metal, 0.5, h + 0.06, 0.1));
+        g.add(box(0.9, 0.005, 0.6, mat('#3f7d5a'), 0.9, h + 0.033, 0));            // cutting mat
+        const proof = mat('#fbfbf6'), photo = [mat('#6a8fbf'), mat('#c98a5a'), mat('#7aa36b'), mat('#b5687d')];
+        for (let i = 0; i < 6; i++) {
+          const px = -1.25 + (i % 3) * 0.42, pz = -0.2 + Math.floor(i / 3) * 0.36;
+          g.add(box(0.36, 0.004, 0.28, proof, px, h + 0.034 + i * 0.001, pz));      // proof page
+          g.add(box(0.15, 0.002, 0.11, photo[i % 4], px - 0.07, h + 0.04 + i * 0.001, pz - 0.05));
+          g.add(box(0.12, 0.002, 0.09, photo[(i + 1) % 4], px + 0.09, h + 0.04 + i * 0.001, pz + 0.06));
+        }
+        g.add(box(0.14, 0.09, 0.07, M.black, 0.6, h + 0.075, -0.25));              // camera body
+        const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.07, 16), M.black);
+        lens.rotation.x = Math.PI / 2; lens.position.set(0.6, h + 0.075, -0.19);
+        g.add(lens);
         break;
+      }
       case 'cabinet':
         g.add(box(w, h, d, mat('#c4c7cb'), 0, h / 2, 0));
         g.add(box(0.01, h - 0.1, 0.02, M.metal, 0, h / 2, d / 2 + 0.01));

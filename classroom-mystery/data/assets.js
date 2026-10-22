@@ -37,7 +37,7 @@ export default {
   objects: {
     table: { url: 'assets/models/table.glb' },
     trophyCase: { url: 'assets/models/trophy_case.glb', rotationY: 0 },
-    bench: { url: 'assets/models/robotics_bench.glb' },
+    bench: { url: 'assets/models/layout_table.glb' },
     desk: { url: 'assets/models/desk.glb' }
   },
 
