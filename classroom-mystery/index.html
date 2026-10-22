@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Classroom Mystery</title>
+<meta name="description" content="A 3D classroom mystery that practices WorkKeys Graphic Literacy skills (Levels 3-7).">
+<link rel="stylesheet" href="css/style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three/build/three.module.min.js",
+    "three/addons/": "./vendor/three/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+  <canvas id="scene" aria-label="3D classroom. Use the notebook and dialogue panels to play."></canvas>
+
+  <div id="hud">
+    <div id="objective" aria-live="polite"></div>
+    <div class="hud-buttons">
+      <button id="btn-notebook" title="Notebook (N)">📓 Notebook <kbd>N</kbd></button>
+      <button id="btn-help" title="Help (H)">? Help</button>
+    </div>
+    <div class="crosshair" aria-hidden="true"></div>
+    <button id="prompt" hidden></button>
+    <div id="joystick" hidden aria-hidden="true"><div class="knob"></div></div>
+  </div>
+
+  <div id="ui-layer"></div>
+  <div id="toasts" aria-live="polite"></div>
+
+  <div id="loading">
+    <p>Loading the classroom…</p>
+    <noscript>This game needs JavaScript.</noscript>
+  </div>
+
+  <script>
+    // ES modules don't load from file://. Explain instead of showing a blank page.
+    if (location.protocol === 'file:') {
+      document.getElementById('loading').innerHTML =
+        '<p><strong>Open this game from a web server.</strong></p>' +
+        '<p>Browsers block 3D modules on file:// pages. See README.md: run <code>npx http-server</code> in this folder, or upload the folder to GitHub Pages or Netlify.</p>';
+    }
+  </script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
