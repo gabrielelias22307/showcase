@@ -116,7 +116,7 @@ for each test.
 | WD5 | 5 | Apply if-then instructions and acronyms | Shelf sensor guide | Priya |
 | WD6 | 5 | Apply a policy to a similar situation | After-school room policy | Mr. Elias |
 | WD7 | 6 | Work out a technical term and apply a rule to a new situation | Robot inspection rules | Sam |
-| WD8 | 6 | Identify the reason behind a rule | Principal's memo | Jordan |
+| WD8 | 6 | Identify the reason behind a rule | Principal's memo | Mr. Grump |
 | WD9 | 7 | Apply one section of a document to another | Key control procedure | Marcus |
 | WD10 | 7 | Infer implied details and draw a conclusion | Equipment loan agreement | Ana |
 

@@ -190,11 +190,11 @@ export default {
 
     WD8: {
       level: 6, skill: 'Identify the reason behind a rule',
-      from: 'jordan', title: 'Principal\'s memo',
-      intro: 'This memo is why my log has a "Time in" column now.',
+      from: 'grump', title: 'Principal\'s memo',
+      intro: 'I wrote this memo after the last fire drill. Read it. Carefully.',
       doc: {
         kind: 'Memo', title: 'Hall Pass Logs',
-        meta: [['To', 'All teachers and club advisors'], ['From', 'Principal Grant'], ['Re', 'Changes to hall pass logs']],
+        meta: [['To', 'All teachers and club advisors'], ['From', 'Principal Grump'], ['Re', 'Changes to hall pass logs']],
         body: [
           'Effective Monday, every classroom hall pass log must record both the time a student leaves and the time the student returns.',
           'During last month\'s fire drill, several rooms could not confirm within five minutes which students were present. Their logs showed when students left, but not whether they had returned. Staff had to search hallways and restrooms room by room.',

@@ -61,6 +61,7 @@ deliver one file at a time.
 | `npc_riley.glb` | Riley, robotics club member (student) | 1.70 m |
 | `npc_sam.glb` | Sam, team captain (student) | 1.70 m. **Done** (`tools/student_character.py`, WHO = B) |
 | `npc_ana.glb` | Ana, library aide visiting the room (student) | 1.60 m |
+| `npc_grump.glb` | Mr. Grump, the principal (in the office; a witness, not a suspect) | 1.83 m. **Done** (`tools/principal_character.py`) |
 | `npc_student.glb` | A generic student, used for any character above that doesn't have a file yet | optional |
 
 If you'd rather not build the whole room as one file, you can instead make
@@ -224,6 +225,7 @@ walk and stand.
 | `SPAWN_riley` | Riley | −0.75, −2.0 (among the student tables) |
 | `SPAWN_sam` | Sam | 5.6, 4.6 (lab, east of robotics bench 2) |
 | `SPAWN_ana` | Ana | 6.5, −6.4 (by the book cart) |
+| `SPAWN_grump` | Mr. Grump | 9.6, 5.6 (in the office) |
 
 Leave at least 0.8 m of clear floor around each spot so students can walk
 up to the person.

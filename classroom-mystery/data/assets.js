@@ -54,7 +54,8 @@ export default {
     priya: { url: 'assets/models/npc_priya.glb', height: 1.62 },
     riley: { url: 'assets/models/npc_riley.glb', height: 1.7 },
     sam: { url: 'assets/models/npc_sam.glb', height: 1.7, portrait: 'assets/photos/portrait_sam.jpg' },
-    ana: { url: 'assets/models/npc_ana.glb', height: 1.6 }
+    ana: { url: 'assets/models/npc_ana.glb', height: 1.6 },
+    grump: { url: 'assets/models/npc_grump.glb', height: 1.83, portrait: 'assets/photos/portrait_grump.jpg' }
   },
 
   // Used for any NPC above whose own file is missing. Set to null to use

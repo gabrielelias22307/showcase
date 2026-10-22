@@ -281,6 +281,36 @@ export default {
           sam: { text: "I left the library at 3:00, so I don't know. Look at the check-in chart.", choices: [{ text: 'OK.', next: 'root' }] }
         }
       }
+    },
+    {
+      id: 'grump', name: 'Mr. Grump', role: 'Principal', color: '#5b6b8a', suspect: false,
+      position: [9.6, -5.6], yaw: 0,
+      dialogue: {
+        start: 'root',
+        nodes: {
+          root: {
+            text: "Hmph. A trophy goes missing on MY watch. I've been in this office on the phone with the district since three o'clock. I didn't see a thing.",
+            choices: [
+              { text: 'Could you see the trophy case from here?', next: 'case' },
+              { text: 'Is there anything you need from me?', next: 'need' },
+              { text: 'Why are you so grumpy?', next: 'grumpy' },
+              { text: 'Goodbye.', end: true }
+            ]
+          },
+          case: {
+            text: "From the office? No. There's a solid wall between me and that case. That's why the team built sensors for the shelves.",
+            choices: [{ text: 'OK.', next: 'root' }]
+          },
+          need: {
+            text: "Yes. When you figure this out, I want ONE graphic that shows WHEN the trophy was taken. One. I do not have time to read five.",
+            choices: [{ text: 'Got it.', next: 'root' }]
+          },
+          grumpy: {
+            text: "I'm not grumpy. I'm busy. ...Fine. I'm a little grumpy. That trophy took this school three years to win.",
+            choices: [{ text: 'We will find it.', next: 'root' }]
+          }
+        }
+      }
     }
   ],
 
@@ -545,7 +575,7 @@ export default {
     },
     {
       id: 'R5', level: 7, skill: 'Identify and justify the most effective graphic',
-      prompt: '"The principal wants ONE graphic that best shows WHEN the trophy was taken. Which should I send, and why?"',
+      prompt: '"Mr. Grump, the principal, wants ONE graphic that best shows WHEN the trophy was taken. Which should I send, and why?"',
       use: [],
       options: [
         { text: 'The pie chart, because it shows who wanted the trophy', feedback: 'A pie chart shows parts of a whole. It has no time information.' },

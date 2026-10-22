@@ -412,7 +412,7 @@ export class UI {
   }
 
   openCulprit(message = '') {
-    const suspects = this.m.npcs.filter((n) => n.id !== 'ortiz');
+    const suspects = this.m.npcs.filter((n) => n.id !== 'ortiz' && n.suspect !== false);
     const w = this.show('culprit', `
       <p class="kicker">Final answer</p>
       <h2>${esc(this.m.culpritPrompt)}</h2>
