@@ -19,9 +19,21 @@ export default {
     hidePlaceholder: true
   },
 
+  // Photo textures for the placeholder room. Made from photos of the real
+  // classroom (location data removed). Each one repeats seamlessly:
+  // wall/accent = 2.05 m of painted block, floor = 8 x 30.5 cm tiles.
+  // Delete a line to fall back to a plain colour.
+  textures: {
+    wall: 'assets/textures/tex_block_cream.jpg',
+    accent: 'assets/textures/tex_block_blue.jpg',
+    floor: 'assets/textures/tex_floor_tile.jpg',
+    wood: 'assets/textures/tex_wood_drawers.jpg'
+  },
+
   // Single furniture pieces, matched by object id first, then by type
-  // (see mystery.room.objects). One table.glb is reused for all 16 tables.
-  // Origin should be at the bottom-centre of the object.
+  // (see mystery.room.objects). One table.glb is reused for all 12 tables.
+  // Origin at the bottom-centre; model the front facing Blender's Front
+  // view (-Y). The engine turns each piece to face the way the room needs.
   objects: {
     table: { url: 'assets/models/table.glb' },
     trophyCase: { url: 'assets/models/trophy_case.glb', rotationY: 0 },
@@ -55,5 +67,10 @@ export default {
   // height = centre of the picture above the floor. Missing files are
   // skipped. Example:
   //   { url: 'assets/photos/team_photo.jpg', wall: 'north', x: 6, height: 1.7, width: 1.4 }
-  pictures: []
+  pictures: [
+    // From the real room photos: no people, no names, location data removed.
+    { url: 'assets/photos/pic_rules_board.jpg', wall: 'south', x: 2.5, height: 1.55, width: 0.85 },
+    { url: 'assets/photos/pic_rainbow_art.jpg', wall: 'east', y: 1.1, height: 1.7, width: 0.7 },
+    { url: 'assets/photos/pic_color_swatches.jpg', wall: 'west', y: 6.6, height: 1.85, width: 1.2 }
+  ]
 };

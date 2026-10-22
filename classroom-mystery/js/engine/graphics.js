@@ -46,6 +46,22 @@ export function floorplan(ev, room) {
     b += `<line x1="${X(-room.width / 2)}" y1="${Z(w.from)}" x2="${X(-room.width / 2)}" y2="${Z(w.to)}" stroke="#7fb3e6" stroke-width="7"/>`;
     b += text(X(-room.width / 2) - 12, Z((w.from + w.to) / 2), 'Windows', { size: 12, rotate: -90, fill: MUTED });
   }
+  // inside walls, with gaps for the walk-through openings
+  for (const iw of room.walls || []) {
+    const [x1, z1] = iw.from, [x2, z2] = iw.to;
+    const horiz = Math.abs(z1 - z2) < 1e-6;
+    const lo = horiz ? Math.min(x1, x2) : Math.min(z1, z2), hi = horiz ? Math.max(x1, x2) : Math.max(z1, z2);
+    const gaps = (iw.openings || []).map((o) => [o.at - o.width / 2, o.at + o.width / 2]).sort((p, q) => p[0] - q[0]);
+    let cur = lo;
+    const parts = [];
+    for (const [ga, gb] of gaps) { parts.push([cur, ga]); cur = gb; }
+    parts.push([cur, hi]);
+    for (const [pa, pb] of parts) {
+      if (pb - pa <= 0.01) continue;
+      const [ax, az, bx, bz] = horiz ? [pa, z1, pb, z1] : [x1, pa, x1, pb];
+      b += `<line x1="${X(ax)}" y1="${Z(az)}" x2="${X(bx)}" y2="${Z(bz)}" stroke="${INK}" stroke-width="4" stroke-linecap="square"/>`;
+    }
+  }
   // objects
   for (const o of room.objects) {
     if (!o.plan) continue;
@@ -60,6 +76,8 @@ export function floorplan(ev, room) {
       b += text(lx, ly, o.label, { size: o.type === 'case' ? 14 : 12, weight: o.type === 'case' ? 700 : 400, rotate: vertical ? -90 : 0, fill: o.type === 'case' ? '#7a4a00' : INK });
     }
   }
+  // room names
+  for (const ar of room.areas || []) b += text(X(ar.x), Z(ar.z), ar.label.toUpperCase(), { size: 13, weight: 700, fill: '#9aa3b2' });
   // doors (gaps in walls)
   for (const d of room.doors) {
     let x1, y1, x2, y2, lx, ly;

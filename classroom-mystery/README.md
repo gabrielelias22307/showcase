@@ -86,9 +86,11 @@ file.
 
 ### Option A: one file for the whole classroom (`classroom.glb`)
 
-Use 1 Blender unit = 1 meter. The default room is 24 m × 16 m with its
-centre at the origin. **X** runs west to east (−12 to +12), Blender's **+Y**
-is north (the whiteboard wall), and Blender's **−Y** is south (Door A). Inside the file, use these names:
+Use 1 Blender unit = 1 meter. The default suite is 24 m × 16 m with its
+centre at the origin: a classroom in the south, and a computer lab and an
+office in the north. **X** runs west to east (−12 to +12), Blender's **+Y**
+is north (the computer lab, Door B), and Blender's **−Y** is south (the
+classroom). `tools/classroom_starter.py` builds the whole layout for you. Inside the file, use these names:
 
 | Object name in Blender | What the engine does |
 |---|---|
@@ -108,7 +110,7 @@ the floor plan matches the 3D room.
 
 `table.glb`, `trophy_case.glb`, `robotics_bench.glb` and `desk.glb` replace
 those placeholder pieces wherever the layout puts them. Put each model's
-origin at its bottom centre.
+origin at its bottom centre, with its front facing Blender's Front view (−Y).
 
 ### Photos
 
@@ -129,8 +131,10 @@ with `portrait:` on that character's line. See HANDOVER.md, section 6.
 
 Everything about the story lives in `data/mystery.js`:
 
-- `room`: size, doors, windows and furniture (used for both the 3D room and
-  the floor plan)
+- `room`: size, outside doors, inside `walls` with walk-through openings,
+  room-name `areas`, blue `paint`, pennant `bunting` and furniture (used for
+  both the 3D room and the floor plan). Each object can `face` north, south,
+  east or west.
 - `npcs`: name, role, colour, position and a dialogue tree. A dialogue
   choice can `give` evidence, `set` flags, `requires` or `requiresNot` flags,
   or run `action: 'accuse'`.
@@ -160,6 +164,8 @@ js/engine/state.js    flags, scoring and save (localStorage)
 data/mystery.js       the story
 data/assets.js        list of Blender files
 data/banks/           optional Applied Math and Workplace Documents tasks
+assets/textures/      wall, floor and wood textures made from photos of the real room
+tools/classroom_starter.py  Blender script that builds the room layout
 vendor/three/         three.js r160 (MIT), stored locally
 ```
 

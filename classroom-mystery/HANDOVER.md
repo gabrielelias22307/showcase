@@ -53,7 +53,7 @@ deliver one file at a time.
 
 | File | What it is | Notes |
 |---|---|---|
-| `classroom.glb` | The whole room: walls, floor, ceiling, windows, doors, furniture | **Recommended.** Must include `COL_` boxes (section 4). |
+| `classroom.glb` | The whole suite: walls, floor, ceiling, doors, furniture | **Recommended.** Must include `COL_` boxes (section 4). |
 | `npc_ortiz.glb` | Ms. Ortiz, robotics coach (teacher) | 1.72 m |
 | `npc_jordan.glb` | Jordan, hall pass monitor (student) | 1.68 m |
 | `npc_marcus.glb` | Marcus, lab assistant (student) | 1.78 m |
@@ -64,9 +64,10 @@ deliver one file at a time.
 | `npc_student.glb` | A generic student, used for any character above that doesn't have a file yet | optional |
 
 If you'd rather not build the whole room as one file, you can instead make
-single pieces: `table.glb` (reused for all 16 student tables),
+single pieces: `table.glb` (reused for all 12 student tables),
 `trophy_case.glb`, `robotics_bench.glb` and `desk.glb`. Each piece's origin
-must be at its **bottom centre**. The engine puts them in place. Don't do
+must be at its **bottom centre**, with its front facing Blender's Front
+view (−Y). The engine puts and turns them in place. Don't do
 both: if `classroom.glb` exists, the separate pieces are hidden.
 
 Heights are set in `data/assets.js`. The engine resizes each character to
@@ -103,21 +104,41 @@ Units: **1 Blender unit = 1 meter.** Apply scale on everything
 
 ## 4. The classroom (`classroom.glb`)
 
+The layout comes from photos of the real room: a big classroom, with a
+computer lab and a small office behind a wall with two open doorways.
+**Shortcut:** `tools/classroom_starter.py` builds this whole layout in
+Blender (walls, furniture, `COL_` boxes, `SPAWN_` spots, photo textures).
+Run it, then model over it.
+
 ### Size and directions
 
-The room is **24 m (east–west) × 16 m (north–south)**, with a **3.4 m**
-ceiling. The room's centre on the floor is Blender's origin (0, 0, 0).
+The whole suite is **24 m (east–west) × 16 m (north–south)**, with a
+**3.4 m** ceiling. The suite's centre on the floor is Blender's origin
+(0, 0, 0).
 
 | Direction in the story | In Blender |
 |---|---|
 | East | +X (X = 12 is the east wall) |
 | West | −X (X = −12 is the west wall) |
-| North (whiteboard wall) | +Y (Y = 8 is the north wall) |
-| South (Door A wall) | −Y (Y = −8 is the south wall) |
+| North (computer lab side) | +Y (Y = 8 is the north wall) |
+| South (classroom side) | −Y (Y = −8 is the south wall) |
 | Up | +Z |
 
 Look from Blender's **Top view** (numpad 7): north is at the top of the
 screen and east is on the right, the same as the floor-plan clue.
+
+### Rooms and walls
+
+| Part | Where (Blender X, Y) |
+|---|---|
+| Classroom | Y from −8 to 2, the full width |
+| Computer lab | X from −12 to 7, Y from 2 to 8 |
+| Office | X from 7 to 12, Y from 2 to 8 |
+| Inside wall, classroom ↔ lab and office | Y = 2, 0.15 m thick, two open doorways: X 2.8 to 4.2 (lab) and X 8.3 to 9.3 (office), 2.2 m tall |
+| Inside wall, lab ↔ office | X = 7, from Y 2 to 8, no doorway |
+| Blue painted wall | Classroom's east wall, Y from −8 to 2 |
+
+There are **no windows** (the real room has none).
 
 ### Where things go (Blender X, Y in meters, centre of the object)
 
@@ -127,23 +148,33 @@ moves, see "Moving things" below.
 
 | Object | X | Y | Size (X × Y × height) | Notes |
 |---|---|---|---|---|
-| Door A (Main) | −6 | −8 | 1.6 wide, 2.2 tall | South wall. Label it "Door A". |
-| Door B (East) | 12 | 4 | 1.6 wide, 2.2 tall | East wall. Label it "Door B". |
-| **Trophy case** | 11.55 | 1.4 | 0.8 × 2.2 × 1.9 | Against the east wall, just south of Door B. Glass front faces west (into the room). |
-| Teacher's desk | −1 | 5.8 | 2.2 × 0.9 × 0.78 | |
-| Whiteboard | −1 | 7.9 | 6 wide, 1.2 tall | North wall; bottom edge 1.0 m off the floor |
-| Storage closet | −10.5 | 6.6 | 3 × 2.8, floor to ceiling | Northwest corner; its door faces east |
-| Plant shelf | −11.6 | −0.5 | 0.7 × 4 × 0.9 | West wall, with potted plants |
-| Windows | west wall, Y from −6 to 2 | | about 1.4 tall, centred 1.8 m up | |
-| Hall pass desk | −4 | −6.6 | 1.6 × 0.8 × 0.78 | Just inside Door A |
-| Robotics bench 1 | 7.5 | −3.2 | 3.2 × 1.1 × 0.9 | Robot parts on top |
-| Robotics bench 2 | 7.5 | −6.2 | 3.2 × 1.1 × 0.9 | |
-| Parts cabinet | 11.6 | −5.5 | 0.7 × 2.5 × 2.0 | East wall |
-| Library book cart | 2.6 | −7.1 | 1.2 × 0.6 × 1.0 | Ana's cart |
-| Student tables (16) | X = −7, −4, −1, 2 | Y = 2.6, 0.2, −2.2, −4.6 | 2 × 0.8 × 0.75 each | Two chairs per table, on the south (−Y) side |
+| Door A (Main) | −12 | −6 | 1.2 wide, 2.2 tall | West wall of the classroom. Wood door with a glass side panel. Label it "Door A (Main)". |
+| Door B (Lab) | −9 | 8 | 1.2 wide, 2.2 tall | North wall of the computer lab. Label it "Door B (Lab)". |
+| **Trophy case** | −6.8 | 7.55 | 2.2 × 0.8 × 1.9 | Against the lab's north wall, just east of Door B. Glass front faces south. |
+| Computer desks | 2.6 | 7.55 | 6.8 × 0.8 × 0.75 | Lab's north wall; monitors, towers, navy chairs |
+| Robotics bench 1 | −2.4 | 4.6 | 3.2 × 1.1 × 0.9 | Robot parts on top |
+| Robotics bench 2 | 2.6 | 4.6 | 3.2 × 1.1 × 0.9 | |
+| Parts cabinet | 6.55 | 6.3 | 0.7 × 1.6 × 2.0 | Grey metal, against the office wall, doors face west |
+| Rolling whiteboard | −10.4 | 4.6 | 0.6 × 1.8 × 2.1 | Sticky notes, faces east |
+| Sink counter | −11.65 | 6.6 | 0.7 × 1.4 × 0.9 | Lab's west wall |
+| Office desk | 10.4 | 7.25 | 1.5 × 0.7 × 0.76 | |
+| Filing cabinets (2) | 11.7 | 5.3 and 4.7 | 0.6 × 0.5 × 1.35 each | Black |
+| Teacher's desk | −8.6 | 0.95 | 2.0 × 0.8 × 0.76 | Classroom, north-west |
+| Tall wood cabinet | −11.45 | 1.55 | 1.0 × 0.7 × 2.2 | Classroom's north-west corner |
+| TV on a stand | −5.4 | 1.6 | 1.7 wide, screen centre 1.55 m up | "ROBOTICS" sign above it |
+| Whiteboard (north) | −1.2 | 1.9 | 3.4 wide, 1.2 tall | Inside wall; bottom edge 1.0 m up |
+| Whiteboard (west) | −11.97 | −1.4 | 4.0 wide, 1.2 tall | Classroom's west wall |
+| Drawer cabinet | −11.65 | −4.25 | 0.6 × 1.1 × 0.9 | Beside Door A |
+| Hall pass desk | −9.4 | −6 | 0.8 × 1.6 × 0.76 | Just inside Door A; Jordan sits on its east side, facing the door |
+| Counter with plants | 11.62 | −3.6 | 0.75 × 7.0 × 0.9 | Blue east wall; upper cabinets above; potted plants at the north end (Y −0.5 to −2.6) |
+| Bookshelf | 11.1 | −7.65 | 1.0 × 0.35 × 1.8 | Black, south-east corner |
+| Library book cart | 6.5 | −7.3 | 1.2 × 0.6 × 1.0 | Ana's cart |
+| Student tables (12) | X = −6, −2.5, 1, 4.5 | Y = −0.6, −3.2, −5.8 | 2 × 0.8 × 0.75 each | Grey tops; two navy chairs per table, on the south (−Y) side |
 
 **Keep this wall space clear:** the game hangs the **floor-plan poster** (a
-clue) on the south wall at X = −2.6, centred 1.6 m up and about 1.3 m wide.
+clue) on the south wall at X = −7.5, centred 1.6 m up and about 1.3 m wide.
+The game also hangs three photo pictures (section 6): south wall X = 2.5,
+east wall Y = 1.1, and the lab's west wall Y = 6.6.
 
 ### Story details the art must show
 
@@ -153,11 +184,16 @@ Students are told these things, so the model has to agree:
   sensor pad where the trophy stood. **Middle shelf:** ribbons and medals.
   **Bottom shelf:** a couple of small trophies. **Don't model the missing
   championship trophy anywhere in the room.**
-- **Doors A and B are closed.** Students can't leave the room.
+- **Doors A and B are closed.** Students can't leave the suite. The two
+  inside doorways stay open (no doors in them).
 - Jordan's hall pass desk faces Door A. You can't see the trophy case from
-  it (the story relies on that).
-- The plant shelf (Priya) is on the far west side, away from the case.
-- It's 3:55 PM after school: daylight through the west windows is fine.
+  it: the case is in the lab, behind the inside wall (the story relies on
+  that).
+- Priya's plants are on the counter along the blue wall, in the classroom,
+  far from the case.
+- **No whiteboard writing with names.** The real whiteboards had students'
+  names on them, so keep boards blank or use made-up writing.
+- It's 3:55 PM after school.
 
 ### Required helper objects
 
@@ -167,7 +203,8 @@ walk and stand.
 1. **Collision boxes: name each one `COL_` + anything** (for example
    `COL_wall_north`, `COL_trophy_case`, `COL_table_03`). Use plain cubes.
    The game makes them invisible and stops the player at them. Add one for
-   each wall (including both closed doors) and each large piece of
+   each outside wall (including both closed doors), each piece of the
+   inside walls (**leave the two doorways open**), and each large piece of
    furniture. Only their footprint matters, so height can be rough.
    Rotated boxes are treated as their straight bounding box, so keep them
    aligned to the X and Y axes. If there are **no** `COL_` objects in the
@@ -179,14 +216,14 @@ walk and stand.
 
 | Empty name | Who | Default X, Y |
 |---|---|---|
-| `SPAWN_player` | The student playing | −6, −6.2 (just inside Door A) |
-| `SPAWN_ortiz` | Ms. Ortiz | −1, 4.9 (in front of her desk) |
-| `SPAWN_jordan` | Jordan | −4, −5.8 (at the hall pass desk) |
-| `SPAWN_marcus` | Marcus | 6.2, −2.3 (by robotics bench 1) |
-| `SPAWN_priya` | Priya | −10.5, −0.5 (by the plant shelf) |
-| `SPAWN_riley` | Riley | −1, −1.2 (among the student tables) |
-| `SPAWN_sam` | Sam | 8.9, −4.7 (between the robotics benches) |
-| `SPAWN_ana` | Ana | 3.8, −6.6 (by the book cart) |
+| `SPAWN_player` | The student playing | −11.0, −6.0 (just inside Door A) |
+| `SPAWN_ortiz` | Ms. Ortiz | −8.6, −0.2 (in front of her desk) |
+| `SPAWN_jordan` | Jordan | −8.6, −6.0 (at the hall pass desk) |
+| `SPAWN_marcus` | Marcus | −2.4, 3.5 (lab, by robotics bench 1) |
+| `SPAWN_priya` | Priya | 10.3, −1.4 (by the plants) |
+| `SPAWN_riley` | Riley | −0.75, −2.0 (among the student tables) |
+| `SPAWN_sam` | Sam | 5.6, 4.6 (lab, east of robotics bench 2) |
+| `SPAWN_ana` | Ana | 6.5, −6.4 (by the book cart) |
 
 Leave at least 0.8 m of clear floor around each spot so students can walk
 up to the person.
@@ -243,8 +280,28 @@ pictures: [
   (−8 to 8).
 - `height`: how high the picture's centre is (1.6 m is eye level).
   `width` is in meters; the picture's height comes from the photo's shape.
-- Don't cover the doors, the windows or the floor-plan poster spot
-  (south wall, x = −2.6).
+- Don't cover the doors, the inside doorways or the floor-plan poster spot
+  (south wall, x = −7.5).
+
+### Photos and textures already made from the real room
+
+Photos of the real classroom were turned into ready-to-use files, with
+no people or names in them and location data removed:
+
+| File | What it is |
+|---|---|
+| `assets/textures/tex_block_cream.jpg` | Cream painted block wall (repeats every 2.05 m) |
+| `assets/textures/tex_block_blue.jpg` | Blue painted block wall (repeats every 2.05 m) |
+| `assets/textures/tex_floor_tile.jpg` | Tile floor with red accent tiles (repeats every 2.44 m) |
+| `assets/textures/tex_wood_drawers.jpg` | Wood cabinet drawer fronts |
+| `assets/photos/pic_rules_board.jpg` | "Rules" bulletin board (south wall) |
+| `assets/photos/pic_rainbow_art.jpg` | Rainbow art (blue east wall) |
+| `assets/photos/pic_color_swatches.jpg` | Colour swatch poster (lab's west wall) |
+
+The game already uses them. `tools/classroom_starter.py` uses the textures
+too when you set its `TEXTURE_DIR`. The two art prints look like printed
+posters; if they came from a publisher, check you're allowed to show them
+before you share the game publicly.
 
 ### Photo textures inside Blender
 
@@ -283,7 +340,7 @@ Blender (Cycles > Bake) before export.
 | Each wall photo | under ~300 KB |
 | Everything together | under ~50 MB |
 
-Tables and chairs repeat 16 times. If you use `table.glb`, keep it simple
+Tables and chairs repeat 12 times. If you use `table.glb`, keep it simple
 (under ~2,000 triangles).
 
 ---
@@ -307,7 +364,7 @@ doesn't work for you.
 - [ ] File names match `data/assets.js` exactly (lower case, `.glb`)
 - [ ] Draco compression was off; scale applied; 1 unit = 1 m
 - [ ] `classroom.glb` has `COL_` boxes for every wall and big piece of furniture
-- [ ] The player can't walk through walls or doors, and can reach every character
+- [ ] The player can't walk through walls or Doors A and B, can walk through the two inside doorways, and can reach every character
 - [ ] The trophy case's top shelf is empty with a sensor pad; ribbons and medals are on the middle shelf
 - [ ] Doors A and B are labelled and closed; the floor-plan poster spot is clear
 - [ ] Characters face forward, stand on the floor, and are the right height in the game

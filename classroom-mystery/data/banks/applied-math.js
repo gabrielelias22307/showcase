@@ -105,8 +105,8 @@ export default {
     AM6: {
       level: 5, skill: 'Find the area of a rectangle, then the cost',
       from: 'priya', title: 'Waterproof mat',
-      intro: 'The plant water drips on the shelf. I want to cover it with a mat.',
-      prompt: 'The top of the plant shelf is 0.7 meters wide and 4 meters long. Waterproof mat costs $5 per square meter. How much will enough mat to cover the top cost?',
+      intro: 'Water from the plants drips on the counter. I want to cover that part with a mat.',
+      prompt: 'The part of the counter where the plants sit is 0.7 meters wide and 4 meters long. Waterproof mat costs $5 per square meter. How much will enough mat to cover the top cost?',
       options: [
         { text: '$47.00', feedback: 'You used the perimeter (the distance around). Covering a surface needs the area: length × width.' },
         { text: '$2.80', feedback: '2.8 is the area in square meters. Now multiply by $5 per square meter.' },

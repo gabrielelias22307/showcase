@@ -15,7 +15,7 @@ export default {
   setting: 'Room 210, 3:55 PM, after school',
 
   intro: [
-    'Room 210 is the biggest classroom in the building. The robotics club meets here after school.',
+    'Room 210 is the biggest classroom in the building. It has its own computer lab and a small office. The robotics club meets here after school.',
     'At 3:50 PM, Ms. Ortiz noticed that the state championship trophy was gone from the trophy case.',
     'You just got here. Everyone who was in the room is still here. Talk to them, collect their charts, logs and maps, and read each graphic carefully.',
     'When you have the facts, tell Ms. Ortiz what happened.'
@@ -23,42 +23,84 @@ export default {
 
   controls: 'Move: W A S D or arrow keys. Look: drag with the mouse. Talk or examine: E (or click the button). Notebook: N.',
 
-  player: { spawn: [-6, 6.2], yaw: 0 },
+  // Spawn just inside Door A, looking east at the hall pass desk.
+  player: { spawn: [-11.0, 6.0], yaw: -Math.PI / 2 },
 
+  // Laid out from photos of the real room: a classroom (south), with a
+  // computer lab and a small office behind a wall with two openings.
   room: {
     width: 24,
     depth: 16,
     height: 3.4,
+    // Outside doors. at = x on the north/south walls, z on the east/west walls.
     doors: [
-      { id: 'doorA', label: 'Door A (Main)', wall: 'south', at: -6, width: 1.6 },
-      { id: 'doorB', label: 'Door B (East)', wall: 'east', at: -4, width: 1.6 },
-      { id: 'closetDoor', label: 'Closet', wall: 'inner', x: -9, z: -6.6, w: 0.15, d: 1.2 }
+      { id: 'doorA', label: 'Door A (Main)', wall: 'west', at: 6, width: 1.2 },
+      { id: 'doorB', label: 'Door B (Lab)', wall: 'north', at: -9, width: 1.2 }
     ],
-    windows: { wall: 'west', from: -2, to: 6 },
-    // type: desk | table | case | bench | shelf | board | closet | cabinet | plant
+    // Inside walls. Openings are doorways you can walk through.
+    walls: [
+      { id: 'labWall', from: [-12, -2], to: [12, -2], openings: [{ at: 3.5, width: 1.4 }, { at: 8.8, width: 1.0 }] },
+      { id: 'officeWall', from: [7, -8], to: [7, -2], openings: [] }
+    ],
+    // Room names on the floor plan
+    areas: [
+      { label: 'Classroom', x: 8.3, z: 5.2 },
+      { label: 'Computer lab', x: -4.6, z: -6.3 },
+      { label: 'Office', x: 9.3, z: -3.4 }
+    ],
+    // The classroom's east wall is painted blue, like the real room.
+    paint: [{ wall: 'east', from: -2, to: 8 }],
+    // Paper pennant banners: { from, to, side } (side = which way the room is)
+    bunting: [
+      { from: [-12, 8], to: [12, 8], side: -1 },
+      { from: [-12, -1.925], to: [12, -1.925], side: 1 },
+      { from: [-12, -2], to: [-12, 8], side: 1 },
+      { from: [12, -2], to: [12, 8], side: -1 },
+      { from: [-12, -8], to: [7, -8], side: 1 },
+      { from: [-12, -2.075], to: [6.925, -2.075], side: -1 },
+      { from: [-12, -8], to: [-12, -2], side: 1 },
+      { from: [6.925, -8], to: [6.925, -2.075], side: -1 }
+    ],
+    // type: table | desk | board | counter | tallcab | tv | computers | filing |
+    //       bookshelf | easel | sink | sign | case | bench | cabinet | cart
+    // face: which way the front of the object points (default south)
     objects: [
-      { id: 'whiteboard', label: 'Whiteboard', type: 'board', x: -1, z: -7.9, w: 6, d: 0.1, h: 1.2, y: 1.0, plan: true },
-      { id: 'teacherDesk', label: "Teacher's desk", type: 'desk', x: -1, z: -5.8, w: 2.2, d: 0.9, h: 0.78, plan: true, collide: true },
-      { id: 'closet', label: 'Storage closet', type: 'closet', x: -10.5, z: -6.6, w: 3, d: 2.8, h: 3.4, plan: true, collide: true },
-      { id: 'plantShelf', label: 'Plant shelf', type: 'shelf', x: -11.6, z: 0.5, w: 0.7, d: 4, h: 0.9, plan: true, collide: true },
-      { id: 'hallPassDesk', label: 'Hall pass desk', type: 'desk', x: -4, z: 6.6, w: 1.6, d: 0.8, h: 0.78, plan: true, collide: true },
-      { id: 'trophyCase', label: 'Trophy case', type: 'case', x: 11.55, z: -1.4, w: 0.8, d: 2.2, h: 1.9, plan: true, collide: true },
-      { id: 'labBench1', label: 'Robotics bench', type: 'bench', x: 7.5, z: 3.2, w: 3.2, d: 1.1, h: 0.9, plan: true, collide: true },
-      { id: 'labBench2', label: 'Robotics bench', type: 'bench', x: 7.5, z: 6.2, w: 3.2, d: 1.1, h: 0.9, plan: true, collide: true },
-      { id: 'cabinet', label: 'Parts cabinet', type: 'cabinet', x: 11.6, z: 5.5, w: 0.7, d: 2.5, h: 2, plan: true, collide: true },
-      { id: 'bookCart', label: 'Library book cart', type: 'cart', x: 2.6, z: 7.1, w: 1.2, d: 0.6, h: 1, plan: false, collide: true },
-      // Student tables: 4 columns x 4 rows
-      ...[-7, -4, -1, 2].flatMap((x, ci) => [-2.6, -0.2, 2.2, 4.6].map((z, ri) => ({
+      // ----- Classroom -----
+      { id: 'tallCabinet', label: '', type: 'tallcab', x: -11.45, z: -1.55, w: 1.0, d: 0.7, h: 2.2, plan: false, collide: true },
+      { id: 'teacherDesk', label: "Teacher's desk", type: 'desk', x: -8.6, z: -0.95, w: 2.0, d: 0.8, h: 0.76, plan: true, collide: true },
+      { id: 'tv', label: 'TV', type: 'tv', x: -5.4, z: -1.6, w: 1.7, d: 0.5, h: 1.9, plan: true, collide: true },
+      { id: 'sign', label: '', type: 'sign', text: 'ROBOTICS', x: -5.4, z: -1.9, w: 2.4, d: 0.05, h: 0.35, y: 2.65, plan: false },
+      { id: 'whiteboard', label: 'Whiteboard', type: 'board', x: -1.2, z: -1.9, w: 3.4, d: 0.1, h: 1.2, y: 1.0, plan: true },
+      { id: 'westBoard', label: 'Whiteboard', type: 'board', face: 'east', x: -11.94, z: 1.4, w: 0.1, d: 4.0, h: 1.2, y: 1.0, plan: true },
+      { id: 'drawers', label: '', type: 'counter', face: 'east', x: -11.65, z: 4.25, w: 0.6, d: 1.1, h: 0.9, plan: false, collide: true },
+      { id: 'hallPassDesk', label: 'Hall pass desk', type: 'desk', face: 'west', x: -9.4, z: 6, w: 0.8, d: 1.6, h: 0.76, plan: true, collide: true },
+      { id: 'plantCounter', label: 'Counter with plants', type: 'counter', face: 'west', uppers: true, plants: [-3.1, -2.4, -1.7, -1.0], x: 11.62, z: 3.6, w: 0.75, d: 7.0, h: 0.9, plan: true, collide: true },
+      { id: 'bookshelf', label: '', type: 'bookshelf', face: 'north', x: 11.1, z: 7.65, w: 1.0, d: 0.35, h: 1.8, plan: false, collide: true },
+      { id: 'bookCart', label: 'Library book cart', type: 'cart', x: 6.5, z: 7.3, w: 1.2, d: 0.6, h: 1, plan: false, collide: true },
+      // Student tables: 4 columns x 3 rows, chairs on the south side
+      ...[-6, -2.5, 1, 4.5].flatMap((x, ci) => [0.6, 3.2, 5.8].map((z, ri) => ({
         id: `table${ci}${ri}`, label: ri === 0 && ci === 0 ? 'Student tables' : '', type: 'table',
         x, z, w: 2, d: 0.8, h: 0.75, plan: true, collide: true
-      })))
+      }))),
+      // ----- Computer lab -----
+      { id: 'trophyCase', label: 'Trophy case', type: 'case', x: -6.8, z: -7.55, w: 2.2, d: 0.8, h: 1.9, plan: true, collide: true },
+      { id: 'computers', label: 'Computers', type: 'computers', x: 2.6, z: -7.55, w: 6.8, d: 0.8, h: 0.75, plan: true, collide: true },
+      { id: 'labBench1', label: 'Robotics bench', type: 'bench', x: -2.4, z: -4.6, w: 3.2, d: 1.1, h: 0.9, plan: true, collide: true },
+      { id: 'labBench2', label: 'Robotics bench', type: 'bench', x: 2.6, z: -4.6, w: 3.2, d: 1.1, h: 0.9, plan: true, collide: true },
+      { id: 'cabinet', label: 'Parts cabinet', type: 'cabinet', face: 'west', x: 6.55, z: -6.3, w: 0.7, d: 1.6, h: 2, plan: true, collide: true },
+      { id: 'easel', label: '', type: 'easel', face: 'east', x: -10.4, z: -4.6, w: 0.6, d: 1.8, h: 2.1, plan: false, collide: true },
+      { id: 'sink', label: '', type: 'sink', face: 'east', x: -11.65, z: -6.6, w: 0.7, d: 1.4, h: 0.9, plan: false, collide: true },
+      // ----- Office -----
+      { id: 'officeDesk', label: 'Desk', type: 'desk', x: 10.4, z: -7.25, w: 1.5, d: 0.7, h: 0.76, plan: true, collide: true },
+      { id: 'filing1', label: '', type: 'filing', face: 'west', x: 11.7, z: -5.3, w: 0.6, d: 0.5, h: 1.35, plan: false, collide: true },
+      { id: 'filing2', label: '', type: 'filing', face: 'west', x: 11.7, z: -4.7, w: 0.6, d: 0.5, h: 1.35, plan: false, collide: true }
     ]
   },
 
   npcs: [
     {
       id: 'ortiz', name: 'Ms. Ortiz', role: 'Robotics coach (teacher)', color: '#3d6fb4',
-      position: [-1, -4.9], yaw: 0,
+      position: [-8.6, 0.2], yaw: 0,
       dialogue: {
         start: 'root',
         nodes: {
@@ -92,7 +134,7 @@ export default {
     },
     {
       id: 'jordan', name: 'Jordan', role: 'Hall pass monitor', color: '#c46a2b',
-      position: [-4, 5.8], yaw: 0,
+      position: [-8.6, 6], yaw: -Math.PI / 2,
       dialogue: {
         start: 'root',
         nodes: {
@@ -106,7 +148,7 @@ export default {
           },
           log: { text: 'Sure. Here it is. Read the times carefully.', choices: [{ text: 'Thanks.', next: 'root', give: 'E2' }] },
           case: {
-            text: "No. My desk faces Door A. The trophy case is on the other side of the room. I can't see it from here.",
+            text: "No. My desk faces Door A. The trophy case is in the computer lab, behind the wall. I can't see it from here.",
             choices: [{ text: 'OK.', next: 'root' }]
           }
         }
@@ -114,7 +156,7 @@ export default {
     },
     {
       id: 'marcus', name: 'Marcus', role: 'Lab assistant', color: '#2f8a5b',
-      position: [6.2, 2.3], yaw: Math.PI * 0.85,
+      position: [-2.4, -3.5], yaw: 0,
       dialogue: {
         start: 'root',
         nodes: {
@@ -141,12 +183,12 @@ export default {
     },
     {
       id: 'priya', name: 'Priya', role: 'Programmer, robotics club', color: '#8a3fa0',
-      position: [-10.5, 0.5], yaw: Math.PI / 2,
+      position: [10.3, 1.4], yaw: Math.PI / 2,
       dialogue: {
         start: 'root',
         nodes: {
           root: {
-            text: "I was watering the plants. I saw the trophy in the case at about 3:25. It was there. I'm sure.",
+            text: "I was watering the plants on the counter. I saw the trophy in the case at about 3:25, when I went into the lab to print. It was there. I'm sure.",
             choices: [
               { text: 'Does the trophy case have any sensors?', next: 'sensor', requiresNot: ['has:E5'] },
               { text: 'Did you see anyone take it?', next: 'see' },
@@ -158,7 +200,7 @@ export default {
             choices: [{ text: 'Great, thanks.', next: 'root', give: 'E5' }]
           },
           see: {
-            text: "No. After 3:25 I came back to the plants. The shelf is on the west side. The case is on the east side, far away.",
+            text: "No. After 3:25 I came back to the plants. They are on the blue wall, here in the classroom. The trophy case is in the computer lab, on the other side of the wall.",
             choices: [{ text: 'OK.', next: 'root' }]
           }
         }
@@ -166,7 +208,7 @@ export default {
     },
     {
       id: 'riley', name: 'Riley', role: 'Robotics club member', color: '#b23a48',
-      position: [-1, 1.2], yaw: Math.PI,
+      position: [-0.75, 2], yaw: Math.PI,
       dialogue: {
         start: 'root',
         nodes: {
@@ -191,7 +233,7 @@ export default {
     },
     {
       id: 'sam', name: 'Sam', role: 'Team captain', color: '#d19a1f',
-      position: [8.9, 4.7], yaw: -Math.PI * 0.4,
+      position: [5.6, -4.6], yaw: -Math.PI / 2,
       dialogue: {
         start: 'root',
         nodes: {
@@ -220,7 +262,7 @@ export default {
     },
     {
       id: 'ana', name: 'Ana', role: 'Library aide (visiting)', color: '#2b8f9a',
-      position: [3.8, 6.6], yaw: Math.PI,
+      position: [6.5, 6.4], yaw: Math.PI,
       dialogue: {
         start: 'root',
         nodes: {
@@ -245,12 +287,12 @@ export default {
   props: [
     {
       id: 'floorPlanPoster', name: 'Fire exit floor plan', prompt: 'Read the floor plan',
-      position: [-2.6, 7.9], wall: 'south', poster: 'E1',
+      position: [-7.5, 7.9], wall: 'south', poster: 'E1',
       examine: { text: 'A fire exit floor plan of Room 210 is posted on the wall.', give: 'E1' }
     },
     {
       id: 'trophyCaseProp', name: 'Trophy case', prompt: 'Examine the trophy case',
-      position: [11.0, -1.4],
+      position: [-6.8, -6.8],
       examine: {
         text: 'The glass door is closed but NOT locked. The top shelf (Shelf 1) is empty. There is a small sensor pad under it. The middle shelf (Shelf 2) has ribbons and medals.',
         set: ['sawCase']
@@ -266,18 +308,18 @@ export default {
       type: 'floorplan',
       level: 3,
       skill: 'Locate information in a simple graphic',
-      alt: 'Floor plan of Room 210. Door A is on the south wall, near the hall pass desk. Door B is on the east wall, right next to the trophy case. The closet is in the northwest corner. The plant shelf is on the west wall.',
+      alt: 'Floor plan of Room 210. The classroom is the south part. Door A (Main) is on its west wall, next to the hall pass desk. A wall with two openings leads north to the computer lab and a small office. The trophy case is in the computer lab, on the north wall, right next to Door B (Lab). The counter with plants is on the east wall of the classroom.',
       data: { useRoom: true, highlight: [] },
       question: {
         prompt: 'Look at the floor plan. Which door is closest to the trophy case?',
         options: [
-          { text: 'Door A (Main)', feedback: 'Door A is on the south wall, by the hall pass desk. Find the trophy case first, then look for the nearest door.' },
-          { text: 'Door B (East)', correct: true, feedback: 'Correct. The trophy case is on the east wall, right next to Door B.' },
-          { text: 'The closet door', feedback: 'The closet is in the northwest corner, far from the trophy case.' },
-          { text: 'There is no door near the case', feedback: 'Look again at the east wall.' }
+          { text: 'Door A (Main)', feedback: 'Door A is on the west wall of the classroom, by the hall pass desk. Find the trophy case first, then look for the nearest door.' },
+          { text: 'Door B (Lab)', correct: true, feedback: 'Correct. The trophy case is in the computer lab, right next to Door B.' },
+          { text: 'The office doorway', feedback: 'The office is on the far east side of the plan, far from the trophy case.' },
+          { text: 'There is no door near the case', feedback: 'Look again at the north wall of the computer lab.' }
         ]
       },
-      fact: 'The trophy case is right next to Door B (the east door).'
+      fact: 'The trophy case is in the computer lab, right next to Door B (the lab door).'
     },
 
     E2: {
@@ -353,7 +395,7 @@ export default {
         yLabel: 'Badge swipes',
         series: [
           { name: 'Door A (Main)', values: [2, 0, 1, 0, 0, 1] },
-          { name: 'Door B (East)', values: [0, 0, 0, 1, 0, 0] }
+          { name: 'Door B (Lab)', values: [0, 0, 0, 1, 0, 0] }
         ]
       },
       question: {
@@ -476,7 +518,7 @@ export default {
         { text: 'The case was locked, so they used the key', feedback: 'Check the key checklist. Was the case locked after 3:20?' },
         { text: 'The case was unlocked after 3:20, and someone came in through Door B, right next to it, at 3:30-3:39', correct: true, feedback: 'Correct. You combined three graphics: the checklist, the floor plan and the badge chart.' },
         { text: 'They came in through Door A at 3:30', feedback: 'Door A had zero swipes in the 3:30 block.' },
-        { text: 'They hid in the storage closet', feedback: 'No graphic gives evidence for the closet.' }
+        { text: 'They hid in the office', feedback: 'No graphic gives evidence for the office.' }
       ]
     },
     {
@@ -519,7 +561,7 @@ export default {
   wrongCulprit: {
     riley: 'Riley had a motive, but Riley signed back in at 3:20. The trophy left at 3:36.',
     marcus: 'Marcus left the case unlocked, but the trophy left at 3:36, while Marcus was in the room. He signed out at 3:40.',
-    priya: 'Priya was at the plant shelf on the west side. The only entry by the case was through Door B, from outside.',
+    priya: 'Priya was at the plant counter in the classroom. The only entry near the case was through Door B, from outside.',
     jordan: 'Jordan was at the hall pass desk the whole time and never signed out.',
     ana: 'Ana left the library at 3:00 to deliver books. No graphic places her near the case.'
   },
