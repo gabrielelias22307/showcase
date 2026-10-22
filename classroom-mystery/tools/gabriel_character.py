@@ -2,7 +2,7 @@
 Classroom Mystery - character: Gabriel (stylized, game-ready)
 =============================================================
 Built from four reference photos (front, 3/4, back, side):
-black baseball cap, short dark hair and stubble, navy long-sleeve tee,
+black baseball cap, shaved head under the cap, stubble, navy long-sleeve tee,
 black joggers with cuffs, grey-brown hiking shoes.
 
 - Faces Blender's Front view (looks toward -Y), feet on the floor (Z = 0).
@@ -206,11 +206,29 @@ for side in (-1, 1):
             (side * 0.225, -0.005, 1.03, 0.036, 0.036),
             (side * 0.232, -0.01, 0.90, 0.032, 0.032),      # sleeve end
             (side * 0.233, -0.01, 0.885, 0.03, 0.03)], I["shirt"], seg=16, cap1=False)
-    m.loft([(side * 0.233, -0.01, 0.80, 0.022, 0.034),      # hand (relaxed, palm in)
-            (side * 0.234, -0.012, 0.84, 0.026, 0.044),
-            (side * 0.233, -0.01, 0.875, 0.026, 0.033),
-            (side * 0.233, -0.01, 0.895, 0.024, 0.026)], I["skin"], seg=14)
-    m.ellipsoid((side * 0.233, -0.012, 0.795), (0.021, 0.034, 0.03), I["skin"], seg=(12, 8))
+    # hand: relaxed at the side, palm facing the leg
+    hx = side * 0.233
+    m.loft([(hx, -0.008, 0.803, 0.015, 0.041),               # palm (bottom = knuckles)
+            (hx, -0.009, 0.83, 0.016, 0.043),
+            (hx, -0.009, 0.86, 0.016, 0.038),
+            (hx, -0.008, 0.882, 0.017, 0.028),               # wrist
+            (hx, -0.008, 0.895, 0.019, 0.026)], I["skin"], seg=14)
+    for k, length in enumerate((0.074, 0.081, 0.077, 0.061)):   # index (front) to pinky
+        fy = -0.035 + k * 0.0185
+        top = 0.808
+        bend = (0.0, -0.004, -0.011, -0.02)
+        rings = []
+        for t, b in zip((0, 0.33, 0.66, 1.0), bend):
+            rings.append((hx + side * b, fy, top - length * t, 0.0085 - 0.0012 * t, 0.0085 - 0.0012 * t))
+        rings.reverse()
+        m.loft(rings, I["skin"], seg=10)
+        m.ellipsoid((rings[0][0], fy, top - length), (0.0074, 0.0074, 0.008), I["skin"], seg=(10, 6))
+    thumb = [(hx - side * 0.012, -0.03, 0.872, 0.011, 0.011),     # thumb, forward and down
+             (hx - side * 0.017, -0.043, 0.85, 0.0098, 0.0098),
+             (hx - side * 0.019, -0.051, 0.826, 0.0088, 0.0088)]
+    thumb.reverse()
+    m.loft(thumb, I["skin"], seg=10)
+    m.ellipsoid((hx - side * 0.019, -0.051, 0.824), (0.0082, 0.0082, 0.009), I["skin"], seg=(10, 6))
     build(f"Arm_{'L' if side > 0 else 'R'}", m, MATS, COL)
 
 # ---------- neck + head ----------
@@ -226,10 +244,6 @@ m = Mesh()   # short stubble beard on the lower face (jaw, cheeks, chin, upper l
 m.ellipsoid((0, 0.0, 1.655), (0.0838, 0.0995, 0.1165), I["stubble"], lat=(-85, -22), lon=(200, 340), seg=(20, 8))
 m.ellipsoid((0, 0.0, 1.611), (0.026, 0.1, 0.007), I["stubble"], lat=(-90, 90), lon=(245, 295), seg=(8, 4))
 build("Stubble", m, MATS, COL)
-
-m = Mesh()   # short dark hair at the back and sides, under the cap
-m.ellipsoid((0, 0.0, 1.655), (0.0842, 0.0995, 0.1168), I["hair"], lat=(-22, 30), lon=(30, 150), seg=(16, 6))
-build("Hair", m, MATS, COL)
 
 m = Mesh()   # eyes and eyebrows
 for side in (-1, 1):
