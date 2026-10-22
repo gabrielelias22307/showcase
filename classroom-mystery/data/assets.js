@@ -29,6 +29,8 @@ export default {
     desk: { url: 'assets/models/desk.glb' }
   },
 
+  // Optional on each character: portrait: 'assets/photos/portrait_sam.jpg'
+  // (a square photo shown in the dialogue box and notebook).
   // Characters. Model them facing the camera in Blender's Front view
   // (the character faces -Y); that exports as facing forward here.
   // Animation clips named "Idle" and "Talk" play automatically.
@@ -45,5 +47,13 @@ export default {
 
   // Used for any NPC above whose own file is missing. Set to null to use
   // the coloured placeholder figures instead.
-  npcFallback: { url: 'assets/models/npc_student.glb', height: 1.7 }
+  npcFallback: { url: 'assets/models/npc_student.glb', height: 1.7 },
+
+  // Real photos hung on the walls as framed pictures. wall: north | south |
+  // east | west. Position in Blender floor coordinates (meters from the
+  // room centre): x for north/south walls, y for east/west walls.
+  // height = centre of the picture above the floor. Missing files are
+  // skipped. Example:
+  //   { url: 'assets/photos/team_photo.jpg', wall: 'north', x: 6, height: 1.7, width: 1.4 }
+  pictures: []
 };

@@ -39,6 +39,7 @@ for (const p of mystery.props.filter((p) => p.poster)) {
   const c = await svgToCanvas(renderGraphic(mystery.evidence[p.poster], mystery.room), 1024);
   if (c) world.addPoster(c, p.position[0], p.position[1], p.wall, 1.3);
 }
+await Promise.all((assets.pictures || []).map((p) => world.addPicture(p)));
 
 // NPCs
 const npcs = {};
@@ -67,6 +68,7 @@ const prompt = document.getElementById('prompt');
 const objective = document.getElementById('objective');
 const ui = new UI({
   mystery, state, npcs,
+  portraits: Object.fromEntries(Object.entries(assets.npcs || {}).filter(([, v]) => v?.portrait).map(([k, v]) => [k, v.portrait])),
   onAction(action) {
     if (action === 'accuse') ui.openReview(0);
     refreshHud();

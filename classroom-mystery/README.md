@@ -35,6 +35,9 @@ and tablets there is a joystick on the left; drag on the right to look.
 
 ## Adding your Blender files
 
+**Artists: start with [HANDOVER.md](HANDOVER.md).** It has the room layout in
+Blender coordinates, the file checklist, photo rules and size budgets.
+
 Export each file with **File > Export > glTF 2.0** and these settings:
 
 - Format: **glTF Binary (.glb)**
@@ -74,6 +77,12 @@ the floor plan matches the 3D room.
 `table.glb`, `trophy_case.glb`, `robotics_bench.glb` and `desk.glb` replace
 those placeholder pieces wherever the layout puts them. Put each model's
 origin at its bottom centre.
+
+### Photos
+
+Real photos go in `assets/photos/`. Wall pictures are listed under
+`pictures` in `data/assets.js`. A character's dialogue portrait is set
+with `portrait:` on that character's line. See HANDOVER.md, section 6.
 
 ### Characters (`npc_<id>.glb`)
 

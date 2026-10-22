@@ -299,17 +299,31 @@ export class World {
   }
 
   // Wall poster with an evidence graphic (canvas) on it.
-  addPoster(canvas, x, z, wall, width = 1.2) {
+  // Real photos (data/assets.js > pictures). x / y are Blender floor
+  // coordinates (Blender Y = -world z); height is the centre above the floor.
+  // A missing file is skipped.
+  async addPicture(p) {
+    const img = new Image();
+    const ok = await new Promise((res) => { img.onload = () => res(true); img.onerror = () => res(false); img.src = p.url; });
+    if (!ok) { console.info(`[assets] picture ${p.url} not loaded, skipped.`); return; }
+    const c = document.createElement('canvas');
+    const max = 1024, s = Math.min(1, max / Math.max(img.width, img.height));
+    c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    this.addPoster(c, p.x ?? 0, -(p.y ?? 0), p.wall, p.width || 1.2, p.height || 1.6);
+  }
+
+  addPoster(canvas, x, z, wall, width = 1.2, y = 1.6) {
     const tex = new THREE.CanvasTexture(canvas);
     tex.colorSpace = THREE.SRGBColorSpace;
     const h = width * (canvas.height / canvas.width);
     const m = new THREE.Mesh(new THREE.PlaneGeometry(width, h), new THREE.MeshBasicMaterial({ map: tex }));
     const off = 0.02;
     const W = this.room.width / 2, D = this.room.depth / 2;
-    if (wall === 'south') { m.position.set(x, 1.6, D - off); m.rotation.y = Math.PI; }
-    else if (wall === 'north') { m.position.set(x, 1.6, -D + off); }
-    else if (wall === 'east') { m.position.set(W - off, 1.6, z); m.rotation.y = -Math.PI / 2; }
-    else { m.position.set(-W + off, 1.6, z); m.rotation.y = Math.PI / 2; }
+    if (wall === 'south') { m.position.set(x, y, D - off); m.rotation.y = Math.PI; }
+    else if (wall === 'north') { m.position.set(x, y, -D + off); }
+    else if (wall === 'east') { m.position.set(W - off, y, z); m.rotation.y = -Math.PI / 2; }
+    else { m.position.set(-W + off, y, z); m.rotation.y = Math.PI / 2; }
     const frame = box(width + 0.08, h + 0.08, 0.02, M.trim);
     frame.position.copy(m.position); frame.rotation.copy(m.rotation);
     frame.translateZ(-0.012);

@@ -109,6 +109,8 @@ kbd {
 .modal.dialogue { place-items: end center; background: linear-gradient(transparent 40%, rgba(10, 12, 18, 0.5)); }
 .modal.dialogue .panel { width: min(780px, 100%); }
 .speaker { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; padding-right: 36px; }
+.portrait { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; flex: none; vertical-align: middle; margin-right: 6px; border: 2px solid var(--line); }
+.portrait.big { width: 64px; height: 64px; margin-right: 0; }
 .dot { display: inline-block; width: 16px; height: 16px; border-radius: 50%; flex: none; vertical-align: middle; }
 .line { font-size: 1.12rem; }
 .line.big { font-size: 1.3rem; }

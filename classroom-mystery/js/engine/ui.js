@@ -7,8 +7,9 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '
 const $ = (sel, root = document) => root.querySelector(sel);
 
 export class UI {
-  constructor({ mystery, state, npcs, onAction }) {
+  constructor({ mystery, state, npcs, portraits = {}, onAction }) {
     this.m = mystery;
+    this.portraits = portraits;     // npcId -> photo URL (optional)
     this.state = state;
     this.npcs = npcs;               // id -> NPC
     this.onAction = onAction;       // (action, payload) => void
@@ -96,6 +97,15 @@ export class UI {
     });
   }
 
+  // Photo portrait if one is listed in data/assets.js, else a colour dot.
+  // A missing file falls back to the dot.
+  face(def, big = false) {
+    const dot = `<span class="dot" style="background:${esc(def.color)}"></span>`;
+    const url = this.portraits[def.id];
+    if (!url) return dot;
+    return `<img class="portrait${big ? ' big' : ''}" src="${esc(url)}" alt="" onerror="this.outerHTML='${dot.replace(/"/g, '&quot;')}'">`;
+  }
+
   // ---------- dialogue ----------
   openDialogue(npc) {
     this.dialogueNpc = npc;
@@ -108,7 +118,7 @@ export class UI {
     const node = def.dialogue.nodes[nodeId];
     const choices = node.choices.filter((c) => this.state.check(c.requires, c.requiresNot));
     const w = this.show('dialogue', `
-      <div class="speaker"><span class="dot" style="background:${esc(def.color)}"></span>
+      <div class="speaker">${this.face(def, true)}
         <div><strong>${esc(def.name)}</strong><span class="muted"> · ${esc(def.role || '')}</span></div></div>
       <p class="line">${esc(node.text)}</p>
       <div class="choices">${choices.map((c, i) => `<button data-num="${i + 1}" data-i="${i}"><kbd>${i + 1}</kbd> ${esc(c.text)}</button>`).join('')}</div>`,
@@ -211,7 +221,7 @@ export class UI {
       body = solved.length ? `<ol class="facts">${solved.map((id) => `<li><strong>${id}:</strong> ${esc(this.m.evidence[id].fact)}</li>`).join('')}</ol>` : '<p>Answer the question on each graphic to add facts here.</p>';
       body += `<p class="muted">You need ${this.m.readyWhen.length} key facts before the case review. You have ${this.m.readyWhen.filter((f) => this.state.has(f)).length}.</p>`;
     } else if (tab === 'people') {
-      body = `<ul class="people">${this.m.npcs.map((n) => `<li><span class="dot" style="background:${esc(n.color)}"></span><strong>${esc(n.name)}</strong> · ${esc(n.role)} ${this.state.has(`talked:${n.id}`) ? '<span class="status good">talked</span>' : '<span class="status">not yet</span>'}</li>`).join('')}</ul>`;
+      body = `<ul class="people">${this.m.npcs.map((n) => `<li>${this.face(n)}<strong>${esc(n.name)}</strong> · ${esc(n.role)} ${this.state.has(`talked:${n.id}`) ? '<span class="status good">talked</span>' : '<span class="status">not yet</span>'}</li>`).join('')}</ul>`;
     } else {
       body = this.progressTable() + `<div class="row"><button data-report>Teacher report</button><button data-restart class="danger">Start over</button></div>`;
     }
