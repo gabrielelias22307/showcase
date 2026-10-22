@@ -44,7 +44,7 @@ export default {
     AM2: {
       level: 3, skill: 'Change a fraction to a percent',
       from: 'riley', title: 'Safety quiz',
-      intro: 'Ms. Ortiz wants to know how many of us passed the safety quiz.',
+      intro: 'Mr. Elias wants to know how many of us passed the safety quiz.',
       prompt: '3 out of 4 robotics team members passed the safety quiz. What percent of the team passed?',
       options: [
         { text: '34%', feedback: 'That just puts the 3 and the 4 side by side. Divide: 3 ÷ 4.' },

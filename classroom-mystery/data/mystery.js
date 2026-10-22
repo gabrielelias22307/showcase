@@ -16,9 +16,9 @@ export default {
 
   intro: [
     'Room 210 is the biggest classroom in the building. It has its own computer lab and a small office. The robotics club meets here after school.',
-    'At 3:50 PM, Ms. Ortiz noticed that the state championship trophy was gone from the trophy case.',
+    'At 3:50 PM, Mr. Elias noticed that the state championship trophy was gone from the trophy case.',
     'You just got here. Everyone who was in the room is still here. Talk to them, collect their charts, logs and maps, and read each graphic carefully.',
-    'When you have the facts, tell Ms. Ortiz what happened.'
+    'When you have the facts, tell Mr. Elias what happened.'
   ],
 
   controls: 'Move: W A S D or arrow keys. Look: drag with the mouse. Talk or examine: E (or click the button). Notebook: N.',
@@ -99,7 +99,7 @@ export default {
 
   npcs: [
     {
-      id: 'ortiz', name: 'Ms. Ortiz', role: 'Robotics coach (teacher)', color: '#3d6fb4',
+      id: 'ortiz', name: 'Mr. Elias', role: 'Robotics coach (teacher)', color: '#3d6fb4',
       position: [-8.6, 0.2], yaw: 0,
       dialogue: {
         start: 'root',
@@ -169,7 +169,7 @@ export default {
               { text: 'Goodbye.', end: true }
             ]
           },
-          list: { text: "Here. Ms. Ortiz makes us check off every step.", choices: [{ text: 'Thanks.', next: 'root', give: 'E3' }] },
+          list: { text: "Here. Mr. Elias makes us check off every step.", choices: [{ text: 'Thanks.', next: 'root', give: 'E3' }] },
           when: {
             text: "I got the key at 3:00. I opened the case around 3:18, took the ribbon, and gave the key back at 3:20. Then at 3:40 I went to the office.",
             choices: [{ text: 'OK.', next: 'root' }]
@@ -254,7 +254,7 @@ export default {
             choices: [{ text: 'OK.', next: 'root', set: ['samNervous'] }]
           },
           confront2: {
-            text: "...I think I should explain this to Ms. Ortiz. Not here.",
+            text: "...I think I should explain this to Mr. Elias. Not here.",
             choices: [{ text: 'OK.', next: 'root', set: ['samNervous'] }]
           }
         }
@@ -356,22 +356,22 @@ export default {
       type: 'flowchart',
       level: 5,
       skill: 'Identify the missing step in a process',
-      alt: 'Flowchart with 7 steps. Marcus checked steps 1, 2, 3, 4, 6 and 7. Step 5 is blank and not checked. Steps: 1 Ask Ms. Ortiz. 2 Sign the key log. 3 Unlock the case. 4 Remove or replace the item. 5 blank. 6 Return the key. 7 Ms. Ortiz initials the log.',
+      alt: 'Flowchart with 7 steps. Marcus checked steps 1, 2, 3, 4, 6 and 7. Step 5 is blank and not checked. Steps: 1 Ask Mr. Elias. 2 Sign the key log. 3 Unlock the case. 4 Remove or replace the item. 5 blank. 6 Return the key. 7 Mr. Elias initials the log.',
       data: {
         steps: [
-          { text: 'Ask Ms. Ortiz', done: true, time: '3:00' },
+          { text: 'Ask Mr. Elias', done: true, time: '3:00' },
           { text: 'Sign the key log', done: true, time: '3:00' },
           { text: 'Unlock the case', done: true, time: '3:18' },
           { text: 'Remove or replace the item', done: true, time: '3:18' },
           { text: '?', done: false, missing: true },
           { text: 'Return the key', done: true, time: '3:20' },
-          { text: 'Ms. Ortiz initials the log', done: true, time: '3:20' }
+          { text: 'Mr. Elias initials the log', done: true, time: '3:20' }
         ]
       },
       question: {
         prompt: 'Step 5 is blank, and Marcus did not check it. What is the missing step in this process?',
         options: [
-          { text: 'Ask Ms. Ortiz', feedback: 'That is already Step 1.' },
+          { text: 'Ask Mr. Elias', feedback: 'That is already Step 1.' },
           { text: 'Lock the case', correct: true, feedback: 'Correct. You unlock, take the item, then you must lock the case before you return the key. Marcus skipped it.' },
           { text: 'Take a photo of the trophy', feedback: 'That is not part of the process. Think about what comes after "Unlock" and "Remove".' },
           { text: 'Sign the key log', feedback: 'That is already Step 2.' }
@@ -382,7 +382,7 @@ export default {
 
     E4: {
       title: 'Badge Swipes by Door, 3:00-4:00 PM',
-      from: 'Ms. Ortiz (door system)',
+      from: 'Mr. Elias (door system)',
       type: 'bar',
       level: 4,
       skill: 'Use one graphic to find information in another; compare data',
@@ -494,14 +494,14 @@ export default {
     }
   },
 
-  // Facts needed before Ms. Ortiz will start the case review.
+  // Facts needed before Mr. Elias will start the case review.
   readyWhen: ['solved:E1', 'solved:E2', 'solved:E3', 'solved:E4', 'solved:E5', 'solved:E6'],
 
   // The case review: the highest-level questions combine two graphics.
   review: [
     {
       id: 'R1', level: 6, skill: 'Interpret a trend',
-      prompt: 'Ms. Ortiz asks: "When was the trophy taken?"',
+      prompt: 'Mr. Elias asks: "When was the trophy taken?"',
       use: ['E5'],
       options: [
         { text: 'About 2:45, after the team photo', feedback: 'The sensor graph shows the trophy still on the shelf after 3:00.' },
@@ -570,7 +570,7 @@ export default {
     'Sam looks at the floor. "OK. It was me."',
     '"I came back through Door B at 3:35. I saw the case was unlocked. I took the trophy and put it in my backpack. Then I signed back in at 3:40."',
     '"I wanted to take it to the engraving shop tonight. I wanted to add every team member\'s name before the awards assembly. It was supposed to be a surprise."',
-    'Ms. Ortiz sighs. "That is a kind idea, Sam. But you have to ask first. And Marcus, the checklist exists for a reason."',
+    'Mr. Elias sighs. "That is a kind idea, Sam. But you have to ask first. And Marcus, the checklist exists for a reason."',
     'Case closed. You solved it by reading the graphics, not by guessing.'
   ]
 };

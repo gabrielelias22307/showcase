@@ -48,12 +48,12 @@ export default {
   // Animation clips named "Idle" and "Talk" play automatically.
   // Leave out `scale` to auto-fit the model to `height` meters.
   npcs: {
-    ortiz: { url: 'assets/models/npc_ortiz.glb', height: 1.72 },
-    jordan: { url: 'assets/models/npc_jordan.glb', height: 1.68 },
+    ortiz: { url: 'assets/models/npc_ortiz.glb', height: 1.78, portrait: 'assets/photos/portrait_ortiz.jpg' },   // Mr. Elias
+    jordan: { url: 'assets/models/npc_jordan.glb', height: 1.6, portrait: 'assets/photos/portrait_jordan.jpg' },
     marcus: { url: 'assets/models/npc_marcus.glb', height: 1.78 },
     priya: { url: 'assets/models/npc_priya.glb', height: 1.62 },
     riley: { url: 'assets/models/npc_riley.glb', height: 1.7 },
-    sam: { url: 'assets/models/npc_sam.glb', height: 1.75 },
+    sam: { url: 'assets/models/npc_sam.glb', height: 1.7, portrait: 'assets/photos/portrait_sam.jpg' },
     ana: { url: 'assets/models/npc_ana.glb', height: 1.6 }
   },
 

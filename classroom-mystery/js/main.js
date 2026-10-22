@@ -92,15 +92,15 @@ function refreshHud() {
   const keySolved = mystery.readyWhen.filter((f) => state.has(f)).length;
   let text;
   if (state.solved) text = 'Case closed. Open your notebook to see your report.';
-  else if (state.has('ready')) text = 'You have the key facts. Tell Ms. Ortiz what happened.';
-  else if (!state.has('talked:ortiz')) text = 'Talk to Ms. Ortiz at the front of the room.';
+  else if (state.has('ready')) text = 'You have the key facts. Tell Mr. Elias what happened.';
+  else if (!state.has('talked:ortiz')) text = 'Talk to Mr. Elias at the front of the room.';
   else text = `Collect graphics and answer their questions. Key facts: ${keySolved} / ${mystery.readyWhen.length}`;
   const pc = state.practiceCount();
   const extra = pc.total ? `<br><span class="muted">Extra practice: ${pc.done} / ${pc.total} tasks done</span>` : '';
   objective.innerHTML = `<strong>Goal:</strong> ${text}<br><span class="muted">Evidence collected: ${have} / ${ids.length}</span>${extra}`;
 }
 state.on((type) => { if (type !== 'answer') refreshHud(); });
-state.on((type) => { if (type === 'ready') ui.toast('<strong>You have all the key facts!</strong> Go tell Ms. Ortiz what happened.', 6000); });
+state.on((type) => { if (type === 'ready') ui.toast('<strong>You have all the key facts!</strong> Go tell Mr. Elias what happened.', 6000); });
 refreshHud();
 
 document.getElementById('btn-notebook').onclick = () => ui.openNotebook();

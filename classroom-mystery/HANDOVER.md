@@ -54,12 +54,12 @@ deliver one file at a time.
 | File | What it is | Notes |
 |---|---|---|
 | `classroom.glb` | The whole suite: walls, floor, ceiling, doors, furniture | **Recommended.** Must include `COL_` boxes (section 4). |
-| `npc_ortiz.glb` | Ms. Ortiz, robotics coach (teacher) | 1.72 m |
-| `npc_jordan.glb` | Jordan, hall pass monitor (student) | 1.68 m |
+| `npc_ortiz.glb` | Mr. Elias, robotics coach (teacher) | 1.78 m. **Done** (Gabriel; `tools/gabriel_character.py`) |
+| `npc_jordan.glb` | Jordan, hall pass monitor (student) | 1.60 m. **Done** (`tools/student_character.py`, WHO = A) |
 | `npc_marcus.glb` | Marcus, lab assistant (student) | 1.78 m |
 | `npc_priya.glb` | Priya, robotics club programmer (student) | 1.62 m |
 | `npc_riley.glb` | Riley, robotics club member (student) | 1.70 m |
-| `npc_sam.glb` | Sam, team captain (student) | 1.75 m |
+| `npc_sam.glb` | Sam, team captain (student) | 1.70 m. **Done** (`tools/student_character.py`, WHO = B) |
 | `npc_ana.glb` | Ana, library aide visiting the room (student) | 1.60 m |
 | `npc_student.glb` | A generic student, used for any character above that doesn't have a file yet | optional |
 
@@ -217,7 +217,7 @@ walk and stand.
 | Empty name | Who | Default X, Y |
 |---|---|---|
 | `SPAWN_player` | The student playing | −11.0, −6.0 (just inside Door A) |
-| `SPAWN_ortiz` | Ms. Ortiz | −8.6, −0.2 (in front of her desk) |
+| `SPAWN_ortiz` | Mr. Elias | −8.6, −0.2 (in front of her desk) |
 | `SPAWN_jordan` | Jordan | −8.6, −6.0 (at the hall pass desk) |
 | `SPAWN_marcus` | Marcus | −2.4, 3.5 (lab, by robotics bench 1) |
 | `SPAWN_priya` | Priya | 10.3, −1.4 (by the plants) |
@@ -242,7 +242,7 @@ up to the person.
 - One character per file. The game turns them toward the player when they
   talk.
 - Each character's colour in the placeholder version (in `data/mystery.js`)
-  is a good hint for their main clothing colour: Ortiz blue `#3d6fb4`,
+  is a good hint for their main clothing colour: Mr. Elias blue `#3d6fb4`,
   Jordan orange `#c46a2b`, Marcus green `#2f8a5b`, Priya purple `#8a3fa0`,
   Riley red `#b23a48`, Sam gold `#d19a1f`, Ana teal `#2b8f9a`. Matching
   isn't required, but it helps students tell people apart.
@@ -258,7 +258,7 @@ up to the person.
 2. In `data/assets.js`, add `portrait:` to that character's line:
 
 ```js
-sam: { url: 'assets/models/npc_sam.glb', height: 1.75, portrait: 'assets/photos/portrait_sam.jpg' },
+sam: { url: 'assets/models/npc_sam.glb', height: 1.7, portrait: 'assets/photos/portrait_sam.jpg' },
 ```
 
 If the photo file is missing, the game shows a coloured dot instead.

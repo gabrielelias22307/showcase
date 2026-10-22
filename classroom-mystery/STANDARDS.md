@@ -43,7 +43,7 @@ once, as the test does.
 | E1 | Floor plan | 3 | Locate information in a simple graphic | Poster by Door A |
 | E2 | Table (hall pass log) | 3 | Locate information in a table, with simple time arithmetic | Jordan |
 | E7 | Pie chart (team vote) | 3 | Locate information; convert a part to a percent (red herring) | Riley |
-| E4 | Grouped bar chart (badge swipes) | 4 | Use one graphic (floor plan) to find information in another; compare data | Ms. Ortiz |
+| E4 | Grouped bar chart (badge swipes) | 4 | Use one graphic (floor plan) to find information in another; compare data | Mr. Elias |
 | E3 | Flowchart / checklist | 5 | Identify the missing step in a process | Marcus |
 | E6 | Bar chart (library check-ins) | 5 | Interpret data to draw a conclusion | Ana |
 | E5 | Two-line graph (shelf sensors) | 6 | Compare two trends | Priya |
@@ -89,13 +89,13 @@ for each test.
 | AM1 | 3 | Add prices and find the change | Jordan |
 | AM2 | 3 | Change a fraction to a percent | Riley |
 | AM3 | 4 | Find an average with decimals | Marcus |
-| AM4 | 4 | Use a rate | Ms. Ortiz |
+| AM4 | 4 | Use a rate | Mr. Elias |
 | AM5 | 5 | Find the best deal using a percent discount | Sam |
 | AM6 | 5 | Find the area of a rectangle, then the cost | Priya |
 | AM7 | 6 | Work a percent backward (reverse percent) | Ana |
 | AM8 | 6 | Find the volume of a box | Marcus |
 | AM9 | 7 | Find a weighted average | Sam |
-| AM10 | 7 | Find the volume of a cylinder and change units | Ms. Ortiz |
+| AM10 | 7 | Find the volume of a cylinder and change units | Mr. Elias |
 
 ### Workplace Documents (35 items, 55 minutes)
 
@@ -114,7 +114,7 @@ for each test.
 | WD3 | 4 | Choose an action when conditions change | Battery charging procedure | Marcus |
 | WD4 | 4 | Figure out the meaning of a word from the document | Trophy rotation notice | Riley |
 | WD5 | 5 | Apply if-then instructions and acronyms | Shelf sensor guide | Priya |
-| WD6 | 5 | Apply a policy to a similar situation | After-school room policy | Ms. Ortiz |
+| WD6 | 5 | Apply a policy to a similar situation | After-school room policy | Mr. Elias |
 | WD7 | 6 | Work out a technical term and apply a rule to a new situation | Robot inspection rules | Sam |
 | WD8 | 6 | Identify the reason behind a rule | Principal's memo | Jordan |
 | WD9 | 7 | Apply one section of a document to another | Key control procedure | Marcus |

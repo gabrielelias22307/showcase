@@ -513,7 +513,7 @@ export class UI {
         <li>People give you graphics: tables, charts, maps and flowcharts.</li>
         <li>Each graphic has one question. Answer it to add a fact to your notebook.</li>
         <li>Choices: click them, or press the number keys.</li>
-        <li>When you have the key facts, talk to Ms. Ortiz to start the case review.</li>
+        <li>When you have the key facts, talk to Mr. Elias to start the case review.</li>
         ${this.state.activeBanks().length ? `<li>Extra practice is on: look for ${this.state.activeBanks().map((b) => `${b.icon} ${esc(b.taskWord)}`).join(' and ')} choices when you talk to people. They are optional.</li>` : ''}
       </ul>
       <div class="row"><button class="primary" data-close autofocus>Got it</button></div>`);

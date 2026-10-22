@@ -70,10 +70,10 @@ export default {
     WD3: {
       level: 4, skill: 'Choose an action when conditions change',
       from: 'marcus', title: 'Battery charging',
-      intro: 'I also charge the robot batteries. Ms. Ortiz made us a procedure.',
+      intro: 'I also charge the robot batteries. Mr. Elias made us a procedure.',
       doc: {
         kind: 'Procedure', title: 'Robot Battery Charging',
-        meta: [['From', 'Ms. Ortiz, Robotics Coach']],
+        meta: [['From', 'Mr. Elias, Robotics Coach']],
         body: [
           'Charge batteries only at the charging station on Robotics Bench 2. Never leave a charging battery alone.',
           { ol: [
@@ -100,11 +100,11 @@ export default {
       intro: 'This is the notice about who keeps the trophy over the summer. That\'s what the vote was about.',
       doc: {
         kind: 'Notice', title: 'Summer Trophy Rotation',
-        meta: [['To', 'Robotics team members'], ['From', 'Ms. Ortiz']],
+        meta: [['To', 'Robotics team members'], ['From', 'Mr. Elias']],
         body: [
           'This summer, the state championship trophy will rotate among team members. Each member keeps it for two weeks. The first holder was chosen by team vote.',
           'While you have the trophy, you are its custodian. As custodian, you must keep it indoors, keep it safe from damage, and bring it to the next holder on the date on the schedule.',
-          'If the trophy is damaged while you are its custodian, tell Ms. Ortiz the same day.'
+          'If the trophy is damaged while you are its custodian, tell Mr. Elias the same day.'
         ]
       },
       prompt: 'In this notice, what does the word "custodian" most likely mean?',
@@ -213,7 +213,7 @@ export default {
     WD9: {
       level: 7, skill: 'Apply one section of a document to another',
       from: 'marcus', title: 'Key control procedure',
-      intro: 'Ms. Ortiz gave me the official key procedure when I became lab assistant. It is very hard to read.',
+      intro: 'Mr. Elias gave me the official key procedure when I became lab assistant. It is very hard to read.',
       doc: {
         kind: 'Procedure', title: 'Equipment Custody and Key Control (Rev. 3)',
         meta: [['Issued by', 'Facilities Office'], ['Scope', 'Secured storage units: display cases, parts cabinets, tool lockers']],
