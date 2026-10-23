@@ -26,7 +26,7 @@ import bmesh
 WHO = os.environ.get("CM_WHO", "A")     # change to "B" to build the other student
 
 STYLES = {
-    "A": dict(height=1.60, width=0.92, skin="#c99777", hair="#2b211c", hair_style="long",
+    "A": dict(height=1.60, width=0.92, skin="#a86e4b", hair="#2b211c", hair_style="long", face="oval", lip="#7a4436", brow="#1d1613",
               top="hoodie_open", hoodie="#1d1e21", inner="camo", pants="#202124", pants_fit="baggy",
               shoe="#f2f1ee", sole="#e2e0dc", lace="#d8d6d2"),
     "B": dict(height=1.70, width=0.97, skin="#c4936f", hair="#231b17", hair_style="curly",
@@ -69,8 +69,8 @@ M = {
     "lace": mat("Lace", P["lace"], 0.8),
     "eye": mat("Eye", "#1c1a19", 0.3),
     "eyewhite": mat("EyeWhite", "#f1ece6", 0.4),
-    "brow": mat("Brow", "#2a201b", 0.9),
-    "lip": mat("Mouth", "#8a4f45", 0.7),
+    "brow": mat("Brow", P.get("brow", "#2a201b"), 0.9),
+    "lip": mat("Mouth", P.get("lip", "#8a4f45"), 0.6),
     "camo1": mat("Camo1", "#6f6c4c", 0.9),
     "camo2": mat("Camo2", "#4a4a34", 0.9),
     "camo3": mat("Camo3", "#a39c7a", 0.9),
@@ -259,7 +259,8 @@ else:
         m.ellipsoid((px, -0.115 if pz > 1.1 else -0.118, pz), (rr, 0.003, rr * 0.7), I[mi], seg=(10, 6))
         m.ellipsoid((px * 0.9, 0.114, pz + 0.02), (rr, 0.003, rr * 0.7), I[mi], seg=(10, 6))  # back
 # hood, lying down behind the neck
-m.ellipsoid((0, 0.085, 1.45), (0.125, 0.045, 0.075), I["hoodie"], lat=(-60, 80), seg=(18, 10))
+hood = ((0, 0.092, 1.43), (0.1, 0.038, 0.065)) if P["top"] == "hoodie_open" else ((0, 0.085, 1.45), (0.125, 0.045, 0.075))
+m.ellipsoid(hood[0], hood[1], I["hoodie"], lat=(-60, 80), seg=(18, 10))
 m.loft([(0, 0.02, 1.47, 0.092, 0.078), (0, 0.025, 1.53, 0.088, 0.075)], I["hoodie"], seg=20,
        gap=(270, 40) if P["top"] == "hoodie_open" else None, cap0=False, cap1=False)
 build("Top", m, COL)
@@ -298,15 +299,29 @@ for side in (-1, 1):
 # ---------- head (not slimmed: heads stay full size) ----------
 m = Mesh(body=False)
 m.loft([(0, 0.012, 1.48, 0.05, 0.05), (0, 0.012, 1.57, 0.048, 0.05)], I["skin"], seg=16)
-m.ellipsoid((0, 0.0, 1.655), (0.08, 0.096, 0.113), I["skin"], seg=(28, 18))
-for side in (-1, 1):
-    m.ellipsoid((side * 0.078, 0.014, 1.65), (0.01, 0.018, 0.026), I["skin"], seg=(10, 8))
-m.ellipsoid((0, -0.095, 1.638), (0.01, 0.012, 0.017), I["skin"], seg=(10, 8))           # nose
-for side in (-1, 1):
-    m.ellipsoid((side * 0.031, -0.0885, 1.668), (0.0125, 0.006, 0.0078), I["eyewhite"], seg=(10, 6))
-    m.ellipsoid((side * 0.031, -0.0938, 1.668), (0.0062, 0.0026, 0.0062), I["eye"], seg=(8, 6))
-    m.box((side * 0.032, -0.0915, 1.689), (0.028, 0.006, 0.005), I["brow"])
-m.ellipsoid((0, -0.093, 1.612), (0.018, 0.004, 0.0045), I["lip"], seg=(10, 6))           # smile
+if P.get("face") == "oval":
+    # longer oval face with a narrower chin, slim nose with a narrow bridge, fuller lips
+    m.ellipsoid((0, 0.0, 1.652), (0.077, 0.095, 0.121), I["skin"], seg=(28, 20))
+    # (no ears: they stay hidden under her long hair)
+    m.ellipsoid((0, -0.091, 1.66), (0.0058, 0.0058, 0.015), I["skin"], seg=(8, 6))      # nose bridge
+    m.ellipsoid((0, -0.0935, 1.64), (0.0088, 0.0115, 0.0175), I["skin"], seg=(10, 8))      # nose
+    for side in (-1, 1):
+        m.ellipsoid((side * 0.031, -0.0885, 1.669), (0.0125, 0.006, 0.0072), I["eyewhite"], seg=(10, 6))
+        m.ellipsoid((side * 0.031, -0.0937, 1.669), (0.0062, 0.0026, 0.0062), I["eye"], seg=(8, 6))
+        m.box((side * 0.031, -0.0918, 1.6885), (0.026, 0.006, 0.0045), I["brow"])
+        m.box((side * 0.043, -0.0898, 1.687), (0.01, 0.006, 0.004), I["brow"])          # brow tail, slight arch
+    m.ellipsoid((0, -0.0902, 1.6145), (0.0168, 0.0056, 0.0042), I["lip"], seg=(12, 6))  # upper lip
+    m.ellipsoid((0, -0.0893, 1.6065), (0.0152, 0.006, 0.0052), I["lip"], seg=(12, 6))   # lower lip
+else:
+    m.ellipsoid((0, 0.0, 1.655), (0.08, 0.096, 0.113), I["skin"], seg=(28, 18))
+    for side in (-1, 1):
+        m.ellipsoid((side * 0.078, 0.014, 1.65), (0.01, 0.018, 0.026), I["skin"], seg=(10, 8))
+    m.ellipsoid((0, -0.095, 1.638), (0.01, 0.012, 0.017), I["skin"], seg=(10, 8))           # nose
+    for side in (-1, 1):
+        m.ellipsoid((side * 0.031, -0.0885, 1.668), (0.0125, 0.006, 0.0078), I["eyewhite"], seg=(10, 6))
+        m.ellipsoid((side * 0.031, -0.0938, 1.668), (0.0062, 0.0026, 0.0062), I["eye"], seg=(8, 6))
+        m.box((side * 0.032, -0.0915, 1.689), (0.028, 0.006, 0.005), I["brow"])
+    m.ellipsoid((0, -0.093, 1.612), (0.018, 0.004, 0.0045), I["lip"], seg=(10, 6))           # smile
 build("Head", m, COL)
 
 m = Mesh(body=False)

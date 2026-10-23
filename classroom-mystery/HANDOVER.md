@@ -55,7 +55,7 @@ deliver one file at a time.
 |---|---|---|
 | `classroom.glb` | The whole suite: walls, floor, ceiling, doors, furniture | **Recommended.** Must include `COL_` boxes (section 4). |
 | `npc_ortiz.glb` | Mr. Elias, yearbook adviser (teacher) | 1.78 m. **Done** (Gabriel; `tools/gabriel_character.py`) |
-| `npc_jordan.glb` | Jordan, hall pass monitor (student) | 1.60 m. **Done** (`tools/student_character.py`, WHO = A) |
+| `npc_jordan.glb` | Jordan, hall pass monitor (student) | 1.60 m. **Done, textured** (`tools/student_character.py`, WHO = A, then `tools/texture_zaria.py` with the textures in `assets/textures/characters/`) |
 | `npc_marcus.glb` | Marcus, photo editor (student) | 1.78 m |
 | `npc_priya.glb` | Priya, page designer (student) | 1.62 m |
 | `npc_riley.glb` | Riley, staff writer (student) | 1.70 m |
