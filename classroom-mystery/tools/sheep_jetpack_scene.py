@@ -220,7 +220,7 @@ for name, size in (("GB_Stubble", 0.0015), ("GB_HairDark", 0.002), ("GB_Brow", 0
 m, n, l, b, out = new_mat("Grass")
 wp = coord(n, "WORLD")
 fine, big = noise_tex(n, l, wp, 30, 8), noise_tex(n, l, wp, 0.25, 4)
-gc = mix_col(n, l, maprange(n, l, fine, 0.3, 0.7, 0, 1), (0.025, 0.05, 0.012, 1), (0.08, 0.15, 0.03, 1))
+gc = mix_col(n, l, maprange(n, l, fine, 0.3, 0.7, 0, 1), (0.035, 0.08, 0.015, 1), (0.085, 0.16, 0.035, 1))
 gc = mix_col(n, l, maprange(n, l, big, 0.55, 0.7, 0, 0.5), gc, (0.11, 0.085, 0.05, 1))
 l.new(gc, b.inputs["Base Color"]); inp(b, "Roughness", 1.0)
 bump_chain(n, l, b, [(fine, 0.7, 0.05)])
@@ -405,10 +405,12 @@ def off_paths(x, y):
     return not (on_pad or on_walk or under_school)
 
 
-inner = grass_patch("GrassNear", -12, 12, -14, 37, 0.25, off_paths)
-outer = grass_patch("GrassFar", -40, 40, -34, 37, 1.0,
-                    lambda x, y: off_paths(x, y) and not (-12 < x < 12 and -14 < y < 37))
-for ob, dens, seed in ((inner, 260 * GRASS, 1), (outer, 70 * GRASS, 2)):
+inner = grass_patch("GrassNear", -10, 10, -12, 37, 0.25, off_paths)
+middle = grass_patch("GrassMid", -22, 22, -24, 37, 0.5,
+                     lambda x, y: off_paths(x, y) and not (-10 < x < 10 and -12 < y < 37))
+outer = grass_patch("GrassFar", -60, 60, -60, 37, 1.0,
+                    lambda x, y: off_paths(x, y) and not (-22 < x < 22 and -24 < y < 37))
+for ob, dens, seed in ((inner, 260 * GRASS, 1), (middle, 170 * GRASS, 2), (outer, 60 * GRASS, 4)):
     ob.location.z = 0.0
     md = ob.modifiers.new("Grass", "NODES")
     md.node_group = scatter_group(f"Scatter_{ob.name}", clump, dens, (-0.15, -0.15, 0), (0.15, 0.15, 6.283), 0.7, 1.35, seed)
@@ -609,7 +611,7 @@ def ribbon(pts, width, axis, mi):
         rows.append((a, c, c2, a2))
     for r0, r1 in zip(rows, rows[1:]):
         for k in range(4):
-            bm.faces.new((r0[k], r0[(k + 1) % 4], r1[(k + 1) % 4], r1[k]))
+            bm.faces.new((r0[k], r0[(k + 1) % 4], r1[(k + 1) % 4], r1[k])).material_index = mi
 
 
 ctr = Vector((0, 0.0, 1.28 * S))
@@ -823,7 +825,7 @@ for i in range(30):
     a = i / 30 * 2 * math.pi + rnd.uniform(-0.1, 0.1)
     d = Vector((math.cos(a), math.sin(a), 0))
     puff(LIFT - 4 + rnd.randint(0, 8), 60, lift_spot + d * 0.4 + Vector((0, 0, 0.15)),
-         d * rnd.uniform(3.5, 5.5) / 0.6 * 0.6, 0.25, rnd.uniform(1.0, 1.6), 0.6, (0.42, 0.38, 0.31), 0.25, 0.6)
+         d * rnd.uniform(3.5, 5.5), 0.2, rnd.uniform(0.7, 1.15), 0.42, (0.42, 0.38, 0.31), 0.25, 0.6)
 for f in range(IGNITE, END - 4, 2):
     if f < LIFT and rnd.random() < 0.6:
         continue
@@ -832,7 +834,7 @@ for f in range(IGNITE, END - 4, 2):
     p0 = noz.matrix_world.translation.copy()
     down = (noz.matrix_world.to_3x3() @ Vector((0, 0, -1))).normalized()
     spread = Vector((rnd.uniform(-1, 1), rnd.uniform(-1, 1), rnd.uniform(-0.3, 0.3))) * 0.5
-    puff(f, 40, p0 + down * 0.6, (down * 3.0 + spread), 0.1, rnd.uniform(0.8, 1.2), 0.5, (0.6, 0.58, 0.55), 0.3, 0.5)
+    puff(f, 36, p0 + down * 0.5, (down * 3.0 + spread), 0.07, rnd.uniform(0.4, 0.65), 0.38, (0.6, 0.58, 0.55), 0.3, 0.5)
 
 # ---------- 8. sheep: graze, then watch him fly ----------
 def key_head(pv, f, pitch, yaw):
@@ -891,8 +893,8 @@ for f in range(WALK + 1, END + 1):
         look = him + Vector((0, 0, lerp(0.9, 1.1, s)))
         ground_cam = pos.copy()
     else:
-        s = smooth((f - (LIFT + 30)) / 95)
-        chase = him + Vector((4.2, 8.5, 3.2))
+        s = smooth((f - (LIFT + 14)) / 85)
+        chase = him + Vector((2.3, 4.8, 1.7))
         pos = ground_cam.lerp(chase, s)
         look = (him + Vector((0, 0, 0.9))).lerp(him + Vector((0, 0, -1.4)), s)
     cam.location = pos
@@ -910,18 +912,22 @@ sc.cycles.samples = int(args.get("samples", "64"))
 sc.cycles.use_adaptive_sampling = True
 sc.cycles.adaptive_threshold = 0.03
 sc.cycles.use_denoising = True
-sc.cycles.max_bounces = 6
-sc.cycles.transparent_max_bounces = 32
+sc.cycles.max_bounces = 4
+sc.cycles.diffuse_bounces = 2
+sc.cycles.glossy_bounces = 2
+sc.cycles.transmission_bounces = 4
+sc.cycles.transparent_max_bounces = 24
+sc.cycles.caustics_reflective = sc.cycles.caustics_refractive = False
 sc.render.use_persistent_data = True
-sc.view_settings.view_transform = args.get("view", "AgX")
+sc.view_settings.view_transform = args.get("view", "Standard")
 try:
     sc.view_settings.look = args.get("look", "AgX - Medium High Contrast") if sc.view_settings.view_transform == "AgX" else "None"
 except TypeError:
     pass
-sc.view_settings.exposure = float(args.get("exposure", "0"))
+sc.view_settings.exposure = float(args.get("exposure", "-0.5"))
 bg = sc.world.node_tree.nodes["Background"]
-bg.inputs["Strength"].default_value = float(args.get("sky", "0.35"))
-bpy.data.objects["Sun"].data.energy = float(args.get("sun", "4.0"))
+bg.inputs["Strength"].default_value = float(args.get("sky", "0.12"))
+bpy.data.objects["Sun"].data.energy = float(args.get("sun", "2.6"))
 sc.render.resolution_x, sc.render.resolution_y = 1920, 1080
 sc.render.image_settings.file_format = "PNG"
 sc.render.filepath = os.path.join(Z, "jetpack_frames", "f_")
