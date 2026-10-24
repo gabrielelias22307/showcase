@@ -898,9 +898,9 @@ for f in range(WALK + 1, END + 1):
         ground_cam = pos.copy()
     else:
         s = smooth((f - (LIFT + 14)) / 85)
-        chase = him + Vector((2.3, 4.8, 1.7))
+        chase = him + Vector((3.0, 6.5, 2.4))
         pos = ground_cam.lerp(chase, s)
-        look = (him + Vector((0, 0, 0.9))).lerp(him + Vector((0, 0, -1.4)), s)
+        look = (him + Vector((0, 0, 0.9))).lerp(him + Vector((0, 0, -0.6)), s)
     cam.location = pos
     q = (look - pos).to_track_quat("-Z", "Y")
     e = q.to_euler("XYZ", prev); prev = e
