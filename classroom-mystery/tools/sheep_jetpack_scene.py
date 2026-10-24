@@ -225,6 +225,10 @@ gc = mix_col(n, l, maprange(n, l, big, 0.55, 0.7, 0, 0.5), gc, (0.11, 0.085, 0.0
 l.new(gc, b.inputs["Base Color"]); inp(b, "Roughness", 1.0)
 bump_chain(n, l, b, [(fine, 0.7, 0.05)])
 
+for o in bpy.data.objects:                      # push the horizon far away
+    if o.type == "MESH" and o.data.materials and o.data.materials[0].name == "Grass" and o.dimensions.x > 300:
+        o.scale = (12, 12, 1)
+
 m, n, l, b, out = new_mat("Concrete")
 wp = coord(n, "WORLD")
 c1, c2 = noise_tex(n, l, wp, 3, 6), noise_tex(n, l, wp, 0.4, 3)
