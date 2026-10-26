@@ -275,7 +275,7 @@ for k in range(4):
     p = mesh_obj("MatPanel", bm, [matm])
     p.location = (x0 + 0.5, LANE_Y, 0.03)
 box_obj("MatBase", (TAKEOFF_X + 2.25, LANE_Y, 0.012), (4.0, 1.28, 0.024), seam)
-marker_m, n, l, b, _ = new_mat("MarkerBlue"); inp(b, "Base Color", (0.02, 0.06, 0.35, 1)); inp(b, "Roughness", 0.5)
+marker_m, n, l, b, _ = new_mat("MarkerBlue"); inp(b, "Base Color", (0.01, 0.025, 0.2, 1)); inp(b, "Roughness", 0.5)
 red_m, n, l, b, _ = new_mat("MarkerRed"); inp(b, "Base Color", (0.45, 0.02, 0.02, 1)); inp(b, "Roughness", 0.5)
 
 
@@ -321,14 +321,14 @@ wb_y = 1.86
 if wb:
     ys = [(wb.matrix_world @ v.co).y for v in wb.data.vertices]
     wb_y = min(ys) - 0.006
-text_obj("WB_Title", "FIELD DAY - LONG JUMP", (-1.2, wb_y, 1.72), (math.radians(90), 0, 0), 0.2, marker_m)
+text_obj("WB_Title", "FIELD DAY - LONG JUMP", (-1.2, wb_y, 1.72), (math.radians(90), 0, 0), 0.24, marker_m)
 
 # ceiling lights over the classroom
 for x in (-9.0, -5.4, -1.8, 1.8, 5.4, 9.0):
     for y in (-6, -3, 0):
         lt = bpy.data.objects.new("CeilingLight", bpy.data.lights.new("CeilingLight", "AREA"))
         lt.data.shape = "RECTANGLE"; lt.data.size = 1.2; lt.data.size_y = 0.6
-        lt.data.energy = float(args.get("light", "170")); lt.data.color = (1.0, 0.97, 0.92)
+        lt.data.energy = float(args.get("light", "70")); lt.data.color = (1.0, 0.97, 0.92)
         lt.location = (x, y, 3.3)
         sc.collection.objects.link(lt)
 world = bpy.data.worlds.new("Room"); sc.world = world; world.use_nodes = True
@@ -538,11 +538,11 @@ f = s_up
 WALK_N = 30
 for k in range(1, WALK_N + 1):
     u = k / WALK_N
-    sam.frames[f + k] = (lerp(s_x, 3.55, smooth(u)), lerp(LANE_Y, -1.75, smooth(u)), 0.0,
+    sam.frames[f + k] = (lerp(s_x, 2.65, smooth(u)), lerp(LANE_Y, -1.85, smooth(u)), 0.0,
                          lerp(90, 180, smooth(min(1, u * 1.6))), blend(walk(k * 0.45), stand(f + k), smooth((u - 0.8) / 0.2)))
 f += WALK_N
 for k in range(1, 13):
-    sam.frames[f + k] = (3.55, -1.75, 0.0, lerp(180, 270, smooth(k / 12)), stand(f + k))
+    sam.frames[f + k] = (2.65, -1.85, 0.0, lerp(180, 270, smooth(k / 12)), stand(f + k))
 s_watch = f + 12
 
 G_RUN = s_watch + 20
@@ -555,7 +555,7 @@ for fr in range(1, END + 1):
         if fr < S_RUN:
             sam.frames[fr] = (-6.5, LANE_Y, 0.0, 90, stand(fr))
         elif fr < g_land + 6:
-            sam.frames[fr] = (3.55, -1.75, 0.0, 270, stand(fr))
+            sam.frames[fr] = (2.65, -1.85, 0.0, 270, stand(fr))
         else:                                                # he lost, but he cheers!
             k = fr - (g_land + 6)
             rot = lerp(270, 380, smooth(k / 12))
@@ -567,7 +567,7 @@ for fr in range(1, END + 1):
             else:
                 z = 0.0
                 pose = blend(stand(fr), arms_up(fr), smooth(k / 10)) if k < 10 else arms_up(fr)
-            sam.frames[fr] = (3.55, -1.75, z, rot, pose)
+            sam.frames[fr] = (2.65, -1.85, z, rot, pose)
     if fr not in grump.frames:
         if fr < G_RUN:
             grump.frames[fr] = (-8.0, LANE_Y, 0.0, 90, stand(fr, 1.3))
@@ -632,7 +632,7 @@ def shot_mid(fr):
 
 def shot_final(fr):
     u = smooth((fr - (g_land + 30)) / 80)
-    return Vector((4.1, -6.55 + 0.6 * u, 1.45 - 0.05 * u)), Vector((4.1, -2.4, 1.05))
+    return Vector((3.6, -6.55 + 0.6 * u, 1.45 - 0.05 * u)), Vector((3.6, -2.4, 1.05))
 
 
 segments = [  # (until frame, shot, blend frames into the next)
@@ -676,7 +676,7 @@ for attr, val in (("use_shadows", True), ("use_raytracing", True), ("use_gtao", 
 sc.render.use_motion_blur = True
 sc.render.motion_blur_shutter = 0.4
 sc.view_settings.view_transform = "Standard"
-sc.view_settings.exposure = float(args.get("exposure", "0"))
+sc.view_settings.exposure = float(args.get("exposure", "-0.4"))
 sc.render.resolution_x, sc.render.resolution_y = 1920, 1080
 sc.render.resolution_percentage = 100
 sc.render.image_settings.file_format = "PNG"
