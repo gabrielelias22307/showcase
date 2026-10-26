@@ -458,7 +458,7 @@ DRIVE = {"thigh.L": (-1.25, 0, 0), "shin.L": (1.7, 0, 0), "foot.L": (-0.4, 0, 0)
          "upperarm.L": (0.7, 0, -0.15), "upperarm.R": (-2.2, 0, 0.15), "forearm.L": (-1.2, 0, 0), "forearm.R": (-0.5, 0, 0),
          "chest": (0.05, 0, 0), "head": (-0.25, 0, 0)}
 SAIL = mirror({"thigh.L": (-1.1, 0, 0), "shin.L": (1.3, 0, 0), "foot.L": (-0.2, 0, 0),
-               "upperarm.L": (-2.7, 0, -0.25), "forearm.L": (-0.3, 0, 0), "chest": (0.1, 0, 0), "head": (-0.2, 0, 0)})
+               "upperarm.L": (-2.7, 0, 0.25), "forearm.L": (-0.3, 0, 0), "chest": (0.1, 0, 0), "head": (-0.2, 0, 0)})
 REACH = mirror({"thigh.L": (-1.55, 0, 0), "shin.L": (0.25, 0, 0), "foot.L": (-0.3, 0, 0),
                 "upperarm.L": (-1.3, 0, -0.15), "forearm.L": (-0.2, 0, 0), "chest": (0.55, 0, 0), "head": (-0.4, 0, 0)})
 LAND = mirror({"thigh.L": (-1.6, 0, 0), "shin.L": (2.0, 0, 0), "foot.L": (-0.45, 0, 0),
@@ -467,7 +467,7 @@ LAND = mirror({"thigh.L": (-1.6, 0, 0), "shin.L": (2.0, 0, 0), "foot.L": (-0.45,
 
 def arms_up(f, bounce=0.0):
     s = math.sin(f * 0.55)
-    d = mirror({"upperarm.L": (-2.85 + 0.12 * s, 0, -0.35), "forearm.L": (-0.25 - 0.15 * s, 0, 0),
+    d = mirror({"upperarm.L": (-2.85 + 0.12 * s, 0, 0.35), "forearm.L": (-0.25 - 0.15 * s, 0, 0),
                 "chest": (-0.08, 0, 0), "head": (0.15, 0, 0)})
     if bounce:
         d.update(mirror({"thigh.L": (-0.35 * bounce, 0, 0), "shin.L": (0.7 * bounce, 0, 0), "foot.L": (-0.35 * bounce, 0, 0)}))
@@ -477,7 +477,7 @@ def arms_up(f, bounce=0.0):
 def fist_pump(f):
     s = 0.5 + 0.5 * math.sin(f * 0.6)
     d = stand(f)
-    d.update({"upperarm.L": (-2.7 + 0.5 * s, 0, -0.3), "forearm.L": (-0.4 - 0.9 * s, 0, 0),
+    d.update({"upperarm.L": (-2.7 + 0.5 * s, 0, 0.3), "forearm.L": (-0.4 - 0.9 * s, 0, 0),
               "upperarm.R": (0.05, 0, 0.35), "forearm.R": (-1.3, 0, 0), "head": (0.1, 0, 0.1 * math.sin(f * 0.2)),
               "chest": (-0.05, 0, 0)})
     return d
