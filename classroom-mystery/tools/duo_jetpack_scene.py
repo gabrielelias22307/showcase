@@ -315,7 +315,7 @@ l.new(tint(n, l, br.outputs["Color"], maprange(n, l, bn, 0.3, 0.7, 0.8, 1.15)), 
 inv = n.new("ShaderNodeMath"); inv.operation = "SUBTRACT"; inv.inputs[0].default_value = 1
 l.new(br.outputs["Fac"], inv.inputs[1])
 inp(b, "Roughness", 0.92)
-bump_chain(n, l, b, [(inv.outputs[0], 0.6, 0.01), (bn, 0.25, 0.003)])
+bump_chain(n, l, b, [(inv.outputs[0], 0.15, 0.002)])
 school = add_mesh(bpy.ops.mesh.primitive_cube_add, size=1, location=(0, 25, 5))
 school.scale = (50, 10, 10); school.data.materials.append(m)
 wm, n, l, b, out = new_mat("Window")
@@ -673,7 +673,7 @@ for c in CAST:
             power = 1.0 + 0.25 * rnd.random()
         for fo, inner in c["flames"]:
             w = 0.9 + 0.2 * rnd.random()
-            fo.scale = (w, w, power * (0.55 if inner else 1.1))
+            fo.scale = (w, w, power * (0.75 if inner else 1.5))
             fo.keyframe_insert("scale", frame=f)
         c["glow"].data.energy = 900 * power
         c["glow"].data.keyframe_insert("energy", frame=f)
@@ -720,7 +720,7 @@ for c in CAST:
             z = -0.11 * smooth((f - (LF - 7)) / 6)
         else:
             t = (f - LF) / FPS
-            vzv = 10.0 * smooth(t / 0.9)
+            vzv = 7.0 * smooth(t / 0.9)
             z += vzv / FPS
             px = x + math.copysign(1.0, x) * 0.9 * smooth(t / 3)
             if lazy:                                          # Mr. Grump wobbles a bit
@@ -783,15 +783,15 @@ for c in CAST:
         d = Vector((math.cos(a), math.sin(a), 0))
         puff(LF - 3 + rnd.randint(0, 6), 50, spot + d * 0.35 + Vector((0, 0, 0.12)), d * rnd.uniform(3.0, 4.5),
              0.18, rnd.uniform(0.6, 1.0), 0.4, (0.45, 0.42, 0.36), 0.2, 0.6)
-    for f in range(c["ignite"], END - 3, 2):
-        if f < LF and rnd.random() < 0.6:
+    for f in range(c["ignite"], END - 3):
+        if f < LF and rnd.random() < 0.75:
             continue
         sc.frame_set(f)
-        noz = c["nozzles"][(f // 2) % 2]
+        noz = c["nozzles"][f % 2]
         p0 = noz.matrix_world.translation.copy()
         down = (noz.matrix_world.to_3x3() @ Vector((0, 0, -1))).normalized()
         spread = Vector((rnd.uniform(-1, 1), rnd.uniform(-1, 1), rnd.uniform(-0.3, 0.3))) * 0.5
-        puff(f, 34, p0 + down * 0.5, down * 3.0 + spread, 0.07, rnd.uniform(0.4, 0.65), 0.4, (0.62, 0.6, 0.57), 0.3, 0.5)
+        puff(f, 30, p0 + down * 0.5, down * 3.0 + spread, 0.08, rnd.uniform(0.55, 0.85), 0.35, (0.62, 0.6, 0.57), 0.3, 0.5)
 
 # ---------- sheep: graze, then look up ----------
 def key_head(pv, f, pitch, yaw):
@@ -844,8 +844,8 @@ for f in range(1, END + 1):
     if f <= LIFT0:
         pos, look = base, Vector((0.0, 0, 1.05))
     else:
-        rise = max(0.0, m_.z - 7.0) * 0.82
-        pos = base + Vector((0, -0.04 * (f - LIFT0), rise))
+        rise = max(0.0, m_.z - 2.0) * 0.93
+        pos = base + Vector((0.02 * (f - LIFT0), -0.035 * (f - LIFT0), rise))
         look = m_ + Vector((0, 0, 1.0))
     cam.location = pos
     e = (look - pos).to_track_quat("-Z", "Y").to_euler("XYZ", prev); prev = e
